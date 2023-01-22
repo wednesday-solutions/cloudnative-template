@@ -4,11 +4,19 @@ importers:
 
   .:
     specifiers:
-      eslint-config-custom: workspace:*
+      '@fastify-postgres-template/eslint-config-custom': workspace:*
       turbo: latest
     devDependencies:
-      eslint-config-custom: link:packages/eslint-config-custom
+      '@fastify-postgres-template/eslint-config-custom': link:packages/eslint-config-custom
       turbo: 1.7.0
+
+  apps/alpha:
+    specifiers:
+      '@fastify-postgres-template/eslint-config-custom': workspace:*
+      '@fastify-postgres-template/tsconfig': workspace:*
+    devDependencies:
+      '@fastify-postgres-template/eslint-config-custom': link:../../packages/eslint-config-custom
+      '@fastify-postgres-template/tsconfig': link:../../packages/tsconfig
 
   packages/eslint-config-custom:
     specifiers:

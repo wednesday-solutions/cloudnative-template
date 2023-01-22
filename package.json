@@ -1,7 +1,8 @@
 {
   "name": "fastify-postgres-template",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
+  "author": "Wednesday Solutions",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -14,7 +15,6 @@
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "prettier": "latest",
     "turbo": "latest"
   },
   "engines": {

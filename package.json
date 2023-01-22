@@ -11,11 +11,16 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
+    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@types/jest": "^29.2.6",
     "eslint-config-custom": "workspace:*",
-    "turbo": "latest"
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.5",
+    "turbo": "latest",
+    "typescript": "^4.7.4"
   },
   "engines": {
     "node": ">=14.0.0"

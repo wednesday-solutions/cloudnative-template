@@ -1,4 +1,5 @@
-// @rushstack/eslint-patch/modern-module-resolution
+// ESLint fails to resolve some dependencies that exists
+// inside others this is a fix for that!
 require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {

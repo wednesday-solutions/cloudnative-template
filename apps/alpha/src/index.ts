@@ -1,7 +1,3 @@
-import fastify from 'fastify';
-
-const server = fastify();
-
-server.listen({
-  port: 5000,
-}, () => {});
+export const foo = (a: number, b: number) => {
+  return a + b;
+};

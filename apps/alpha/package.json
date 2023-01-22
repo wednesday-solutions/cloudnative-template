@@ -1,24 +1,22 @@
 {
-  "name": "fastify-postgres-template",
+  "name": "@fastify-postgres-template/alpha",
   "version": "0.0.1",
   "private": true,
   "author": "Wednesday Solutions",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "dependencies": {
+    "fastify": "^4.12.0",
+    "tsconfig": "workspace:*"
+  },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "@types/node": "^18.11.18",
+    "typescript": "^4.7.4"
   },
   "packageManager": "pnpm@7.25.0"
 }

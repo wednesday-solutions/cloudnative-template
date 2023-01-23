@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "./jest-setup.ts"],
+  "include": ["./src/**/*.ts", "./test/**/*.ts", "./jest-setup.ts", "./migrate.ts"],
   "exclude": ["./turbo", "./coverage"],
   "compilerOptions": {
     "paths": {

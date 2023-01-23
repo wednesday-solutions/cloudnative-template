@@ -8,11 +8,22 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "DEVELOPMENT": "-------------------- DEVELOPMENT --------------------",
+    "turbo": "turbo",
+    "start:dev": "dotenv -e ./environments/.env.development -- turbo run start:dev --parallel",
+    "start:qa": "dotenv -e ./environments/.env.qa -- turbo run start:qa --parallel",
+    "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel",
+    "TESTING": "-------------------- TESTING --------------------",
+    "test:all": "turbo run test:all",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
+    "test:coverage": "turbo run test:coverage",
+    "test:verbose": "turbo run test:verbose",
+    "CODE_STYLE": "-------------------- CODE STYLE --------------------",
+    "lint:no-fix": "eslint --ext ts ./src",
+    "lint:fix": "eslint --fix --ext ts ./src",
+    "BUILDING": "-------------------- BUILDING --------------------",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^29.2.6",
@@ -25,5 +36,8 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@7.25.0"
+  "packageManager": "pnpm@7.25.0",
+  "dependencies": {
+    "dotenv-cli": "^7.0.0"
+  }
 }

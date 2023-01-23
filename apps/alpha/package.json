@@ -6,7 +6,9 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "lint": "eslint --ext ts ./src",
+    "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
+    "lint:no-fix": "eslint --ext ts ./src",
+    "lint:fix": "eslint --fix --ext ts ./src",
     "TESTING": "-------------------------- TESTING --------------------------",
     "test:all": "jest --silent --verbose",
     "test:unit": "jest --silent --verbose --testPathPattern=test/unit",

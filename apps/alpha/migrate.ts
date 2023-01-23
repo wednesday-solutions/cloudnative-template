@@ -5,14 +5,14 @@ import { Umzug, SequelizeStorage } from 'umzug';
 
 const command = process.argv[2];
 
-// TODO: Move these to ENVs
+// TODO: A better way to read and define ENVs
 const sequelize = new Sequelize({
-  dialect: 'postgres',
-  database: 'procedures',
-  host: '127.0.0.1',
-  port: 5432,
-  password: 'postgres',
-  username: 'postgres',
+  dialect: process.env.DB_DIALECT ?? 'postgres',
+  database: process.env.DB_DATABASE ?? 'fastify_postgres',
+  host: process.env.DB_HOST ?? '127.0.0.1',
+  port: process.env.DB_PORT ?? 5432,
+  password: process.env.DB_USERNAME ?? 'postgres',
+  username: process.env.DB_PASSWORD ?? 'postgres',
 });
 
 /**

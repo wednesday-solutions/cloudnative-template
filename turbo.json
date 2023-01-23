@@ -8,7 +8,8 @@
     "lint:no-fix": {},
     "lint:fix": {},
     "start:dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "start:qa": {
       "dependsOn": ["test:all", "build"],

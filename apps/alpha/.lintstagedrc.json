@@ -1,0 +1,5 @@
+{
+  "./**/*.{js, ts}": [
+    "pnpm run lint:no-fix"
+  ]
+}

@@ -7,7 +7,7 @@ import type { FastifyBootstrapperOptions } from './types/bootstrapper.types';
  * fastify server that will setup all the necessary logic required for the application
  * to work.
  */
-export class FastifyServer {
+                                export class FastifyServer {
   /**
    * Instance of fastify server!
    */

@@ -39,6 +39,7 @@ services:
 # for our database persistance.
 volumes:
   fastify-postgres: {}
+  fastify-pgadmin: {}
 
 # Networks used by docker-compose and all the apps in it
 networks:

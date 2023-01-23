@@ -82,8 +82,6 @@ async function migrate() {
 
 void migrate().then(() => {
   console.info(
-    `Successfully ${
-      command === 'seed:up' || command === 'seed:down' ? 'seeded' : 'migrated'
-    }!`,
+    `Successfully ${command.startsWith('seed') ? 'seeded' : 'migrated'}!`,
   );
 });

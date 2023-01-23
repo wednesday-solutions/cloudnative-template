@@ -11,28 +11,28 @@
       "cache": false
     },
     "start:qa": {
-      "dependsOn": ["test:all", "lint:no-fix", "build"],
+      "dependsOn": ["test:all", "build"],
       "cache": false
     },
     "start:prod": {
-      "dependsOn": ["test:all", "lint:no-fix", "build"],
+      "dependsOn": ["test:all", "build"],
       "cache": false
     },
     "test:all": {
-      "dependsOn": ["lint"]
+      "dependsOn": ["lint:no-fix"]
     },
     "test:unit": {
-      "dependsOn": ["lint"]
+      "dependsOn": ["lint:no-fix"]
     },
     "test:integration": {
-      "dependsOn": ["lint"]
+      "dependsOn": ["lint:no-fix"]
     },
     "test:coverage": {
-      "dependsOn": ["lint"],
+      "dependsOn": ["lint:no-fix"],
       "outputs": ["coverage/**"]
     },
     "test:verbose": {
-      "dependsOn": ["lint"]
+      "dependsOn": ["lint:no-fix"]
     }
   },
   "globalEnv": [

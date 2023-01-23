@@ -7,7 +7,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "eslint --ext ts ./src",
-    "test": "jest --coverage"
+
+    "TESTING": "-------------------------- TESTING --------------------------",
+    "test:all": "jest --silent --verbose",
+    "test:unit": "jest --silent --verbose --testPathPattern=test/unit",
+    "test:integration": "jest --silent --verbose --testPathPattern=test/integration",
+    "test:coverage": "jest --coverage --silent",
+    "test:verbose": "jest --verbose"
   },
   "dependencies": {
     "fastify": "^4.12.0",

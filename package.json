@@ -20,12 +20,13 @@
     "test:coverage": "turbo run test:coverage",
     "test:verbose": "turbo run test:verbose",
     "CODE_STYLE": "-------------------- CODE STYLE --------------------",
-    "lint:no-fix": "eslint --ext ts ./src",
-    "lint:fix": "eslint --fix --ext ts ./src",
+    "lint:no-fix": "turbo run lint:no-fix",
+    "lint:fix": "turbo run lint:fix",
     "BUILDING": "-------------------- BUILDING --------------------",
     "build": "tsc",
     "GIT": "-------------------- GIT --------------------",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "devDependencies": {
     "@types/jest": "^29.2.6",

@@ -5,8 +5,12 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "lint:no-fix": {},
-    "lint:fix": {},
+    "lint:no-fix": {
+      "cache": false
+    },
+    "lint:fix": {
+      "cache": false
+    },
     "start:dev": {
       "cache": false,
       "persistent": true

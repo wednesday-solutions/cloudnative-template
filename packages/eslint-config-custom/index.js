@@ -96,6 +96,8 @@ module.exports = {
   },
   ignorePatterns: [
     'packages/*/types/**/*',
+    'node_modules',
+    'dist',
     '.typedoc-build',
   ],
   env: {

@@ -3,7 +3,6 @@ CREATE OR REPLACE FUNCTION trigger_set_update_at_timestamp()
 RETURNS TRIGGER AS $trigger_set_update_at_timestamp$
   BEGIN
     IF row(NEW.*) IS DISTINCT FROM row(OLD.*) THEN
-      RAISE NOTICE 'Calling Update Timestamp on (%)', row(NEW.*);
       NEW.updated_at = now();
       RETURN NEW;
     ELSE

@@ -38,9 +38,9 @@ services:
 # Volumes that the compose uses will be used to persist
 # for our database persistance.
 volumes:
-  amex_perks_database_volume: {}
+  fastify-postgres: {}
 
 # Networks used by docker-compose and all the apps in it
 networks:
-  postgres:
+  fastify-postgres-template:
     driver: bridge

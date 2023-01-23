@@ -1,4 +1,4 @@
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyRegisterOptions } from 'fastify';
 import fastify from 'fastify';
 
 /**
@@ -10,7 +10,7 @@ export class FastifyServer {
   /**
    * Instance of fastify server!
    */
-  readonly server: FastifyInstance;
+  readonly instance: FastifyInstance;
 
   /**
    * Setup the fastify server!
@@ -28,9 +28,10 @@ export class FastifyServer {
    * @param [options.port] - the port on which the application should listen, is required
    * @param [options.host] - the host on which the application should run, defaults to `localhost`
    * @param [options.logging] - should log output, defaults to `false`
+   * @param [options.routes] - array containing object specifying a route and its prefix
    */
   constructor(public options: FastifyBootstrapperOptions) {
-    this.server = fastify({ logger: options.logging ?? false });
+    this.instance = fastify({ logger: options.logging ?? false });
 
     this.#registerRoutes();
   }
@@ -60,15 +61,32 @@ export class FastifyServer {
    * ```
    */
   async startServer() {
-    return this.server.listen({ port: this.options.port, host: this.options.host ?? 'localhost' });
+    await this.instance.listen({ port: this.options.port, host: this.options.host ?? 'localhost' });
   }
 
   /**
-   * Registers routes provided to the bootstrapper.
+   * Registers routes provided to the bootstrapper. HealthCheck route
+   * is created by default at `/healthcheck` by the bootstrapper.
    */
-  #registerRoutes() {}
+  #registerRoutes() {
+    const routes = this.options.routes ?? [];
 
-  #setupErrorHandler() {}
+    // Register Health Check
+    this.instance.get('/healthcheck', async () => {
+      return { status: 'Ok!', message: 'Fastify just being fast!' };
+    });
+
+    for (const _route of routes) {
+      void this.instance.register(_route.handler, _route.opts);
+    }
+  }
+
+  /**
+   * Setup global Error Handler.
+   */
+  #setupErrorHandler() {
+    // TODO: Setup Error handler and error handling structure.
+  }
 }
 
 export default FastifyServer;
@@ -89,6 +107,35 @@ interface FastifyBootstrapperOptions {
 
   /**
    * Option forwarded to `fastify.logger`, defaults to `false`
+   * Pino as a logger is built into Fastify itself. Setting this will
+   * allow you to do the following!
+   *
+   * @example
+   * ```typescript
+   * fastify.log('Foobar');
+   *
+   * // or in the route
+   * request.log('Fizzbuzz');
+   * ```
    */
   logging?: boolean;
+
+  /**
+   * Array containing all the routes defined in the application.
+   * These will be registered by the bootstrapper. A Health-Check route
+   * is automatically created at `/healthcheck`!
+   */
+  routes?: RouteConfig[];
 }
+
+type RouteConfig = {
+  /**
+   * Handler that handles this route
+   */
+  handler(): void,
+
+  /**
+   * FastifyRegisterOptions taken in by route configurations
+   */
+  opts: FastifyRegisterOptions<{ prefix: string }>,
+};

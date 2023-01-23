@@ -1,10 +1,15 @@
-import fastify from 'fastify';
+import FastifyServer from './bootstrapper';
 
-const server = fastify();
+const server = new FastifyServer({
+  port: 5000,
+  host: '0.0.0.0',
+  logging: true,
+  routes: [],
+});
 
 async function main() {
   try {
-    await server.listen({ port: 5000, host: '0.0.0.0' });
+    await server.startServer();
     console.info(`Listening for requests on port 5000...`);
   } catch (error) {
     console.error(error);

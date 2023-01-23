@@ -26,7 +26,7 @@ export class FastifyServer {
    * ```
    *
    * @param [options] - options for FastifyBootstrapper
-   * @param [options.port] - the port on which the application should listen, is required
+   * @param [options.port] - the port on which the application should listen, defaults to 5000
    * @param [options.host] - the host on which the application should run, defaults to `localhost`
    * @param [options.logging] - should log output, defaults to `false`
    * @param [options.routes] - array containing object specifying a route and its prefix
@@ -62,7 +62,7 @@ export class FastifyServer {
    * ```
    */
   async startServer() {
-    await this.instance.listen({ port: this.options.port, host: this.options.host ?? 'localhost' });
+    await this.instance.listen({ port: this.options.port ?? 5000, host: this.options.host ?? 'localhost' });
   }
 
   /**
@@ -73,7 +73,7 @@ export class FastifyServer {
     const routes = this.options.routes ?? [];
 
     // Register Health Check
-    this.instance.get('/healthcheck', async () => {
+    this.instance.get('/health-check', async () => {
       return { status: 'Ok!', message: 'Fastify just being fast!' };
     });
 

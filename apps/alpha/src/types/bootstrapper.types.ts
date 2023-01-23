@@ -1,4 +1,4 @@
-import type { FastifyRegisterOptions } from 'fastify';
+import type { FastifyInstance, FastifyRegisterOptions } from 'fastify';
 
 /**
  * Options for FastifyBootstrapper
@@ -7,7 +7,7 @@ export interface FastifyBootstrapperOptions {
   /**
    * Port the application should listen on, is required!
    */
-  port: number;
+  port?: number;
 
   /**
    * Host the application should run on, defaults to `localhost`
@@ -41,7 +41,7 @@ type RouteConfig = {
   /**
    * Handler that handles this route
    */
-  handler(): void,
+  handler(server: FastifyInstance): Promise<void>,
 
   /**
    * FastifyRegisterOptions taken in by route configurations

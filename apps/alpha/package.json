@@ -10,7 +10,7 @@
     "lint:no-fix": "eslint --ext ts ./src",
     "lint:fix": "eslint --fix --ext ts ./src",
     "TESTING": "-------------------------- TESTING --------------------------",
-    "test:all": "yarn test:unit && yarn test:integration",
+    "test:all": "pnpm run test:unit && pnpm run test:integration",
     "test:unit": "jest --silent --verbose --testPathPattern=test/unit",
     "test:integration": "jest --silent --verbose --testPathPattern=test/integration",
     "test:coverage": "jest --coverage --silent --testPathPattern=test",

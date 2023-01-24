@@ -95,7 +95,7 @@ export class FastifyServer {
           .status(error.statusCode)
           .send({ ok: false, errCode: error.errorCode, errors: error.serializeErrors() });
       } else {
-        void reply.status(500).send({ errCode: 500, errors: error });
+        void reply.status(500).send({ ok: false, errCode: 500, errors: [{ message: 'Something went wrong!' }] });
       }
     });
   }

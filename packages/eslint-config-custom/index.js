@@ -46,7 +46,7 @@ module.exports = {
   },
   overrides: [{
     // Disable slow rules that are not important in tests (perf)
-    files: ['packages/*/test/**/*'],
+    files: ['apps/*/test/**/*'],
     rules: {
       // We will have stuff that can be imported from DevDeps in tests
       'import/no-extraneous-dependencies': 'off',

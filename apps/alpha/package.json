@@ -6,25 +6,37 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "lint": "eslint --ext ts ./src",
-
+    "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
+    "lint:no-fix": "eslint --ext ts ./src",
+    "lint:fix": "eslint --fix --ext ts ./src",
     "TESTING": "-------------------------- TESTING --------------------------",
-    "test:all": "jest --silent --verbose",
+    "test:all": "pnpm run test:unit && pnpm run test:integration",
     "test:unit": "jest --silent --verbose --testPathPattern=test/unit",
     "test:integration": "jest --silent --verbose --testPathPattern=test/integration",
-    "test:coverage": "jest --coverage --silent",
-    "test:verbose": "jest --verbose"
+    "test:coverage": "jest --coverage --silent --testPathPattern=test",
+    "test:verbose": "jest --verbose --testPathPattern=test",
+    "MIGRATIONS": "-------------------------- DB MIGRATIONS --------------------------",
+    "migrate:up": "ts-node ./migrate.ts up",
+    "migrate:down": "ts-node ./migrate.ts down",
+    "migrate:purge": "ts-node ./migrate.ts purge",
+    "seed:up": "ts-node ./migrate.ts seed:up",
+    "seed:down": "ts-node ./migrate.ts seed:down"
   },
   "dependencies": {
     "fastify": "^4.12.0",
     "fastify-zod": "^1.2.0",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.28.0",
     "tsconfig": "workspace:*",
+    "umzug": "^3.2.1",
     "zod": "^3.20.2",
     "zod-to-json-schema": "^3.20.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
     "eslint-config-custom": "workspace:*",
+    "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   },

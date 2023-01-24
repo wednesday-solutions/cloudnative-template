@@ -1,0 +1,47 @@
+version: '3'
+services:
+  # Setup Postgres Database
+  fastify-postgres-db:
+    container_name: fastify-template-postgres
+    image: postgres
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      # This will persist the data on host machine remember
+      # it will be there as long as the volume is there essentially
+      # don't pass the `-v` flag to docker-compose down.
+      - fastify-postgres:/data/postgres
+    networks:
+      - fastify-postgres-template
+
+  # Setup PGAdmin for Postgres
+  fastify-pgadmin:
+    container_name: fastify-template-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - fastify-pgadmin:/var/lib/pgadmin
+    ports:
+      - '5050:5050'
+    restart: unless-stopped
+    networks:
+      - fastify-postgres-template
+
+# Volumes that the compose uses will be used to persist
+# for our database persistance.
+volumes:
+  fastify-postgres: {}
+  fastify-pgadmin: {}
+
+# Networks used by docker-compose and all the apps in it
+networks:
+  fastify-postgres-template:
+    driver: bridge

@@ -3,14 +3,51 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "outputs": ["dist/**"]
     },
-    "lint": {
-      "outputs": []
+    "lint:no-fix": {},
+    "lint:fix": {},
+    "start:dev": {
+      "cache": false,
+      "persistent": true
     },
-    "dev": {
+    "start:qa": {
+      "dependsOn": ["test:all", "build"],
       "cache": false
     },
-    "test": {}
-  }
+    "start:prod": {
+      "dependsOn": ["test:all", "build"],
+      "cache": false
+    },
+    "test:all": {
+      "dependsOn": ["lint:no-fix"]
+    },
+    "test:unit": {
+      "dependsOn": ["lint:no-fix"]
+    },
+    "test:integration": {
+      "dependsOn": ["lint:no-fix"]
+    },
+    "test:coverage": {
+      "dependsOn": ["lint:no-fix"],
+      "outputs": ["coverage/**"]
+    },
+    "test:verbose": {
+      "dependsOn": ["lint:no-fix"]
+    }
+  },
+  "globalEnv": [
+    "NODE_ENV",
+    "DB_DIALECT",
+    "DB_DATABASE",
+    "DB_HOST",
+    "DB_PORT",
+    "DB_USERNAME",
+    "DB_PASSWORD"
+  ],
+  "globalDependencies": [
+    "./environments/.env",
+    "./environments/.env.development",
+    "./environments/.env.qa"
+  ]
 }

@@ -2,6 +2,7 @@
   "name": "fastify-custom-errors",
   "description": "Reusable errors that are framework agnostic works with Expressjs, Fastify, and Nestjs!",
   "version": "0.0.1",
+  "main": "./src/index.ts",
   "license": "MIT",
   "dependencies": {
     "tsconfig": "workspace:*"

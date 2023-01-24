@@ -4,6 +4,8 @@
   "private": true,
   "author": "Wednesday Solutions",
   "scripts": {
+    "DEVELOPMENT": "-------------------------- DEVELOPMENT --------------------------",
+    "start:dev": "ts-node-dev ./src/index.ts",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",
     "lint:fix": "eslint --fix --ext ts './src/**/*.{js,ts}'",

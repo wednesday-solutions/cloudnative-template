@@ -1,4 +1,4 @@
-import { ERROR_CODES, ERROR_STATUS_CODES } from '@src/types';
+import { ERROR_CODES, ERROR_STATUS_CODES } from '../types';
 import CustomError from './custom.error';
 
 /**

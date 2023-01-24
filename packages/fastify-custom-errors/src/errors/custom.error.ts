@@ -1,4 +1,4 @@
-import type { ERROR_CODES, ERROR_STATUS_CODES } from '@src/types';
+import type { ERROR_CODES, ERROR_STATUS_CODES } from '../types';
 
 /**
  * CustomError will be our main error class which all the other errors

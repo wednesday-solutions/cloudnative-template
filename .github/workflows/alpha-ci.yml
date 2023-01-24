@@ -37,12 +37,12 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build the entire monorepo
+      - name: Build the `alpha` app
         run: pnpm run build
         working-directory: ./apps/alpha
 
       # For now we'll only run Unit tests on CI
       # TODO: Write and wire up integration tests for CI
-      - name: Test the entire monorepo
+      - name: Test the `alpha` app
         run: pnpm run test:unit
         working-directory: ./apps/alpha

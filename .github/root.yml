@@ -1,0 +1,41 @@
+name: Fastify Postgres
+
+# We'll run this root file for the entire repository which means
+# that this will be executed keeping all the `apps` in this monorepo
+# in mind. And it is for testing the entire monorepo itself!
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # We'll test against both 16 Gallium LTS.
+    # And the current LTS that's Node 18, to be honest
+    # the reason we wanna do this is because of a lot of trouble
+    # we've faced with migrating from Node 16 to Node 18.
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the entire monorepo
+        run: pnpm run build
+
+      # For now we'll only run Unit tests on CI
+      # TODO: Write and wire up integration tests for CI
+      - name: Test the entire monorepo
+        run: pnpm run test:unit

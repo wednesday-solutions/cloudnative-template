@@ -23,7 +23,7 @@
     "lint:no-fix": "turbo run lint:no-fix",
     "lint:fix": "turbo run lint:fix",
     "BUILDING": "-------------------- BUILDING --------------------",
-    "build": "tsc",
+    "build": "turbo run build",
     "GIT": "-------------------- GIT --------------------",
     "prepare": "husky install",
     "pre-commit": "lint-staged"

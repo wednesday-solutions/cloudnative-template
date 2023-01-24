@@ -1,5 +1,6 @@
 import FastifyServer from '@src/bootstrapper';
 import type { FastifyInstance } from 'fastify';
+import { TestFastifyServer } from '../support';
 
 describe('bootstrapper', () => {
   let server: FastifyServer;
@@ -42,17 +43,7 @@ describe('bootstrapper', () => {
   });
 
   it('starts a server on a certain provided port', async () => {
-    class TestFastifyServer extends FastifyServer {
-      constructor() {
-        super({ port: 9000 });
-      }
-
-      async stopServer() {
-        await this.instance.close();
-      }
-    }
-
-    const _server = new TestFastifyServer();
+    const _server = new TestFastifyServer({ port: 9000 });
     await _server.startServer();
 
     const response = await _server.instance.inject({
@@ -67,7 +58,7 @@ describe('bootstrapper', () => {
       status: 'Ok!',
     });
 
-    await _server.stopServer();
+    await _server.closeServer();
     try {
       await _server.instance.inject();
     } catch (error) {
@@ -76,17 +67,7 @@ describe('bootstrapper', () => {
   });
 
   it('starts a server on default port of 5000 if no port was provided', async () => {
-    class TestFastifyServer extends FastifyServer {
-      constructor() {
-        super({});
-      }
-
-      async stopServer() {
-        await this.instance.close();
-      }
-    }
-
-    const _server = new TestFastifyServer();
+    const _server = new TestFastifyServer({});
     await _server.startServer();
 
     const response = await _server.instance.inject({
@@ -101,7 +82,7 @@ describe('bootstrapper', () => {
       status: 'Ok!',
     });
 
-    await _server.stopServer();
+    await _server.closeServer();
     try {
       await _server.instance.inject();
     } catch (error) {

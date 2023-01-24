@@ -30,6 +30,7 @@ importers:
       '@types/node': ^18.11.18
       eslint-config-custom: workspace:*
       fastify: ^4.12.0
+      fastify-custom-errors: workspace:*
       fastify-zod: ^1.2.0
       pg: ^8.8.0
       pg-hstore: ^2.3.4
@@ -43,6 +44,7 @@ importers:
       zod-to-json-schema: ^3.20.2
     dependencies:
       fastify: 4.12.0
+      fastify-custom-errors: link:../../packages/fastify-custom-errors
       fastify-zod: 1.2.0_fastify@4.12.0
       pg: 8.8.0
       pg-hstore: 2.3.4

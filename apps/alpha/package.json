@@ -29,6 +29,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.28.0",
     "tsconfig": "workspace:*",
+    "fastify-custom-errors": "workspace:*",
     "umzug": "^3.2.1",
     "zod": "^3.20.2",
     "zod-to-json-schema": "^3.20.2"

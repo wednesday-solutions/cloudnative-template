@@ -1,4 +1,4 @@
-import type { ERROR_CODES, STATUS_CODES } from '@src/types';
+import type { ERROR_CODES, ERROR_STATUS_CODES } from '@src/types';
 
 /**
  * CustomError will be our main error class which all the other errors
@@ -32,12 +32,14 @@ import type { ERROR_CODES, STATUS_CODES } from '@src/types';
  *     ],
  * }
  * ```
+ *
+ * NOTE: Do not expose this class outside this package!
  */
 abstract class CustomError extends Error {
   /**
    * HTTP Error Code for the request.
    */
-  abstract statusCode: STATUS_CODES;
+  abstract statusCode: ERROR_STATUS_CODES;
 
   /**
    * Custom error code notifying the user what the error code is.

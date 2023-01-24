@@ -1,1 +1,3 @@
-export * from './errors/custom.error';
+export { default } from './errors/bad-request.error';
+
+export * from './types';

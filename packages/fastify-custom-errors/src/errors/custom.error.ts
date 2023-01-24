@@ -33,7 +33,7 @@ import type { ERROR_CODES, STATUS_CODES } from '@src/types';
  * }
  * ```
  */
-export abstract class CustomError extends Error {
+abstract class CustomError extends Error {
   /**
    * HTTP Error Code for the request.
    */
@@ -54,7 +54,7 @@ export abstract class CustomError extends Error {
   }
 
   /**
-   * The error will have implement this return type. It will force the errors
+   * The errors will have to implement this return type. It will force the errors
    * to only have this structure. This will help with error consistency.
    */
   abstract serializeErrors(): Array<{ message: string, field?: string }>;

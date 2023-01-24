@@ -4,7 +4,7 @@ import CustomError from './custom.error';
 /**
  * Rate limiting, too many requests were sent by the client.
  */
-class TooManyRequests extends CustomError {
+class TooManyRequestsError extends CustomError {
   statusCode = ERROR_STATUS_CODES.ERR_TOO_MANY_REQUESTS;
   errorCode = ERROR_CODES.ERR_TOO_MANY_REQUESTS;
 
@@ -17,4 +17,4 @@ class TooManyRequests extends CustomError {
   }
 }
 
-export default TooManyRequests;
+export default TooManyRequestsError;

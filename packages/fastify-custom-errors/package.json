@@ -6,6 +6,9 @@
   "dependencies": {
     "tsconfig": "workspace:*"
   },
+  "scripts": {
+    "test": "jest --silent --verbose --testPathPattern=test"
+  },
   "devDependencies": {
     "@types/node": "^18.11.18",
     "eslint-config-custom": "workspace:*",

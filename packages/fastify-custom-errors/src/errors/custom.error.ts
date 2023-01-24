@@ -32,8 +32,6 @@ import type { ERROR_CODES, ERROR_STATUS_CODES } from '@src/types';
  *     ],
  * }
  * ```
- *
- * NOTE: Do not expose this class outside this package!
  */
 abstract class CustomError extends Error {
   /**

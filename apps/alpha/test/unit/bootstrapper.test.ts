@@ -43,7 +43,7 @@ describe('bootstrapper', () => {
     });
   });
 
-  it('handles errors thrown by CustomError\'s instances and serializes them in correct structure', async () => {
+  it('handles errors thrown by Errors aside of CustomError\'s instances and serializes them in correct structure', async () => {
     async function userRoutes(router: FastifyInstance) {
       router.get('/', async () => {
         throw new Error('Not a CustomError!');

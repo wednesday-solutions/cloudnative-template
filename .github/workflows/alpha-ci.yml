@@ -29,6 +29,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+          # Trying with the one on root, TurboRepo doesn't generate
+          # any lockfiles within subdirs of any apps!
+          cache-dependency-path: 'pnpm-lock.yaml'
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile

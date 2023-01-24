@@ -4,8 +4,6 @@
   "private": true,
   "author": "Wednesday Solutions",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",
     "lint:fix": "eslint --fix --ext ts './src/**/*.{js,ts}'",
@@ -20,7 +18,9 @@
     "migrate:down": "ts-node ./migrate.ts down",
     "migrate:purge": "ts-node ./migrate.ts purge",
     "seed:up": "ts-node ./migrate.ts seed:up",
-    "seed:down": "ts-node ./migrate.ts seed:down"
+    "seed:down": "ts-node ./migrate.ts seed:down",
+    "BUILDING": "-------------------- BUILDING --------------------",
+    "build": "tsc"
   },
   "dependencies": {
     "fastify": "^4.12.0",

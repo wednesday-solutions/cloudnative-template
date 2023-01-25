@@ -4,6 +4,8 @@
   "private": true,
   "author": "Wednesday Solutions",
   "scripts": {
+    "DEVELOPMENT": "-------------------------- DEVELOPMENT --------------------------",
+    "start:dev": "ts-node-dev ./src/index.ts",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",
     "lint:fix": "eslint --fix --ext ts './src/**/*.{js,ts}'",
@@ -29,6 +31,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.28.0",
     "tsconfig": "workspace:*",
+    "fastify-custom-errors": "workspace:*",
     "umzug": "^3.2.1",
     "zod": "^3.20.2",
     "zod-to-json-schema": "^3.20.2"

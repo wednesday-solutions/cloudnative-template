@@ -34,6 +34,7 @@ importers:
       '@types/node': ^18.11.18
       eslint-config-custom: workspace:*
       fastify: ^4.12.0
+      fastify-custom-errors: workspace:*
       fastify-zod: ^1.2.0
       pg: ^8.8.0
       pg-hstore: ^2.3.4
@@ -47,6 +48,7 @@ importers:
       zod-to-json-schema: ^3.20.2
     dependencies:
       fastify: 4.12.0
+      fastify-custom-errors: link:../../packages/fastify-custom-errors
       fastify-zod: 1.2.0_fastify@4.12.0
       pg: 8.8.0
       pg-hstore: 2.3.4
@@ -108,6 +110,19 @@ importers:
       eslint-plugin-react: 7.31.8_eslint@7.32.0
       prettier: 2.8.3
     devDependencies:
+      typescript: 4.9.4
+
+  packages/fastify-custom-errors:
+    specifiers:
+      '@types/node': ^18.11.18
+      eslint-config-custom: workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.7.4
+    dependencies:
+      tsconfig: link:../tsconfig
+    devDependencies:
+      '@types/node': 18.11.18
+      eslint-config-custom: link:../eslint-config-custom
       typescript: 4.9.4
 
   packages/tsconfig:

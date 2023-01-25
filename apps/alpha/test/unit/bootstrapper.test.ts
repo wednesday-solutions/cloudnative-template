@@ -1,5 +1,6 @@
 import FastifyServer from '@src/bootstrapper';
 import type { FastifyInstance } from 'fastify';
+import { NotImplementedError } from 'fastify-custom-errors';
 import { TestFastifyServer } from '../support';
 
 describe('bootstrapper', () => {
@@ -19,6 +20,46 @@ describe('bootstrapper', () => {
     expect(response.json()).toEqual({
       message: 'Fastify just being fast!',
       status: 'Ok!',
+    });
+  });
+
+  it('handles errors thrown by CustomError\'s instances and serializes them in correct structure', async () => {
+    async function userRoutes(router: FastifyInstance) {
+      router.get('/', async () => {
+        throw new NotImplementedError('The following is not implemented yet!');
+      });
+    }
+
+    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/user' } }] });
+    const response = await _server.instance.inject({
+      method: 'GET',
+      url: '/user',
+    });
+
+    expect(response.json()).toEqual({
+      ok: false,
+      errCode: '[FASTIFY:API]:ERRINT_NOT_IMPLEMENTED',
+      errors: [{ message: 'The following is not implemented yet!' }],
+    });
+  });
+
+  it('handles errors thrown by Errors aside of CustomError\'s instances and serializes them in correct structure', async () => {
+    async function userRoutes(router: FastifyInstance) {
+      router.get('/', async () => {
+        throw new Error('Not a CustomError!');
+      });
+    }
+
+    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/user' } }] });
+    const response = await _server.instance.inject({
+      method: 'GET',
+      url: '/user',
+    });
+
+    expect(response.json()).toEqual({
+      ok: false,
+      errCode: 500,
+      errors: [{ message: 'Something went wrong!' }],
     });
   });
 

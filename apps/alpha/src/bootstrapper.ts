@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
+import { CustomError } from 'fastify-custom-errors';
 import type { FastifyBootstrapperOptions } from './types/bootstrapper.types';
 
 /**
@@ -35,6 +36,7 @@ export class FastifyServer {
     this.instance = fastify({ logger: options.logging ?? false });
 
     this.#registerRoutes();
+    this.#setupErrorHandler();
   }
 
   /**
@@ -86,7 +88,16 @@ export class FastifyServer {
    * Setup global Error Handler.
    */
   #setupErrorHandler() {
-    // TODO: Setup Error handler and error handling structure.
+    this.instance.setErrorHandler((error, _request, reply) => {
+      this.instance.log.error(error);
+      if (error instanceof CustomError) {
+        void reply
+          .status(error.statusCode)
+          .send({ ok: false, errCode: error.errorCode, errors: error.serializeErrors() });
+      } else {
+        void reply.status(500).send({ ok: false, errCode: 500, errors: [{ message: 'Something went wrong!' }] });
+      }
+    });
   }
 }
 

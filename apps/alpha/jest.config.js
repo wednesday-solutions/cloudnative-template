@@ -12,5 +12,4 @@ module.exports = {
     // Files that do not require testing or cannot be tested
     '!src/index.ts',
   ],
-  setupFilesAfterEnv: ['./jest-setup.ts'],
 };

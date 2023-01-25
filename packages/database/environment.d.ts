@@ -4,7 +4,7 @@ declare global {
   declare namespace NodeJS {
     interface ProcessEnv {
       // Environments
-      NODE_ENV: 'development' | 'qa' | 'production';
+      NODE_ENV: 'development' | 'qa' | 'production' | 'test';
 
       // Database
       DB_DIALECT: Dialect;

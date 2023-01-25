@@ -33,6 +33,7 @@ export class SequelizeInstance {
 export function createSequelizeInstanceForTesting(options: Options = {}): Sequelize {
   const sequelizeOptions = defaults(options, {
     host: '0.0.0.0',
+    logging: false,
     dialect: 'postgres',
     port: 23_010,
   });

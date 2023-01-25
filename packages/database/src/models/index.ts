@@ -1,7 +1,9 @@
-import { SequelizeInstance } from '@core';
-import { verifyDatabaseEnvs } from '@utils';
+import { SequelizeInstance } from '../core';
+import { verifyDatabaseEnvs } from '../utils';
 
-verifyDatabaseEnvs();
+if (process.env.NODE_ENV !== 'test') {
+  verifyDatabaseEnvs();
+}
 
 const db = new SequelizeInstance(
   process.env.DB_DATABASE,

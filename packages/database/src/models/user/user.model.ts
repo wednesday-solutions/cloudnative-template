@@ -1,6 +1,6 @@
-import type { ModelDefined, Optional } from '@core';
-import { DataTypes } from '@core';
-import { instance } from '..';
+import type { ModelDefined, Optional } from '../../core';
+import { DataTypes } from '../../core';
+import { instance } from '../index';
 import type { UserAttributes } from './user.schema';
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;

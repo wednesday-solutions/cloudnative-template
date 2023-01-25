@@ -1,4 +1,6 @@
-/**
- * Exported like this for now once we setup this file we can remove the below!
- */
-export {};
+import { clearDatabase, databaseInstance } from './test/integration/support';
+
+afterAll(async () => {
+  await clearDatabase(databaseInstance);
+  await databaseInstance.close();
+});

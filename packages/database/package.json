@@ -2,6 +2,7 @@
   "name": "fastify-postgres-database",
   "description": "Fastify Postgres common that can be used all over the application!",
   "version": "0.0.1",
+  "main": "./src/index.ts",
   "license": "MIT",
   "dependencies": {
     "@types/lodash": "^4.14.191",

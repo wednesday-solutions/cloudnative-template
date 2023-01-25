@@ -35,7 +35,9 @@ importers:
       eslint-config-custom: workspace:*
       fastify: ^4.12.0
       fastify-custom-errors: workspace:*
+      fastify-postgres-database: workspace:*
       fastify-zod: ^1.2.0
+      p-timeout: ^6.1.0
       pg: ^8.8.0
       pg-hstore: ^2.3.4
       sequelize: ^6.28.0
@@ -49,7 +51,9 @@ importers:
     dependencies:
       fastify: 4.12.0
       fastify-custom-errors: link:../../packages/fastify-custom-errors
+      fastify-postgres-database: link:../../packages/database
       fastify-zod: 1.2.0_fastify@4.12.0
+      p-timeout: 6.1.0
       pg: 8.8.0
       pg-hstore: 2.3.4
       sequelize: 6.28.0_pg-hstore@2.3.4+pg@8.8.0
@@ -5109,6 +5113,11 @@ packages:
     dependencies:
       aggregate-error: 3.1.0
     dev: true
+
+  /p-timeout/6.1.0:
+    resolution: {integrity: sha512-s0y6Le9QYGELLzNpFIt6h8B2DHTVUDLStvxtvRMSKNKeuNVVWby2dZ+pIJpW4/pWr5a3s8W85wBNtc0ZA+lzCg==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /p-try/2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}

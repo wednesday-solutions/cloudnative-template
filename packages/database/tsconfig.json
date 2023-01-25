@@ -1,10 +1,15 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "./jest-setup.ts"],
+  "include": ["./src/**/*.ts", "./test/**/*.ts", "./jest-setup.ts", "./environment.d.ts"],
   "exclude": ["./turbo", "./coverage"],
   "compilerOptions": {
     "paths": {
       "@src/*": ["./src/*"],
+      "@models/*": ["./src/models/*"],
+      "@models": ["./src/models/index.ts"],
+      "@core/*": ["./src/core/*"],
+      "@core": ["./src/core/index.ts"],
+      "@utils": ["./src/utils/index.ts"],
     }
   },
 }

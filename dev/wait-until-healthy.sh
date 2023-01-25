@@ -1,14 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-  >&2 echo "Container name or container hash wasn't provided!"
+  >&2 echo "Please provide the container name or hash"
   exit 1
 fi
 
 for _ in {1..50}
 do
   state=$(docker inspect -f '{{ .State.Health.Status }}' $1 2>&1)
-  return_code$?
+  return_code=$?
   if [ ${return_code} -eq 0 ] && [ "$state" == "healthy" ]; then
     echo "$1 is healthy!"
     exit 0

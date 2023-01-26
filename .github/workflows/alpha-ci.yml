@@ -49,7 +49,7 @@ jobs:
         working-directory: ./apps/alpha
 
       - name: Install pg-native
-        run: pnpm install pg-native --workspace=alpha
+        run: pnpm add pg-native --filter @fastify-postgres-template/alpha
       - run: pnpm run start:postgres
 
       - name: Integration tests for `alpha` service

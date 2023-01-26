@@ -8,11 +8,6 @@ describe('bootstrapper', () => {
   let server: TestFastifyServer;
 
   beforeAll(async () => {
-    await databaseInstance.authenticate();
-
-    User = databaseInstance.define('user', { name: DataTypes.STRING }, { timestamps: false });
-    await databaseInstance.sync({ force: true });
-
     async function userRoutes(router: FastifyInstance) {
       router.get<{ Params: { id: number } }>('/:id', async request => {
         const foundUser = await User.findOne({ where: { id: request.params.id } });
@@ -31,6 +26,13 @@ describe('bootstrapper', () => {
       port: 5000,
       routes: [{ handler: userRoutes, opts: { prefix: '/user' } }],
     });
+  });
+
+  beforeEach(async () => {
+    await databaseInstance.authenticate();
+
+    User = databaseInstance.define('user', { name: DataTypes.STRING }, { timestamps: false });
+    await databaseInstance.sync({ force: true });
   });
 
   afterEach(async () => {

@@ -1,0 +1,19 @@
+services:
+  postgres-latest:
+    container_name: integration-tests-fastify-postgres
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_USER: fastify_postgres_template
+      POSTGRES_PASSWORD: fastify_postgres_template
+      POSTGRES_DB: fastify_postgres_template
+    ports:
+      - 23010:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "fastify_postgres_template"]
+      interval: 3s
+      timeout: 1s
+      retries: 10
+
+networks:
+  default:
+    name: fastify_postgres_template_testing

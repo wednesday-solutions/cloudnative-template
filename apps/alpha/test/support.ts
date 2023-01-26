@@ -12,3 +12,4 @@ export class TestFastifyServer extends FastifyServer {
     await this.instance.close();
   }
 }
+

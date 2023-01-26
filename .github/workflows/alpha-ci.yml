@@ -44,8 +44,13 @@ jobs:
         run: pnpm run build
         working-directory: ./apps/alpha
 
-      # For now we'll only run Unit tests on CI
-      # TODO: Write and wire up integration tests for CI
-      - name: Test the `alpha` app
+      - name: Unit tests for `alpha` service
         run: pnpm run test:unit
         working-directory: ./apps/alpha
+
+      - name: Install pg-native
+        run: pnpm add pg-native --filter @fastify-postgres-template/alpha
+      - run: pnpm run start:postgres
+
+      - name: Integration tests for `alpha` service
+        run: pnpm run test:integration

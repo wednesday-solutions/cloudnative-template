@@ -1,4 +1,4 @@
-import { createSequelizeInstanceForTesting } from '../packages/database/src/core/instance';
+import { createSequelizeInstanceForTesting } from '../apps/alpha/src/db/instance';
 
 const sequelize = createSequelizeInstanceForTesting();
 

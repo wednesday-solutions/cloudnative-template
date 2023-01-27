@@ -55,5 +55,3 @@ function getSequelizeInstance(db: string, user: string, pass: string, options?: 
 
   return new Sequelize(db, user, pass, options);
 }
-
-export * from 'sequelize';

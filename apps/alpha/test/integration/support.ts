@@ -1,5 +1,5 @@
-import type { Sequelize } from 'fastify-postgres-database';
-import { createSequelizeInstanceForTesting } from 'fastify-postgres-database';
+import type { Sequelize } from '@database';
+import { createSequelizeInstanceForTesting } from '@database/instance';
 
 export async function clearDatabase(sequelize: Sequelize) {
   const qi = sequelize.getQueryInterface();

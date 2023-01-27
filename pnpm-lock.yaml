@@ -31,12 +31,13 @@ importers:
 
   apps/alpha:
     specifiers:
+      '@types/lodash': ^4.14.191
       '@types/node': ^18.11.18
       eslint-config-custom: workspace:*
       fastify: ^4.12.0
       fastify-custom-errors: workspace:*
-      fastify-postgres-database: workspace:*
       fastify-zod: ^1.2.0
+      lodash: ^4.17.21
       p-timeout: ^6.1.0
       pg: ^8.8.0
       pg-hstore: ^2.3.4
@@ -49,10 +50,11 @@ importers:
       zod: ^3.20.2
       zod-to-json-schema: ^3.20.2
     dependencies:
+      '@types/lodash': 4.14.191
       fastify: 4.12.0
       fastify-custom-errors: link:../../packages/fastify-custom-errors
-      fastify-postgres-database: link:../../packages/database
       fastify-zod: 1.2.0_fastify@4.12.0
+      lodash: 4.17.21
       p-timeout: 6.1.0
       pg: 8.8.0
       pg-hstore: 2.3.4
@@ -66,27 +68,6 @@ importers:
       eslint-config-custom: link:../../packages/eslint-config-custom
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       ts-node-dev: 2.0.0_awa2wsr5thmg3i7jqycphctjfq
-      typescript: 4.9.4
-
-  packages/database:
-    specifiers:
-      '@types/lodash': ^4.14.191
-      '@types/node': ^18.11.18
-      eslint-config-custom: workspace:*
-      lodash: ^4.17.21
-      sequelize: ^6.28.0
-      tsconfig: workspace:*
-      typescript: ^4.7.4
-      zod: ^3.20.2
-    dependencies:
-      '@types/lodash': 4.14.191
-      lodash: 4.17.21
-      sequelize: 6.28.0
-      tsconfig: link:../tsconfig
-      zod: 3.20.2
-    devDependencies:
-      '@types/node': 18.11.18
-      eslint-config-custom: link:../eslint-config-custom
       typescript: 4.9.4
 
   packages/eslint-config-custom:
@@ -5695,59 +5676,6 @@ packages:
   /sequelize-pool/7.1.0:
     resolution: {integrity: sha512-G9c0qlIWQSK29pR/5U2JF5dDQeqqHRragoyahj/Nx4KOOQ3CPPfzxnfqFPCSB7x5UgjOgnZ61nSxz+fjDpRlJg==}
     engines: {node: '>= 10.0.0'}
-    dev: false
-
-  /sequelize/6.28.0:
-    resolution: {integrity: sha512-+WHqvUQgTp19GLkt+gyQ+F6qg+FIEO2O5F9C0TOYV/PjZ2a/XwWvVkL1NCkS4VSIjVVvAUutiW6Wv9ofveGaVw==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      ibm_db: '*'
-      mariadb: '*'
-      mysql2: '*'
-      oracledb: '*'
-      pg: '*'
-      pg-hstore: '*'
-      snowflake-sdk: '*'
-      sqlite3: '*'
-      tedious: '*'
-    peerDependenciesMeta:
-      ibm_db:
-        optional: true
-      mariadb:
-        optional: true
-      mysql2:
-        optional: true
-      oracledb:
-        optional: true
-      pg:
-        optional: true
-      pg-hstore:
-        optional: true
-      snowflake-sdk:
-        optional: true
-      sqlite3:
-        optional: true
-      tedious:
-        optional: true
-    dependencies:
-      '@types/debug': 4.1.7
-      '@types/validator': 13.7.10
-      debug: 4.3.4
-      dottie: 2.0.2
-      inflection: 1.13.4
-      lodash: 4.17.21
-      moment: 2.29.4
-      moment-timezone: 0.5.40
-      pg-connection-string: 2.5.0
-      retry-as-promised: 7.0.3
-      semver: 7.3.8
-      sequelize-pool: 7.1.0
-      toposort-class: 1.0.1
-      uuid: 8.3.2
-      validator: 13.7.0
-      wkx: 0.5.0
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /sequelize/6.28.0_pg-hstore@2.3.4+pg@8.8.0:

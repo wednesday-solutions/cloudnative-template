@@ -1,12 +1,11 @@
-import type { ModelDefined, Optional } from '../../core';
-import { DataTypes } from '../../core';
-import { instance } from '../index';
+import type { ModelDefined, Optional } from '../../index';
+import { DataTypes, dbConnection } from '../../index';
 import type { UserAttributes } from './user.schema';
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
 
 export const User: ModelDefined<UserCreationAttributes, UserAttributes>
-  = instance.define(
+  = dbConnection.instance.define(
     'users',
     {
       id: {
@@ -31,3 +30,4 @@ export const User: ModelDefined<UserCreationAttributes, UserAttributes>
   );
 
 export default User;
+

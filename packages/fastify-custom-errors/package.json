@@ -8,7 +8,7 @@
     "tsconfig": "workspace:*"
   },
   "scripts": {
-    "test": "jest --silent --verbose --testPathPattern=test"
+    "test:unit": "jest --silent --verbose --testPathPattern=test"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

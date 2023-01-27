@@ -1,4 +1,3 @@
-import UnprocessableEntity from '@src/errors/unprocessable-entity.error';
 import {
   BadRequestError,
   ForbiddenError,
@@ -10,7 +9,8 @@ import {
   NotImplementedError,
   TooManyRequestsError,
   UnauthorizedError,
-} from '@src/index';
+  UnprocessableEntityError,
+} from '../src/index';
 
 describe('Errors', () => {
   describe('badRequestError', () => {
@@ -191,7 +191,7 @@ describe('Errors', () => {
   describe('unprocessableEntity', () => {
     it('throws an exception with a message', () => {
       try {
-        throw new UnprocessableEntity('Unprocessable Entity!');
+        throw new UnprocessableEntityError('Unprocessable Entity!');
       } catch (error) {
         expect(error).toEqual(new Error('Unprocessable Entity!'));
         expect((error as CustomError).message).toEqual('Unprocessable Entity!');
@@ -202,7 +202,7 @@ describe('Errors', () => {
 
     it('serializes errors and return in a proper structure', () => {
       try {
-        throw new UnprocessableEntity('Unprocessable Entity!');
+        throw new UnprocessableEntityError('Unprocessable Entity!');
       } catch (error) {
         if (error instanceof CustomError) {
           expect(error.serializeErrors()).toEqual([

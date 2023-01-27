@@ -1,5 +1,0 @@
-{
-  "./**/*.{js,ts}": [
-    "eslint --ext ts --ext js"
-  ]
-}

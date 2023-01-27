@@ -1,6 +1,6 @@
+import type { Model, ModelStatic } from '@database';
+import { DataTypes } from '@database';
 import type { FastifyInstance } from 'fastify';
-import type { Model, ModelStatic } from 'fastify-postgres-database';
-import { DataTypes } from 'fastify-postgres-database';
 import { clearDatabase, databaseInstance, TestFastifyServer } from './support';
 
 describe('bootstrapper', () => {

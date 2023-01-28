@@ -25,7 +25,7 @@
     "BUILDING": "-------------------- BUILDING --------------------",
     "prebuild": "rimraf ./dist",
     "build": "pnpm run prebuild && tsc --project ./tsconfig.build.json",
-    "build:ci": "turbo run build --scope='@fastify-postgres-template/alpha' --include-dependencies --no-deps"
+    "build:ci": "turbo run build --filter=@fastify-postgres-template/alpha"
   },
   "dependencies": {
     "@types/lodash": "^4.14.191",

@@ -4,19 +4,19 @@ This is a monorepo template built using TurboRepo. Under the hood we have Fastif
 
 # Philosophy
 
-No code is a bad code. The code is start with is always a good code because you and your team (even if you're the only team 🙃) decided on it. What we have in this repository is also a good code. Well not exactly good but in our *opinion* good code.
+No code is a bad code. The code you start with is always a good code because you and your team (even if you're the only team 🙃) decided on it. What we have in this repository is also good code. Well not exactly good, but in our *opinion* good code.
 
-Good code because it follows what we wanted it to follow. Then what is bad code? No code repository becomes a bad code in a day or two. It becomes bad/unmaintainable/unscalable/sluggish with time. Call it whatever you want a bad code is easily recognizable. And it falls down to you to maintain it.
+Good code because it follows what we wanted it to follow. Then what is bad code? No code repository becomes a bad code repository in a day or two. It becomes *bad/unmaintainable/unscalable/sluggish* with time. Call it whatever you want a bad code is easily recognizable. And it falls down to you to fix and maintain it.
 
-There are several things in this repository that help catch what a human eye might not. Linters, Type Checkers, Editor configurations, pre-commit hooks, and much more. But they can be avoided because they are bypassable. And that is exactly what makes the good code bad.
+There are several things in this repository that help catch what a human eye might miss. Linters, Type Checkers, Editor configurations, pre-commit hooks, and much more. But they can be avoided because they are bypassable. And that is exactly what makes the good code bad.
 
 So rules to live by:
 
-1. Linter is your friend NOT your enemy, don't bypass it (feel free to change the initial rules)
+1. Linter is your friend *NOT* your enemy; don't bypass it (feel free to change the initial rules)
 2. Follow the code style that you decide upon (establish it with your team)
 3. Use comments to let the other devs know what the code does
 4. Don't bypass the pre-commit hooks, it starts as "just this one time" and becomes a "let's do it who cares"
-5. Write tests that actually test the logic you're trying to implement, make sure to write tests first and then write logic accordingly
+5. Write tests that actually test the logic that you're trying to implement, make sure to write tests first and then write logic accordingly
 
 # Technology Used 👨‍💻
 

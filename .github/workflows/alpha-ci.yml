@@ -41,7 +41,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build the `alpha` app
-        run: pnpm run turbo run build --scope='@fastify-postgres-template/alpha' --include-dependencies --no-deps
+        run: pnpm run build:ci
         working-directory: ./apps/alpha
 
       - name: Unit tests for `alpha` service

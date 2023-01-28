@@ -24,7 +24,8 @@
     "seed:down": "ts-node ./migrate.ts seed:down",
     "BUILDING": "-------------------- BUILDING --------------------",
     "prebuild": "rimraf ./dist",
-    "build": "pnpm run prebuild && tsc --project ./tsconfig.build.json"
+    "build": "pnpm run prebuild && tsc --project ./tsconfig.build.json",
+    "build:ci": "turbo run build --scope='@fastify-postgres-template/alpha' --include-dependencies --no-deps"
   },
   "dependencies": {
     "@types/lodash": "^4.14.191",

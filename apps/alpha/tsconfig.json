@@ -4,10 +4,10 @@
   "exclude": ["./turbo", "./coverage"],
   "compilerOptions": {
     "paths": {
-      "@src/*": ["./src/*"],
-      "@types": ["./src/types/*"],
-      "@database": ["./src/db/index.ts"],
-      "@database/*": ["./src/db/*"],
+      "~src/*": ["./src/*"],
+      "~types": ["./src/types/*"],
+      "~database": ["./src/db/index.ts"],
+      "~database/*": ["./src/db/*"],
     }
   },
 }

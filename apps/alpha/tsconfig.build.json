@@ -1,8 +1,11 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "jest-setup-integration.ts", "./migrate.ts", "./environment.d.ts"],
+  "include": ["./src/**/*.ts", "./environment.d.ts"],
   "exclude": ["./turbo", "./coverage"],
   "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "CommonJS",
     "paths": {
       "@src/*": ["./src/*"],
       "@types": ["./src/types/*"],
@@ -11,3 +14,4 @@
     }
   },
 }
+

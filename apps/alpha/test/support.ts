@@ -1,4 +1,4 @@
-import FastifyServer from '@src/bootstrapper';
+import FastifyServer from '~src/bootstrapper';
 
 /**
  * Test server which extends the original server and can contain

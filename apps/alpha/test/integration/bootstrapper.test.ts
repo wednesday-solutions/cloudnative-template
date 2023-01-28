@@ -1,7 +1,7 @@
-import type { Model, ModelStatic } from '@database';
-import { DataTypes } from '@database';
 import type { FastifyInstance } from 'fastify';
 import { clearDatabase, databaseInstance, TestFastifyServer } from './support';
+import type { Model, ModelStatic } from '~database';
+import { DataTypes } from '~database';
 
 describe('bootstrapper', () => {
   let User: ModelStatic<Model<any, any>>;

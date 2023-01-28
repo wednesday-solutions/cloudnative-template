@@ -1,7 +1,7 @@
-import FastifyServer from '@src/bootstrapper';
 import type { FastifyInstance } from 'fastify';
 import { NotImplementedError } from 'fastify-custom-errors';
 import { TestFastifyServer } from '../support';
+import FastifyServer from '~src/bootstrapper';
 
 describe('bootstrapper', () => {
   let server: FastifyServer;

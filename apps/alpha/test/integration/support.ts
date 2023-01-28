@@ -1,5 +1,5 @@
-import type { Sequelize } from '@database';
-import { createSequelizeInstanceForTesting } from '@database/instance';
+import type { Sequelize } from '~database';
+import { createSequelizeInstanceForTesting } from '~database/instance';
 
 export async function clearDatabase(sequelize: Sequelize) {
   const qi = sequelize.getQueryInterface();

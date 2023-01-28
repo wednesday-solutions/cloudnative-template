@@ -6,7 +6,7 @@
 
 # Stage #1
 # Run turbo prune
-FROM node:alpine AS builder
+FROM node:18-alpine AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 RUN yarn global add turbo
@@ -19,7 +19,7 @@ RUN turbo prune --scope=@fastify-postgres-template/alpha --docker
 # 1. Copy pruned app from stage #1
 # 2. Install dependencies
 # 3. Build
-FROM node:alpine AS installer
+FROM node:18-alpine AS installer
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
@@ -38,7 +38,7 @@ RUN turbo run build --filter=@fastify-postgres-template/alpha...
 # Stage #3
 # Copy build from Stage #2
 # run the application
-FROM node:alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV

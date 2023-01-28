@@ -12,7 +12,7 @@
     "turbo": "turbo",
     "start:dev": "dotenv -e ./environments/.env.development -- turbo run start:dev --parallel",
     "start:qa": "dotenv -e ./environments/.env.qa -- turbo run start:qa --parallel",
-    "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel --include-dependencies",
+    "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel",
     "TESTING": "-------------------- TESTING --------------------",
     "test:all": "turbo run test:all",
     "test:unit": "turbo run test:unit",
@@ -26,7 +26,7 @@
     "lint:no-fix": "turbo run lint:no-fix",
     "lint:fix": "turbo run lint:fix",
     "BUILDING": "-------------------- BUILDING --------------------",
-    "build": "turbo run build",
+    "build": "turbo run build --filter=./apps/*...",
     "GIT": "-------------------- GIT --------------------",
     "prepare": "husky install",
     "pre-commit": "lint-staged"

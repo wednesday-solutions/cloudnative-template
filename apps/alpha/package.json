@@ -6,6 +6,7 @@
   "scripts": {
     "DEVELOPMENT": "-------------------------- DEVELOPMENT --------------------------",
     "start:dev": "ts-node-dev ./src/index.ts",
+    "start:qa": "node ./dist/index.js",
     "start:prod": "node ./dist/index.js",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",

@@ -26,7 +26,7 @@
     "lint:no-fix": "turbo run lint:no-fix",
     "lint:fix": "turbo run lint:fix",
     "BUILDING": "-------------------- BUILDING --------------------",
-    "build": "turbo run build --filter=./apps/*...",
+    "build": "turbo run build --filter=./apps/*",
     "GIT": "-------------------- GIT --------------------",
     "prepare": "husky install",
     "pre-commit": "lint-staged"

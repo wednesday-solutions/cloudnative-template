@@ -95,5 +95,5 @@ The instance can now be used with other functions or database related stuff to t
 |---------------------------|-----------------|
 | Install dependencies      | ```pnpm i```          |
 | Start dev server  | ```pnpm start:dev```  |
-| Create and run qa build   | ```pnpm start:qa```   |
-| Create and run prod build | ```pnpm start:prod``` |
+| Build and start qa build   | ```pnpm start:qa```   |
+| Build and start prod build | ```pnpm start:prod``` |

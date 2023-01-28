@@ -57,13 +57,13 @@ We have a bash script and a `docker-compose` that will automatically spin up a p
 You can start the postgres instance on docker using:
 
 ```shell
-pnpm run start:postgres
+pnpm start:postgres
 ```
 
 For teardown you can use:
 
 ```shell
-pnpm run stop:postgres
+pnpm stop:postgres
 ```
 
 For creating a quick instance to the testing database we have a function called `createSequelizeInstanceForTesting` from `packages/database/src/core/instance.ts` which can imported through `fastify-postgres-database` shared package. The function defines the configuration to connect to the database for testing automatically.
@@ -88,3 +88,12 @@ The instance can now be used with other functions or database related stuff to t
 3. Create an npm script with the following name `test:integration` and it should execute integration tests.
   - PS: You can use `testPathPattern` CLI flag to specify in which directory your integration tests reside in
 4. Do `pnpm run test:integration` at your root directory and watch your integration tests run!
+
+### **Development Scripts**
+
+| **Purpose**               | **Script**      |
+|---------------------------|-----------------|
+| Install dependencies      | ```pnpm i```          |
+| Start dev server  | ```pnpm start:dev```  |
+| Create and run qa build   | ```pnpm start:qa```   |
+| Create and run prod build | ```pnpm start:prod``` |

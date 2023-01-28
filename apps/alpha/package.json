@@ -6,6 +6,7 @@
   "scripts": {
     "DEVELOPMENT": "-------------------------- DEVELOPMENT --------------------------",
     "start:dev": "ts-node-dev ./src/index.ts",
+    "start:prod": "node ./dist/index.js",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",
     "lint:fix": "eslint --fix --ext ts './src/**/*.{js,ts}'",
@@ -22,14 +23,16 @@
     "seed:up": "ts-node ./migrate.ts seed:up",
     "seed:down": "ts-node ./migrate.ts seed:down",
     "BUILDING": "-------------------- BUILDING --------------------",
-    "build": "tsc"
+    "prebuild": "rimraf ./dist",
+    "build": "pnpm run prebuild && tsc --project ./tsconfig.build.json",
+    "build:ci": "turbo run build --filter=@fastify-postgres-template/alpha"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.191",
     "fastify": "^4.12.0",
     "fastify-custom-errors": "workspace:*",
     "fastify-zod": "^1.2.0",
     "lodash": "^4.17.21",
-    "@types/lodash": "^4.14.191",
     "p-timeout": "^6.1.0",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
@@ -40,6 +43,7 @@
     "zod-to-json-schema": "^3.20.2"
   },
   "devDependencies": {
+    "rimraf": "^4.1.2",
     "@types/node": "^18.11.18",
     "eslint-config-custom": "workspace:*",
     "ts-node": "^10.9.1",

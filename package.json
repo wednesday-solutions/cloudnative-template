@@ -12,7 +12,7 @@
     "turbo": "turbo",
     "start:dev": "dotenv -e ./environments/.env.development -- turbo run start:dev --parallel",
     "start:qa": "dotenv -e ./environments/.env.qa -- turbo run start:qa --parallel",
-    "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel",
+    "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel --include-dependencies",
     "TESTING": "-------------------- TESTING --------------------",
     "test:all": "turbo run test:all",
     "test:unit": "turbo run test:unit",

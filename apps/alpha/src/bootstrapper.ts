@@ -1,3 +1,5 @@
+import path from 'node:path';
+import autoload from '@fastify/autoload';
 import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
 import { CustomError } from 'fastify-custom-errors';
@@ -31,10 +33,12 @@ export class FastifyServer {
    * @param [options.host] - the host on which the application should run, defaults to `localhost`
    * @param [options.logging] - should log output, defaults to `false`
    * @param [options.routes] - array containing object specifying a route and its prefix
+   * @param [options.schemas] - array containing schemas to register
    */
   constructor(public options: FastifyBootstrapperOptions) {
     this.instance = fastify({ logger: options.logging ?? false });
 
+    // this.#registerSchemas();
     this.#registerRoutes();
     this.#setupErrorHandler();
   }
@@ -64,12 +68,34 @@ export class FastifyServer {
    * ```
    */
   async startServer() {
-    await this.instance.listen({ port: this.options.port ?? 5000, host: this.options.host ?? 'localhost' });
+    await this.instance.listen({
+      port: this.options.port ?? 5000,
+      host: this.options.host ?? 'localhost',
+    });
   }
 
   /**
-   * Registers routes provided to the bootstrapper. HealthCheck route
-   * is created by default at `/healthcheck` by the bootstrapper.
+   * Register schemas provided by the user, warn the user if no schemas were provided.
+   */
+  #registerSchemas() {
+    if (!this.options.schemas || this.options.schemas.length === 0) {
+      this.instance.log.warn(
+        'No schemas were provided, you may not have type checking for schema dependent things.',
+      );
+
+      return;
+    }
+
+    for (const schemaDef of this.options.schemas) {
+      for (const _schema of schemaDef) {
+        this.instance.addSchema(_schema);
+      }
+    }
+  }
+
+  /**
+   * Registers routes provided to the bootstrapper and auto-register if present.
+   * HealthCheck route is created by default at `/healthcheck` by the bootstrapper.
    */
   #registerRoutes() {
     const routes = this.options.routes ?? [];
@@ -77,6 +103,12 @@ export class FastifyServer {
     // Register Health Check
     this.instance.get('/health-check', async () => {
       return { status: 'Ok!', message: 'Fastify just being fast!' };
+    });
+
+    // Autoload all the `*.routes.ts` file that exist inside the `modules` dir
+    void this.instance.register(autoload, {
+      dir: path.join(__dirname, 'modules'),
+      indexPattern: /.*routes.ts$/,
     });
 
     for (const _route of routes) {
@@ -93,9 +125,19 @@ export class FastifyServer {
       if (error instanceof CustomError) {
         void reply
           .status(error.statusCode)
-          .send({ ok: false, errCode: error.errorCode, errors: error.serializeErrors() });
+          .send({
+            ok: false,
+            errCode: error.errorCode,
+            errors: error.serializeErrors(),
+          });
       } else {
-        void reply.status(500).send({ ok: false, errCode: 500, errors: [{ message: 'Something went wrong!' }] });
+        void reply
+          .status(500)
+          .send({
+            ok: false,
+            errCode: 500,
+            errors: [{ message: 'Something went wrong!' }],
+          });
       }
     });
   }

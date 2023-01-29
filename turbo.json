@@ -12,15 +12,15 @@
       "cache": false
     },
     "start:dev": {
-      "cache": false,
-      "persistent": true
+      "dependsOn": ["build"],
+      "cache": false
     },
     "start:qa": {
       "dependsOn": ["test:all", "build"],
       "cache": false
     },
     "start:prod": {
-      "dependsOn": ["test:all", "build"],
+      "dependsOn": ["build"],
       "cache": false
     },
     "test:all": {

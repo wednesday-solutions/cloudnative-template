@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   generateInvalidSchemaTypeError,
   generateRequiredSchemaTypeError,
-} from '~database/utils';
+} from '../../utils';
 
 /**
  * Core construct of the User entity!
@@ -54,7 +54,7 @@ const responseUserSchema = z.object({
   ...userSchemaCore,
 });
 
-export const { schemas, $ref } = buildJsonSchemas({
+export const { schemas: userSchemas, $ref } = buildJsonSchemas({
   createUserSchema,
   responseUserSchema,
 });

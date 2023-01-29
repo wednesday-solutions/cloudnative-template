@@ -1,10 +1,11 @@
 import FastifyServer from './bootstrapper';
+import { userSchemas } from './db/models/user/user.schema';
 
 const server = new FastifyServer({
   port: 5000,
   host: '0.0.0.0',
   logging: true,
-  routes: [],
+  schemas: [userSchemas],
 });
 
 async function main() {

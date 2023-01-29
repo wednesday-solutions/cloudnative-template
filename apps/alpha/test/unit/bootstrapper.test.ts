@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { NotImplementedError } from 'fastify-custom-errors';
+import FastifyServer from '../../src/bootstrapper';
 import { TestFastifyServer } from '../support';
-import FastifyServer from '~src/bootstrapper';
 
 describe('bootstrapper', () => {
   let server: FastifyServer;
@@ -30,10 +30,10 @@ describe('bootstrapper', () => {
       });
     }
 
-    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/user' } }] });
+    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/some-entirely-non-existent-route' } }] });
     const response = await _server.instance.inject({
       method: 'GET',
-      url: '/user',
+      url: '/some-entirely-non-existent-route',
     });
 
     expect(response.json()).toEqual({
@@ -50,10 +50,10 @@ describe('bootstrapper', () => {
       });
     }
 
-    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/user' } }] });
+    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/some-entirely-non-existent-route' } }] });
     const response = await _server.instance.inject({
       method: 'GET',
-      url: '/user',
+      url: '/some-entirely-non-existent-route',
     });
 
     expect(response.json()).toEqual({
@@ -70,10 +70,10 @@ describe('bootstrapper', () => {
       });
     }
 
-    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/user' } }] });
+    const _server = new FastifyServer({ routes: [{ handler: userRoutes, opts: { prefix: '/some-entirely-non-existent-route' } }] });
     const response = await _server.instance.inject({
       method: 'GET',
-      url: '/user',
+      url: '/some-entirely-non-existent-route',
     });
 
     expect(response.statusCode).toEqual(200);

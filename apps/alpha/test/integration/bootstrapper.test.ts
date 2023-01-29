@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
+import type { Model, ModelStatic } from '../../src/db';
+import { DataTypes } from '../../src/db';
 import { clearDatabase, databaseInstance, TestFastifyServer } from './support';
-import type { Model, ModelStatic } from '~database';
-import { DataTypes } from '~database';
 
 describe('bootstrapper', () => {
   let User: ModelStatic<Model<any, any>>;
@@ -24,7 +24,7 @@ describe('bootstrapper', () => {
 
     server = new TestFastifyServer({
       port: 5000,
-      routes: [{ handler: userRoutes, opts: { prefix: '/user' } }],
+      routes: [{ handler: userRoutes, opts: { prefix: '/integration-test-route' } }],
     });
   });
 
@@ -46,7 +46,7 @@ describe('bootstrapper', () => {
   it('handles creating a user from the endpoint and later fetch it', async () => {
     const responseForCreateUser = await server.instance.inject({
       method: 'POST',
-      url: '/user',
+      url: '/integration-test-route',
       payload: {
         name: 'Sourav',
       },
@@ -61,7 +61,7 @@ describe('bootstrapper', () => {
 
     const responseForGetUser = await server.instance.inject({
       method: 'GET',
-      url: '/user/1',
+      url: '/integration-test-route/1',
     });
 
     expect(responseForGetUser.statusCode).toEqual(200);

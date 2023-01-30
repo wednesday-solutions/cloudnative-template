@@ -10,11 +10,6 @@ import {
  */
 const userSchemaCore = {
   /**
-   * Assigned by default and should NOT be passed uniquely identifies the user
-   */
-  id: z.number(),
-
-  /**
    * Name of the user to be inserted into the database
    */
   name: z.string({
@@ -28,6 +23,14 @@ const userSchemaCore = {
   email: z.string({
     required_error: generateRequiredSchemaTypeError('email'),
     invalid_type_error: generateInvalidSchemaTypeError('email', 'string'),
+  }),
+
+  /**
+   * To which tenant does this user belong to
+   */
+  belongsToTenant: z.number({
+    required_error: generateRequiredSchemaTypeError('belongsToTenant'),
+    invalid_type_error: generateInvalidSchemaTypeError('belongsToTenant', 'number'),
   }),
 };
 
@@ -62,6 +65,41 @@ const getUserParams = z.object({
  */
 const responseUserSchema = z.object({
   ...userSchemaCore,
+  /**
+   * A UUID for the tenant that can be exposed publically to uniquely identify the tenant
+   */
+  publicUuid: z.string(),
+});
+
+const UserEntitySchema = z.object({
+  ...userSchemaCore,
+  /**
+   * Assigned by default and should NOT be passed uniquely identifies the user
+   */
+  id: z.number(),
+
+  /**
+   * A UUID for the tenant that can be exposed publically to uniquely identify the tenant
+   */
+  publicUuid: z.string(),
+
+  /**
+   * Password provided by the user which will be encrypted and stored into the db
+   */
+  password: z.string({
+    required_error: generateRequiredSchemaTypeError('email'),
+    invalid_type_error: generateInvalidSchemaTypeError('email', 'string'),
+  }),
+
+  /**
+   * When was this user created
+   */
+  createdAt: z.date(),
+
+  /**
+   * When was the user last updated, `undefined` if never updated
+   */
+  updatedAt: z.date(),
 });
 
 export const { schemas: userSchemas, $ref } = buildJsonSchemas({
@@ -71,5 +109,5 @@ export const { schemas: userSchemas, $ref } = buildJsonSchemas({
 });
 
 export type GetUserParams = z.infer<typeof getUserParams>;
-export type UserAttributes = z.infer<typeof createUserSchema>;
+export type UserAttributes = z.infer<typeof UserEntitySchema>;
 export type CreateUserBody = z.infer<typeof createUserSchema>;

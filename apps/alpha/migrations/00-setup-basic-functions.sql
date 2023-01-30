@@ -16,3 +16,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Load `citext` into Database
 CREATE EXTENTION IF NOT EXISTS citext;
+
+-- Create a default schema to use for tenants
+CREATE SCHEMA main;

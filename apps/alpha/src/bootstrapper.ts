@@ -132,7 +132,7 @@ export class FastifyServer {
       } else if (
         (
           ((((error as any) || {}).validation || [])[0] || {})
-            .schemaPath as string
+            .schemaPath || ''
         ).startsWith('Schema')
       ) {
         /**

@@ -1,11 +1,6 @@
 module.exports = {
   ...require('../../jest.config'),
   rootDir: '.',
-  moduleNameMapper: {
-    '~src(.*)$': '<rootDir>/src/$1',
-    '~types(.*)$': '<rootDir>/src/types/$1',
-    '~database(.*)$': '<rootDir>/src/db/$1',
-  },
   collectCoverageFrom: [
     // Check only in src
     'src/**/*.{js,ts}',

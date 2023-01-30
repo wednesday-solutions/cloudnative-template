@@ -38,7 +38,7 @@ export class FastifyServer {
   constructor(public options: FastifyBootstrapperOptions) {
     this.instance = fastify({ logger: options.logging ?? false });
 
-    // this.#registerSchemas();
+    this.#registerSchemas();
     this.#registerRoutes();
     this.#setupErrorHandler();
   }
@@ -121,23 +121,52 @@ export class FastifyServer {
    */
   #setupErrorHandler() {
     this.instance.setErrorHandler((error, _request, reply) => {
-      this.instance.log.error(error);
       if (error instanceof CustomError) {
-        void reply
-          .status(error.statusCode)
-          .send({
-            ok: false,
-            errCode: error.errorCode,
-            errors: error.serializeErrors(),
-          });
+        // These are errors that we know we have handled through our
+        // own error handling logic!
+        void reply.status(error.statusCode).send({
+          ok: false,
+          errCode: error.errorCode,
+          errors: error.serializeErrors(),
+        });
+      } else if (
+        (
+          ((((error as any) || {}).validation || [])[0] || {})
+            .schemaPath as string
+        ).startsWith('Schema')
+      ) {
+        /**
+         * First let's clarify what the above condition is, its essentially this
+         * ```js
+         * (error.validation[0].schemaPath).startsWith('Schema');
+         * ```
+         * The way its written above in the condition is failsafe because what if the
+         * property `validation` is not present? Or `error` itself is undefined or anything.
+         * That would result into a `TypeError` the failsafe method above makes sure that
+         * doesn't happen.
+         *
+         * If this error occurs then it means it came from a Zod Schema validation failure
+         * which can be handled in the way down below.
+         *
+         * TODO: These errors should be easily handled by doing `error instanceof z.ZodError`
+         *       however, the above is returning false because it is somewhere in between being
+         *       converted. This needs to be fixed so as to reduce complexity here!
+         */
+        void reply.status(400).send({
+          ok: false,
+          errCode: '[FASTIFY:API]:SCHEMA_VALIDATION_ERROR',
+          errors: [{ message: error.message }],
+        });
       } else {
-        void reply
-          .status(500)
-          .send({
-            ok: false,
-            errCode: 500,
-            errors: [{ message: 'Something went wrong!' }],
-          });
+        // Handle all the errors that are unexpected and unforeseen
+        // the error should be logged here!
+        this.instance.log.error(error);
+
+        void reply.status(500).send({
+          ok: false,
+          errCode: 500,
+          errors: [{ message: 'Something went wrong!' }],
+        });
       }
     });
   }

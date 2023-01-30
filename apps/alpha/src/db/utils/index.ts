@@ -32,4 +32,3 @@ export function generateInvalidSchemaTypeError(field: string, type: string) {
 
   return `Field ${field} must be a ${type}`;
 }
-

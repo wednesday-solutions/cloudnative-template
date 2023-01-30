@@ -48,6 +48,16 @@ const createUserSchema = z.object({
 });
 
 /**
+ * Param validation for fetching the user in getUser request
+ */
+const getUserParams = z.object({
+  id: z.number({
+    required_error: generateRequiredSchemaTypeError('id'),
+    invalid_type_error: generateInvalidSchemaTypeError('id', 'number'),
+  }),
+});
+
+/**
  * Definition showing how a user if read and returned to the client would look like!
  */
 const responseUserSchema = z.object({
@@ -57,6 +67,9 @@ const responseUserSchema = z.object({
 export const { schemas: userSchemas, $ref } = buildJsonSchemas({
   createUserSchema,
   responseUserSchema,
+  getUserParams,
 });
 
+export type GetUserParams = z.infer<typeof getUserParams>;
 export type UserAttributes = z.infer<typeof createUserSchema>;
+export type CreateUserBody = z.infer<typeof createUserSchema>;

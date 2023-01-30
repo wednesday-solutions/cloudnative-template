@@ -10,3 +10,9 @@ RETURNS TRIGGER AS $trigger_set_update_at_timestamp$
     END IF;
   END;
 $trigger_set_update_at_timestamp$ LANGUAGE plpgsql;
+
+-- Load `uuid-ossp` into Database
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Load `citext` into Database
+CREATE EXTENTION IF NOT EXISTS citext;

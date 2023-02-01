@@ -19,4 +19,4 @@ done
 ts-node ../check-connection.ts
 
 docker exec integration-tests-fastify-postgres \
-  bash -c "export PGPASSWORD=fastify_postgres_template && psql -h 0.0.0.0 -p 5432 -U fastify_postgres_template fastify_postgres_template -c 'CREATE EXTENSION IF NOT EXISTS btree_gist; CREATE EXTENSION IF NOT EXISTS hstore; CREATE EXTENSION IF NOT EXISTS citext;'"
+  bash -c "export PGPASSWORD=fastify_postgres_template && psql -h 0.0.0.0 -p 5432 -U fastify_postgres_template fastify_postgres_template -c 'CREATE EXTENSION IF NOT EXISTS btree_gist; CREATE EXTENSION IF NOT EXISTS hstore;'"

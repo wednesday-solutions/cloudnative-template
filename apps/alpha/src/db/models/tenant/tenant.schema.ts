@@ -14,6 +14,15 @@ const tenantSchemaCore = {
   }),
 
   /**
+   * Tenant access key indentifies the tenant which the tenant users can use
+   * to uniquely identify which tenant they belong to
+   */
+  tenantAccessKey: z.string({
+    invalid_type_error: generateInvalidSchemaTypeError('tenantAccessKey', 'string'),
+    required_error: generateRequiredSchemaTypeError('tenantAccessKey'),
+  }),
+
+  /**
    * Email of the tenant, should be unique
    */
   email: z.string({

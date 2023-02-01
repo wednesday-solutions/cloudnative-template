@@ -23,6 +23,11 @@ export const Tenant: ModelDefined<TenantCreationAttributes, TenantAttributes>
         allowNull: false,
         field: 'public_uuid',
       },
+      tenantAccesskey: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: 'tenant_access_key',
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,

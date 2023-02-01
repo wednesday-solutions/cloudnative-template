@@ -36,11 +36,6 @@ export const User: ModelDefined<UserCreationAttributes, UserAttributes>
         type: DataTypes.STRING,
         allowNull: false,
       },
-      belongsToTenant: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-        field: 'belongs_to_tenant',
-      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,

@@ -1,13 +1,15 @@
 services:
   postgres-latest:
     container_name: integration-tests-fastify-postgres
-    image: postgis/postgis:15-3.3
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: fastify_postgres_template
       POSTGRES_PASSWORD: fastify_postgres_template
       POSTGRES_DB: fastify_postgres_template
     ports:
       - 23010:5432
+    volumes:
+      - fastify-integration-tests:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "fastify_postgres_template"]
       interval: 3s
@@ -17,3 +19,5 @@ services:
 networks:
   default:
     name: fastify_postgres_template_testing
+volumes:
+  fastify-integration-tests: {}

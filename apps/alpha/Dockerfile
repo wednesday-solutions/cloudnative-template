@@ -7,9 +7,13 @@
 # Stage #1
 # Run turbo prune
 FROM node:18-alpine AS builder
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat git
+RUN apk add --no-cache --virtual builds-deps build-base python3
 RUN apk update
-RUN yarn global add turbo
+RUN corepack enable
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+RUN pnpm add -g turbo
 WORKDIR /app
 COPY . .
 COPY turbo.json turbo.json
@@ -19,20 +23,13 @@ RUN turbo prune --scope=@fastify-postgres-template/alpha --docker
 # 1. Copy pruned app from stage #1
 # 2. Install dependencies
 # 3. Build
-FROM node:18-alpine AS installer
-RUN apk add --no-cache libc6-compat
-RUN apk update
-WORKDIR /app
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
-RUN yarn global add pnpm
-RUN yarn global add turbo
+FROM builder AS installer
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm i
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
+RUN pnpm i
 RUN turbo run build --filter=@fastify-postgres-template/alpha...
 
 # Stage #3

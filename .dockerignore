@@ -1,2 +1,9 @@
+# Node specific
 node_modules
 /**/node_modules
+# Turborepo
+.turbo
+# Test coverage
+coverage
+
+/**/dist

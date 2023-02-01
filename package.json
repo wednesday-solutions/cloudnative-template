@@ -13,6 +13,7 @@
     "start:dev": "dotenv -e ./environments/.env.development -- turbo run start:dev --parallel",
     "start:qa": "dotenv -e ./environments/.env.qa -- turbo run start:qa --parallel",
     "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel",
+    "development:up": "pnpm -c exec docker compose -f docker-compose.yml -f docker-compose-development.yml up",
     "TESTING": "-------------------- TESTING --------------------",
     "test:all": "turbo run test:all",
     "test:unit": "turbo run test:unit",

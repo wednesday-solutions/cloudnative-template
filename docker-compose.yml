@@ -1,7 +1,7 @@
 version: '3'
 services:
   alpha:
-    container_name: alpha
+    container_name: alpha-svc
     build:
       context: .
       dockerfile: ./apps/alpha/Dockerfile

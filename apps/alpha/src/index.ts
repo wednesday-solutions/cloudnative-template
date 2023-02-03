@@ -1,7 +1,11 @@
 import FastifyServer from './bootstrapper';
 
+if (!process.env.PORT) {
+  throw new Error('PORT is unset');
+}
+
 const server = new FastifyServer({
-  port: 5000,
+  port: Number.parseInt(process.env.PORT, 10),
   host: '0.0.0.0',
   logging: true,
   routes: [],

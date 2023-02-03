@@ -97,5 +97,5 @@ The instance can now be used with other functions or database related stuff to t
 | Start development server        | pnpm start:dev              |
 | Create and run qa build         | pnpm start:qa               |
 | Create and run prod build       | pnpm start:prod             |
-| compose development             | pnpm development:up         |
-| rebuild and compose development | pnpm development:up --build |
+| Compose development             | pnpm development:up         |
+| Rebuild and compose development | pnpm development:up --build |

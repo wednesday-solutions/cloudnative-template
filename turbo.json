@@ -47,7 +47,11 @@
     "DB_HOST",
     "DB_PORT",
     "DB_USERNAME",
-    "DB_PASSWORD"
+    "DB_PASSWORD",
+    "REDIS_HOST",
+    "REDIS_PORT",
+    "REDIS_USER",
+    "REDIS_PASSWORD"
   ],
   "globalDependencies": [
     "./environments/.env",

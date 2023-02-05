@@ -13,6 +13,12 @@ declare global {
       DB_PORT: number;
       DB_USERNAME: string;
       DB_PASSWORD: string;
+
+      // Redis
+      REDIS_HOST: string;
+      REDIS_PORT: number;
+      REDIS_USER: string;
+      REDIS_PASSWORD: string;
     }
   }
 }

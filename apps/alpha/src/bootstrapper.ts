@@ -3,6 +3,7 @@ import autoload from '@fastify/autoload';
 import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
 import { CustomError } from 'fastify-custom-errors';
+import { MainCacheInstance } from './cache';
 import type { FastifyBootstrapperOptions } from './types/bootstrapper.types';
 
 /**
@@ -38,9 +39,23 @@ export class FastifyServer {
   constructor(public options: FastifyBootstrapperOptions) {
     this.instance = fastify({ logger: options.logging ?? false });
 
+    this.init()
+      .then(() => {
+        console.info('Bootstrapped the application successfully!');
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
+  /**
+   * Initialize the application
+   */
+  async init() {
     this.#registerSchemas();
     this.#registerRoutes();
     this.#setupErrorHandler();
+    await this.#initializeMainCache();
   }
 
   /**
@@ -117,6 +132,14 @@ export class FastifyServer {
   }
 
   /**
+   * Try and connect to the main cache, throw if any error occurs!
+   */
+  async #initializeMainCache() {
+    await MainCacheInstance.getInstance().connection.connect();
+    console.debug('Connection to main cache succeeded!');
+  }
+
+  /**
    * Setup global Error Handler.
    */
   #setupErrorHandler() {
@@ -131,8 +154,7 @@ export class FastifyServer {
         });
       } else if (
         (
-          ((((error as any) || {}).validation || [])[0] || {})
-            .schemaPath || ''
+          ((((error as any) || {}).validation || [])[0] || {}).schemaPath || ''
         ).startsWith('Schema')
       ) {
         /**

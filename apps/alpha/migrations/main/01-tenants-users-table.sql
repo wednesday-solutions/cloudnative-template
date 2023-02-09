@@ -2,16 +2,25 @@
 CREATE TABLE IF NOT EXISTS "main"."tenants" (
   id serial PRIMARY KEY,
   public_uuid uuid DEFAULT uuid_generate_v4(),
-  tenant_access_key VARCHAR(32) UNIQUE NOT NULL CHECK (tenant_access_key <> ''),
-  name VARCHAR NOT NULL CHECK (name <> ''),
-  email CITEXT UNIQUE NOT NULL CHECK (email <> ''),
-  company_name VARCHAR NOT NULL CHECK (company_name <> ''),
-  password VARCHAR NOT NULL CHECK (password <> ''),
+  tenant_access_key VARCHAR(32) UNIQUE NOT NULL,
+  name VARCHAR NOT NULL,
+  email CITEXT UNIQUE NOT NULL,
+  company_name CITEXT NOT NULL,
+  password VARCHAR NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now(),
-  updated_at timestamptz
+  updated_at timestamptz,
+
+  -- Check constraints
+  CONSTRAINT valid_tenant_access_key CHECK (LENGTH(tenant_access_key) = 32),
+  CONSTRAINT name_not_empty CHECK (name <> ''),
+  CONSTRAINT email_not_empty CHECK (email <> ''),
+  CONSTRAINT company_name_not_empty CHECK (company_name <> ''),
+  CONSTRAINT password_not_empty CHECK (password <> ''),
 );
 
-CREATE INDEX tenants_publid_idx ON "main"."tenants" (public_uuid);
+-- Setup indexes
+CREATE INDEX tenants_public_uuid_idx ON "main"."tenants" (public_uuid);
+CREATE INDEX tenant_access_key_idx ON "main"."tenants" (tenant_access_key);
 
 -- Setup RLS for Tenants
 ALTER TABLE "main"."tenants" ENABLE ROW LEVEL SECURITY;

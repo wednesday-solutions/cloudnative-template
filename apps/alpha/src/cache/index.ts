@@ -1,48 +1,154 @@
-import { MainCache, TenantCache } from './instance';
+import camelCase from 'lodash/camelCase';
+import { QueryTypes } from 'sequelize';
+import { getMainDBConnection } from '../db/tenancy/connection';
+import { mapKeys } from '../utils';
+import type { TenantRedisOptions } from './conn';
+import { mainCacheConnection, tenantCacheConnection } from './conn';
+import type { MainCache, TenantCache } from './instance';
 
 /**
- * Get connection to main cache, this cache is related to the main
- * ops that relate to managing tenants and storing tenants meta.
- *
- * @returns object containing methods and a redis client
+ * Main's cache singleton used for maintaining at most one cache connection
+ * and reuse that connection for every request to main cache.
  */
-export async function mainCacheConnection() {
-  const _conn = new MainCache(
-    process.env.REDIS_HOST,
-    process.env.REDIS_PORT,
-    process.env.REDIS_USER,
-    process.env.REDIS_PASSWORD,
-  );
+export class MainCacheInstance {
+  /**
+   * Instance of main cache as a singleton
+   */
+  private static instance: MainCacheInstance;
 
-  return _conn;
+  /**
+   * Connection to the main's redis instance, this is not connected
+   * until and unless `connect()` is called.
+   *
+   * @example
+   * ```ts
+   * const instance = MainCacheInstance.getInstance();
+   * await instance.connect();
+   * ```
+   */
+  connection: MainCache;
+
+  /**
+   * Connection is not established by default use the
+   * `connect` method that exists on the `connection`
+   */
+  private constructor() {
+    this.connection = mainCacheConnection();
+  }
+
+  /**
+   * Get the pre-existing uninitialized connection to the main cache.
+   * This is uninitialized by default or on the first `getInstance`.
+   * This creates a new instance if `instance` is not defined or else
+   * returns the pre-existing instance.
+   *
+   * @returns uninitialized connection to the main cache
+   */
+  static getInstance(): MainCacheInstance {
+    if (!MainCacheInstance.instance) {
+      MainCacheInstance.instance = new MainCacheInstance();
+    }
+
+    return MainCacheInstance.instance;
+  }
+
+  /**
+   * Get all the tenants from the main db and store them in the cache.
+   * Do note that this SHOULD NOT be called in the application but rather
+   * through some CRON once in a decided time or only at the start or at
+   * a full cache eviction.
+   *
+   * - Time Complexity -> `2 * O(n)`
+   * - Space Complexity -> `O(n)`
+   */
+  async updateOrGetAllTenantsMeta() {
+    interface TenantRecords {
+      id: number;
+      publicUuid: string;
+      tenantAccessKey: string;
+      name: string;
+      email: string;
+      companyName: string;
+      createdAt: string;
+    }
+
+    const db = getMainDBConnection();
+
+    const response: TenantRecords[] = await db.instance.query(`
+    SELECT
+      "id",
+      "public_uuid",
+      "tenant_access_key",
+      "name",
+      "email",
+      "company_name",
+      "created_at"
+    FROM "main"."tenants";
+    `, { type: QueryTypes.SELECT });
+
+    const transformedResponse = mapKeys(response, camelCase);
+
+    const toCache = [];
+    for (const record of transformedResponse) {
+      toCache.push({ [`${record.tenantAccessKey}-${record.id}`]: record });
+    }
+  }
 }
 
-export async function tenantCacheConnection(options: TenantRedisOptions) {
-  const { thost, tport, tusername, tpassword } = options;
-
-  const _conn = new TenantCache(thost, tport, tusername, tpassword);
-
-  return _conn;
-}
-
-interface TenantRedisOptions {
+/**
+ * Tenant's cache singleton used for maintaining at most one cache connection
+ * and reuse that connection for every request to tenant's cache.
+ */
+export class TenantCacheInstance {
   /**
-   * Tenant's redis host url
+   * Instance of tenant's cache as a singleton
    */
-  thost: string;
+  private static instance: TenantCacheInstance;
 
   /**
-   * Tenant's redis port
+   * Connection to the tenant's redis instance, this is not connected
+   * until and unless `connect()` is called.
+   *
+   * @example
+   * ```ts
+   * const instance = TenantCacheInstance.getInstance();
+   * await instance.connect();
+   * ```
    */
-  tport: number;
+  connection: TenantCache;
 
   /**
-   * Tenant's redis username to authenticate with
+   * Connection is not established by default use the
+   * `connect` method that exists on the `connection`
+   *
+   * @param [options] - connection options for tenant's cache
+   * @param [options.thost] - tenant's redis host url
+   * @param [options.tport] - tenant's redis port
+   * @param [options.tusername] - tenant's redis username to authenticate with
+   * @param [options.tpassword] - tenant's redis password to authenticate with
    */
-  tusername: string;
+  private constructor(options: TenantRedisOptions) {
+    this.connection = tenantCacheConnection(options);
+  }
 
   /**
-   * Tenant's redis password to authenticate with
+   * Get the pre-existing or uninitialized connection to the tenant's cache.
+   * This is uninitialized by default or on the first `getInstance`.
+   * This creates a new instance if `instance` is not defined or else
+   * returns the pre-existing instance.
+   *
+   * @param [options] - connection options for tenant's cache
+   * @param [options.thost] - tenant's redis host url
+   * @param [options.tport] - tenant's redis port
+   * @param [options.tusername] - tenant's redis username to authenticate with
+   * @param [options.tpassword] - tenant's redis password to authenticate with
+   * @returns uninitialized connection to the main cache
    */
-  tpassword: string;
+  static getInstance(options: TenantRedisOptions): TenantCacheInstance {
+    if (!TenantCacheInstance.instance) {
+      TenantCacheInstance.instance = new TenantCacheInstance(options);
+    }
+
+    return TenantCacheInstance.instance;
+  }
 }

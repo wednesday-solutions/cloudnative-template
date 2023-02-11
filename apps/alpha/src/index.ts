@@ -1,8 +1,5 @@
 import FastifyServer from './bootstrapper';
-
-if (!process.env.PORT) {
-  throw new Error('PORT is unset');
-}
+import { verifyEnv } from './utils';
 
 const server = new FastifyServer({
   port: Number.parseInt(process.env.PORT, 10),
@@ -13,6 +10,7 @@ const server = new FastifyServer({
 
 async function main() {
   try {
+    verifyEnv();
     await server.startServer();
     console.info(`Listening for requests on port 5000...`);
   } catch (error) {

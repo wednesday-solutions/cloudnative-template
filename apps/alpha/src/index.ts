@@ -1,7 +1,8 @@
 import FastifyServer from './bootstrapper';
+import { verifyEnv } from './utils';
 
 const server = new FastifyServer({
-  port: 5000,
+  port: Number.parseInt(process.env.PORT, 10),
   host: '0.0.0.0',
   logging: true,
   routes: [],
@@ -9,6 +10,7 @@ const server = new FastifyServer({
 
 async function main() {
   try {
+    verifyEnv();
     await server.startServer();
     console.info(`Listening for requests on port 5000...`);
   } catch (error) {

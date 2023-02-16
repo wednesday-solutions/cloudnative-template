@@ -2,8 +2,12 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     },
     "lint:no-fix": {
       "cache": false
@@ -16,28 +20,46 @@
       "persistent": true
     },
     "start:qa": {
-      "dependsOn": ["test:all", "build"],
+      "dependsOn": [
+        "test:all",
+        "build"
+      ],
       "cache": false
     },
     "start:prod": {
-      "dependsOn": ["test:all", "build"],
+      "dependsOn": [
+        "test:all",
+        "build"
+      ],
       "cache": false
     },
     "test:all": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     },
     "test:unit": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     },
     "test:integration": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     },
     "test:coverage": {
-      "dependsOn": ["lint:no-fix"],
-      "outputs": ["coverage/**"]
+      "dependsOn": [
+        "lint:no-fix"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "test:verbose": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     }
   },
   "globalEnv": [
@@ -47,7 +69,8 @@
     "DB_HOST",
     "DB_PORT",
     "DB_USERNAME",
-    "DB_PASSWORD"
+    "DB_PASSWORD",
+    "PORT"
   ],
   "globalDependencies": [
     "./environments/.env",

@@ -107,9 +107,11 @@ The instance can now be used with other functions or database related stuff to t
 
 ### **Development Scripts**
 
-| **Purpose**               | **Script**      |
-|---------------------------|-----------------|
-| Install dependencies      | ```pnpm i```          |
-| Start dev server  | ```pnpm start:dev```  |
-| Build and start qa build   | ```pnpm start:qa```   |
-| Build and start prod build | ```pnpm start:prod``` |
+| **Purpose**                     | **Script**                  |
+|---------------------------------|-----------------------------|
+| Install dependencies            | pnpm i                      |
+| Start development server        | pnpm start:dev              |
+| Create and run qa build         | pnpm start:qa               |
+| Create and run prod build       | pnpm start:prod             |
+| Compose development             | pnpm development:up         |
+| Rebuild and compose development | pnpm development:up --build |

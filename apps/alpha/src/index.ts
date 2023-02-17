@@ -8,6 +8,10 @@ const server = new FastifyServer({
   schemas: [userSchemas],
 });
 
+/**
+ * The `main` function initializes the server and starts the
+ * server instance.
+ */
 async function main() {
   try {
     await server.startServer();

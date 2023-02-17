@@ -58,22 +58,14 @@ export class MainCacheInstance {
    * through some CRON once in a decided time or only at the start or at
    * a full cache eviction.
    *
+   * TODO: Set some sort of validation that disallows using this. Probably
+   * some RBAC!
+   *
    * - Time Complexity -> `2 * O(n)`
    * - Space Complexity -> `O(n)`
    */
   async updateOrGetAllTenantsMeta() {
-    interface TenantRecords {
-      id: number;
-      publicUuid: string;
-      tenantAccessKey: string;
-      name: string;
-      email: string;
-      companyName: string;
-      createdAt: string;
-    }
-
-    const db = getMainDBConnection();
-
+    const db = await getMainDBConnection();
     const response: TenantRecords[] = await db.instance.query(`
     SELECT
       "id",
@@ -84,16 +76,35 @@ export class MainCacheInstance {
       "company_name",
       "created_at"
     FROM "main"."tenants";
-    `, { type: QueryTypes.SELECT });
+    `.trim(), { type: QueryTypes.SELECT });
 
     const transformedResponse = mapKeys(response, camelCase);
 
-    const toCache = [];
+    const lastUpdated = Date.now();
+    const toCache: Array<Promise<string | null>> = [];
     for (const record of transformedResponse) {
-      toCache.push({ [`${record.tenantAccessKey}-${record.id}`]: record });
+      const meta: CacheTenantRecord = { record, lastUpdated };
+      toCache.push(this.connection.cache.xadd(
+        `${record.tenantAccessKey}`, JSON.stringify(meta),
+      ));
     }
+
+    // Push to cache
+    await Promise.all(toCache);
   }
 }
+
+export interface TenantRecords {
+  id: number;
+  publicUuid: string;
+  tenantAccessKey: string;
+  name: string;
+  email: string;
+  companyName: string;
+  createdAt: string;
+}
+
+export type CacheTenantRecord = { record: TenantRecords, lastUpdated: number };
 
 /**
  * Tenant's cache singleton used for maintaining at most one cache connection

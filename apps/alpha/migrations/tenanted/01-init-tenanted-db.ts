@@ -13,7 +13,7 @@ export const up: TenantMigration = async ({ context }) => {
       password VARCHAR NOT NULL CHECK (password <> ''),
       belongs_to_tenant INTEGER NOT NULL CHECK,
       created_at timestamptz NOT NULL DEFAULT now(),
-      created_at timestamptz
+      updated_at timestamptz
     );
   `.trim());
 

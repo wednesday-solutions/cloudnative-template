@@ -57,3 +57,12 @@ export function mapKeys<T extends object>(
 
   return o;
 }
+
+/**
+ * Verify app envs
+ */
+export const verifyEnv = () => {
+  if (!process.env.PORT) {
+    throw new Error('PORT is unset');
+  }
+};

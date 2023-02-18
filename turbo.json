@@ -2,8 +2,12 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     },
     "lint:no-fix": {
       "cache": false
@@ -16,28 +20,46 @@
       "cache": false
     },
     "start:qa": {
-      "dependsOn": ["test:all", "build"],
+      "dependsOn": [
+        "test:all",
+        "build"
+      ],
       "cache": false
     },
     "start:prod": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "test:all",
+        "build"
+      ],
       "cache": false
     },
     "test:all": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     },
     "test:unit": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     },
     "test:integration": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     },
     "test:coverage": {
-      "dependsOn": ["lint:no-fix"],
-      "outputs": ["coverage/**"]
+      "dependsOn": [
+        "lint:no-fix"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "test:verbose": {
-      "dependsOn": ["lint:no-fix"]
+      "dependsOn": [
+        "lint:no-fix"
+      ]
     }
   },
   "globalEnv": [
@@ -51,7 +73,8 @@
     "REDIS_HOST",
     "REDIS_PORT",
     "REDIS_USER",
-    "REDIS_PASSWORD"
+    "REDIS_PASSWORD",
+    "PORT"
   ],
   "globalDependencies": [
     "./environments/.env",

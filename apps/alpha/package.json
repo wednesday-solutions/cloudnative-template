@@ -5,9 +5,9 @@
   "author": "Wednesday Solutions",
   "scripts": {
     "DEVELOPMENT": "-------------------------- DEVELOPMENT --------------------------",
-    "start:dev": "ts-node-dev ./src/index.ts",
-    "start:qa": "node ./dist/index.js",
-    "start:prod": "node ./dist/index.js",
+    "start:dev": "dotenv ts-node-dev ./src/index.ts",
+    "start:qa": "dotenv  node ./dist/index.js",
+    "start:prod": "dotenv node ./dist/index.js",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",
     "lint:fix": "eslint --fix --ext ts './src/**/*.{js,ts}'",
@@ -26,7 +26,7 @@
     "seed:down": "ts-node ./migrate.ts seed:down",
     "BUILDING": "-------------------- BUILDING --------------------",
     "prebuild": "rimraf ./dist",
-    "build": "pnpm run prebuild && tsc --project ./tsconfig.build.json",
+    "build": "dotenv pnpm run prebuild && tsc --project ./tsconfig.build.json",
     "build:ci": "turbo run build --filter=@fastify-postgres-template/alpha"
   },
   "dependencies": {

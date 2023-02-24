@@ -5,9 +5,9 @@
   "author": "Wednesday Solutions",
   "scripts": {
     "DEVELOPMENT": "-------------------------- DEVELOPMENT --------------------------",
-    "start:dev": "dotenv ts-node-dev ./src/index.ts",
-    "start:qa": "dotenv  node ./dist/index.js",
-    "start:prod": "dotenv node ./dist/index.js",
+    "start:dev": "dotenv -- ts-node-dev --files src/index.ts",
+    "start:qa": "dotenv -- node ./dist/index.js",
+    "start:prod": "dotenv -- node ./dist/index.js",
     "CODE_STYLE": "-------------------------- CODE STYLE --------------------------",
     "lint:no-fix": "eslint --ext ts './src/**/*.{js,ts}'",
     "lint:fix": "eslint --fix --ext ts './src/**/*.{js,ts}'",

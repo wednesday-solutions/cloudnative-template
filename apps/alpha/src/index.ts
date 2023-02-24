@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
 import FastifyServer from './bootstrapper';
 import { verifyEnv } from './utils';
+
+dotenv.config();
 
 const server = new FastifyServer({
   port: Number.parseInt(process.env.PORT, 10),

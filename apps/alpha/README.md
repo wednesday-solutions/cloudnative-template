@@ -10,7 +10,7 @@ We have a `migrate.ts` file that contains the `seeder` and the `migrator`, both 
 
 The migration accepts the following commands through NPM Scripts:
 
-- `pnpm run migrate:up` - Will run the latest migrations.
+- `pnpm run migrate:main:up` - Will run the latest migrations.
 - `pnpm run migrate:down` - Will revert the last ran migration.
 - `pnpm run migrate:purge` - Sequentially removes all the migrations and resets DB to the zero state.
 

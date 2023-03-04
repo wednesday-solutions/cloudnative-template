@@ -29,14 +29,15 @@ export enum MigrationTypes {
 const command = process.argv[2];
 const tenantAccessKey = process.argv[3] ?? undefined;
 
-// TODO: A better way to read and define ENVs
+verifyMainMigrationEnvs();
+
 const sequelize = new Sequelize({
   dialect: 'postgres',
-  database: process.env.DB_DATABASE ?? 'fastify_postgres_template',
-  host: process.env.DB_HOST ?? '0.0.0.0',
-  port: 23_010,
-  password: 'fastify_postgres_template' ?? 'postgres',
-  username: 'fastify_postgres_template' ?? 'postgres',
+  database: process.env.DB_DATABASE,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  password: process.env.DB_PASSWORD,
+  username: process.env.DB_USERNAME,
 });
 
 /**
@@ -101,7 +102,7 @@ async function checkTenant() {
   if (!tenantAccessKey) {
     throw new Error(`An argument for 'tenantAccessKey' was expected but received ${tenantAccessKey}, did you forgot to pass an tenantAccessKey?
     Following is how to use tenantMigrator:
-    Example: pnpm migrate:up tenantAccessKey`);
+    Example: pnpm migrate:main:up tenantAccessKey`);
   }
 
   // Verify with database
@@ -170,3 +171,25 @@ void migrate().then(() => {
     `Successfully ${command.startsWith('seed') ? 'seeded' : 'migrated'}!`,
   );
 });
+
+function verifyMainMigrationEnvs() {
+  if (!process.env.DB_DATABASE) {
+    throw new Error(`Expected 'DB_DATABASE' to be defined but got ${process.env.DB_DATABASE}`);
+  }
+
+  if (!process.env.DB_HOST) {
+    throw new Error(`Expected 'DB_HOST' to be defined but got ${process.env.DB_HOST}`);
+  }
+
+  if (!process.env.DB_PASSWORD) {
+    throw new Error(`Expected 'DB_PASSWORD' to be defined but got ${process.env.DB_PASSWORD}`);
+  }
+
+  if (!process.env.DB_USERNAME) {
+    throw new Error(`Expected 'DB_USERNAME' to be defined but got ${process.env.DB_USERNAME}`);
+  }
+
+  if (!process.env.DB_PORT) {
+    throw new Error(`Expected 'DB_PORT' to be defined but got ${process.env.DB_PORT}`);
+  }
+}

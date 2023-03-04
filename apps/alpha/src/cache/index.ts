@@ -94,13 +94,43 @@ export class MainCacheInstance {
   }
 }
 
+/**
+ * The records fetched from the DB corresponding to a tenant
+ */
 export interface TenantRecords {
+  /**
+   * Private `id` field of a tenant
+   */
   id: number;
+
+  /**
+   * Public UUID that uniquely identifies a tenant
+   */
   publicUuid: string;
+
+  /**
+   * Access key that identifies the tenant main access account
+   */
   tenantAccessKey: string;
+
+  /**
+   * Name of the tenant
+   */
   name: string;
+
+  /**
+   * Registered email of the user
+   */
   email: string;
+
+  /**
+   * A tenant must have a company name only then it will considered as a tenant
+   */
   companyName: string;
+
+  /**
+   * When was this tenant createdAt
+   */
   createdAt: string;
 }
 

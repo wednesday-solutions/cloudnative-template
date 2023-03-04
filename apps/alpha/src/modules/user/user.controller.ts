@@ -1,5 +1,5 @@
+import type { CreateUserBody, GetUserParams } from 'entities-schemas';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { CreateUserBody, GetUserParams } from '../../db/models/user/user.schema';
 
 /**
  * Get user based on the id provided

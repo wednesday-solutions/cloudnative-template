@@ -1,7 +1,14 @@
+import { UserSchema } from 'entities-schemas';
+import type { GetUserParams, CreateUserBody } from 'entities-schemas';
 import type { FastifyInstance } from 'fastify';
-import type { GetUserParams, CreateUserBody } from '../../db/models/user/user.schema';
-import { $ref } from '../../db/models/user/user.schema';
+import { buildJsonSchemas } from 'fastify-zod';
 import { createUser, getUser } from './user.controller';
+
+const { schemas: userSchemas, $ref } = buildJsonSchemas({
+  createUserSchema: UserSchema.createUserSchema,
+  getUserParams: UserSchema.getUserParams,
+  responseUserSchema: UserSchema.responseUserSchema,
+});
 
 async function userRoutes(server: FastifyInstance) {
   server.get<{ Params: GetUserParams }>('/:id', {
@@ -23,4 +30,5 @@ async function userRoutes(server: FastifyInstance) {
   }, createUser);
 }
 
+export { userSchemas };
 export default userRoutes;

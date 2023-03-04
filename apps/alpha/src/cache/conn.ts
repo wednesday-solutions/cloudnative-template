@@ -7,11 +7,27 @@ import { MainCache, TenantCache } from './instance';
  * @returns object containing methods and a redis client
  */
 export function mainCacheConnection() {
+  if (!process.env.REDIS_HOST) {
+    throw new Error(`Expected 'REDIS_HOST' to be defined but got ${process.env.REDIS_HOST}`);
+  }
+
+  if (!process.env.REDIS_PORT) {
+    throw new Error(`Expected 'REDIS_PORT' to be defined but got ${process.env.REDIS_PORT}`);
+  }
+
+  if (!process.env.REDIS_USER) {
+    throw new Error(`Expected 'REDIS_USER' to be defined but got ${process.env.REDIS_USER}`);
+  }
+
+  if (!process.env.REDIS_PASSWORD) {
+    throw new Error(`Expected 'REDIS_PASSWORD' to be defined but got ${process.env.REDIS_PASSWORD}`);
+  }
+
   return new MainCache(
-    process.env.REDIS_HOST ?? '0.0.0.0',
-    Number(process.env.REDIS_PORT) ?? 6379,
-    process.env.REDIS_USER ?? '',
-    process.env.REDIS_PASSWORD ?? '',
+    process.env.REDIS_HOST,
+    Number(process.env.REDIS_PORT),
+    process.env.REDIS_USER,
+    process.env.REDIS_PASSWORD,
   );
 }
 

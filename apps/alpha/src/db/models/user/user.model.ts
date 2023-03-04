@@ -1,6 +1,6 @@
+import type { UserAttributes } from 'entities-schemas';
 import type { ModelDefined, Optional } from '../../index';
 import { DataTypes, dbConnection } from '../../index';
-import type { UserAttributes } from './user.schema';
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
 

@@ -7,20 +7,20 @@ declare global {
       NODE_ENV: 'development' | 'qa' | 'production' | 'test';
 
       // Database
-      DB_DIALECT: Dialect;
-      DB_DATABASE: string;
-      DB_HOST: string;
-      DB_PORT: number;
-      DB_USERNAME: string;
-      DB_PASSWORD: string;
+      DB_DIALECT?: Dialect;
+      DB_DATABASE?: string;
+      DB_HOST?: string;
+      DB_PORT?: number;
+      DB_USERNAME?: string;
+      DB_PASSWORD?: string;
 
       // Redis
-      REDIS_HOST: string;
-      REDIS_PORT: number;
-      REDIS_USER: string;
-      REDIS_PASSWORD: string;
+      REDIS_HOST?: string;
+      REDIS_PORT?: number;
+      REDIS_USER?: string;
+      REDIS_PASSWORD?: string;
 
-      PORT: string;
+      PORT?: string;
     }
   }
 }

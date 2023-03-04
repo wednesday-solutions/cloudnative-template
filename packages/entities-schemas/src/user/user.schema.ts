@@ -1,9 +1,8 @@
-import { buildJsonSchemas } from 'fastify-zod';
 import { z } from 'zod';
 import {
   generateInvalidSchemaTypeError,
   generateRequiredSchemaTypeError,
-} from '../../utils';
+} from '../utils';
 
 /**
  * Core construct of the User entity!
@@ -102,11 +101,13 @@ const UserEntitySchema = z.object({
   updatedAt: z.date(),
 });
 
-export const { schemas: userSchemas, $ref } = buildJsonSchemas({
+export const UserSchema = {
+  userSchemaCore,
   createUserSchema,
-  responseUserSchema,
   getUserParams,
-});
+  responseUserSchema,
+  UserEntitySchema,
+};
 
 export type GetUserParams = z.infer<typeof getUserParams>;
 export type UserAttributes = z.infer<typeof UserEntitySchema>;

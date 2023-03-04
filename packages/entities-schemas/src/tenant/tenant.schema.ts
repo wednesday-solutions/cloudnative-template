@@ -2,7 +2,7 @@ import { z } from 'zod';
 import {
   generateInvalidSchemaTypeError,
   generateRequiredSchemaTypeError,
-} from '../../utils';
+} from '../utils';
 
 const tenantSchemaCore = {
   /**
@@ -14,13 +14,19 @@ const tenantSchemaCore = {
   }),
 
   /**
-   * Tenant access key indentifies the tenant which the tenant users can use
-   * to uniquely identify which tenant they belong to
+   * A UUID for the tenant that can be exposed publically to uniquely identify the tenant
    */
-  tenantAccessKey: z.string({
-    invalid_type_error: generateInvalidSchemaTypeError('tenantAccessKey', 'string'),
-    required_error: generateRequiredSchemaTypeError('tenantAccessKey'),
-  }),
+  publicUuid: z.string(),
+
+  /**
+   * When was this tenant created
+   */
+  createdAt: z.date(),
+
+  /**
+   * When was the tenant last updated, `undefined` if never updated
+   */
+  updatedAt: z.date(),
 
   /**
    * Email of the tenant, should be unique
@@ -39,6 +45,17 @@ const tenantSchemaCore = {
   }),
 };
 
+const tenentAccessKey = {
+  /**
+   * Tenant access key indentifies the tenant which the tenant users can use
+   * to uniquely identify which tenant they belong to
+   */
+  tenantAccessKey: z.string({
+    invalid_type_error: generateInvalidSchemaTypeError('tenantAccessKey', 'string'),
+    required_error: generateRequiredSchemaTypeError('tenantAccessKey'),
+  }),
+};
+
 const createTenantSchema = z.object({
   ...tenantSchemaCore,
 
@@ -51,26 +68,16 @@ const createTenantSchema = z.object({
   }),
 });
 
+const createTenantResponse = z.object({
+  ...tenantSchemaCore,
+  ...tenentAccessKey,
+});
+
 const TenantEntitySchema = z.object({
   /**
    * Primary key for the DB uniquely identifying a tenant
    */
   id: z.number(),
-
-  /**
-   * A UUID for the tenant that can be exposed publically to uniquely identify the tenant
-   */
-  publicUuid: z.string(),
-
-  /**
-   * When was this tenant created
-   */
-  createdAt: z.date(),
-
-  /**
-   * When was the tenant last updated, `undefined` if never updated
-   */
-  updatedAt: z.date(),
 
   /**
    * Password of the tenant
@@ -80,7 +87,15 @@ const TenantEntitySchema = z.object({
     required_error: generateRequiredSchemaTypeError('password'),
   }),
   ...tenantSchemaCore,
+  ...tenentAccessKey,
 });
+
+export const TenantSchema = {
+  tenantSchemaCore,
+  createTenantSchema,
+  TenantEntitySchema,
+  createTenantResponse,
+};
 
 export type TenantAttributes = z.infer<typeof TenantEntitySchema>;
 export type CreateTenantBody = z.infer<typeof createTenantSchema>;

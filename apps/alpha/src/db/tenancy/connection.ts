@@ -10,6 +10,18 @@ import { SequelizeInstance } from '../instance';
  * @returns Sequelize connection
  */
 export async function getMainDBConnection() {
+  if (!process.env.DB_DATABASE) {
+    throw new Error('Expected `DB_DATATBASE` to be defined but was not set!');
+  }
+
+  if (!process.env.DB_USERNAME) {
+    throw new Error('Expected `DB_USERNAME` to be defined but was not set!');
+  }
+
+  if (!process.env.DB_PASSWORD) {
+    throw new Error('Expected `DB_PASSWORD` to be defined but was not set!');
+  }
+
   const _conn = new SequelizeInstance(
     process.env.DB_DATABASE,
     process.env.DB_USERNAME,

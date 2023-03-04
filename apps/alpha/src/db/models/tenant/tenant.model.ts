@@ -1,6 +1,6 @@
+import type { TenantAttributes } from 'entities-schemas';
 import type { ModelDefined, Optional } from '../../index';
 import { DataTypes, dbConnection } from '../../index';
-import type { TenantAttributes } from './tenant.schema';
 
 type TenantCreationAttributes = Optional<TenantAttributes, 'id'>;
 

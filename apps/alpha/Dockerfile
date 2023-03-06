@@ -37,13 +37,14 @@ RUN turbo run build --filter=@fastify-postgres-template/alpha...
 # run the application
 FROM node:18-alpine AS runner
 WORKDIR /app
-RUN corepack enable
 RUN addgroup --system --gid 1001 fastify-postgres
 RUN adduser --system --uid 1001 app-alpha
 USER app-alpha
-COPY --from=installer /app .
+COPY --from=installer /app/apps/alpha/dist /app/dist
+COPY --from=installer /app/apps/alpha/.env /app/
 COPY /dev/health-check.js /app/health-check.js
 
 HEALTHCHECK --interval=30s \
     CMD node health-check.js 5000 localhost
-CMD pnpm --filter=@fastify-postgres-template/alpha start:prod
+
+CMD node /app/dist/index.js

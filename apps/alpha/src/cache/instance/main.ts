@@ -14,21 +14,21 @@ export class MainCache extends RedisCache {
    *
    * @param [host] - redis host url
    * @param [port] - port of the running redis instance
-   * @param [username] - username to authenticate with
    * @param [password] - password to authenticate with
+   * @param [username] - username to authenticate with
    */
   constructor(
     public host: string,
     public port: number,
-    public username: string,
     public password: string,
+    public username?: string,
   ) {
     super();
 
     this.cache = new Redis({
       host: this.host,
       port: this.port,
-      username: this.username,
+      username: this.username ?? undefined,
       password: this.password,
       lazyConnect: true,
     });

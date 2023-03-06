@@ -8,7 +8,7 @@ const { schemas: userSchemas, $ref } = buildJsonSchemas({
   createUserSchema: UserSchema.createUserSchema,
   getUserParams: UserSchema.getUserParams,
   responseUserSchema: UserSchema.responseUserSchema,
-});
+}, { $id: 'user-schemas' });
 
 async function userRoutes(server: FastifyInstance) {
   server.get<{ Params: GetUserParams }>('/:id', {

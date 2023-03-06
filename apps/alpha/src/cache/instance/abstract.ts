@@ -19,7 +19,7 @@ export abstract class RedisCache {
   /**
    * Username to authenticate with
    */
-  abstract username: string;
+  abstract username?: string;
 
   /**
    * Password to authenticate with

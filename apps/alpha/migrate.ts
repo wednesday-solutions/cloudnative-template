@@ -29,13 +29,31 @@ export enum MigrationTypes {
 const command = process.argv[2];
 const tenantAccessKey = process.argv[3] ?? undefined;
 
-verifyMainMigrationEnvs();
+if (!process.env.DB_DATABASE) {
+  throw new Error(`Expected 'DB_DATABASE' to be defined but got ${process.env.DB_DATABASE}`);
+}
+
+if (!process.env.DB_HOST) {
+  throw new Error(`Expected 'DB_HOST' to be defined but got ${process.env.DB_HOST}`);
+}
+
+if (!process.env.DB_PASSWORD) {
+  throw new Error(`Expected 'DB_PASSWORD' to be defined but got ${process.env.DB_PASSWORD}`);
+}
+
+if (!process.env.DB_USERNAME) {
+  throw new Error(`Expected 'DB_USERNAME' to be defined but got ${process.env.DB_USERNAME}`);
+}
+
+if (!process.env.DB_PORT) {
+  throw new Error(`Expected 'DB_PORT' to be defined but got ${process.env.DB_PORT}`);
+}
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
   database: process.env.DB_DATABASE,
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  port: Number(process.env.DB_PORT),
   password: process.env.DB_PASSWORD,
   username: process.env.DB_USERNAME,
 });
@@ -171,25 +189,3 @@ void migrate().then(() => {
     `Successfully ${command.startsWith('seed') ? 'seeded' : 'migrated'}!`,
   );
 });
-
-function verifyMainMigrationEnvs() {
-  if (!process.env.DB_DATABASE) {
-    throw new Error(`Expected 'DB_DATABASE' to be defined but got ${process.env.DB_DATABASE}`);
-  }
-
-  if (!process.env.DB_HOST) {
-    throw new Error(`Expected 'DB_HOST' to be defined but got ${process.env.DB_HOST}`);
-  }
-
-  if (!process.env.DB_PASSWORD) {
-    throw new Error(`Expected 'DB_PASSWORD' to be defined but got ${process.env.DB_PASSWORD}`);
-  }
-
-  if (!process.env.DB_USERNAME) {
-    throw new Error(`Expected 'DB_USERNAME' to be defined but got ${process.env.DB_USERNAME}`);
-  }
-
-  if (!process.env.DB_PORT) {
-    throw new Error(`Expected 'DB_PORT' to be defined but got ${process.env.DB_PORT}`);
-  }
-}

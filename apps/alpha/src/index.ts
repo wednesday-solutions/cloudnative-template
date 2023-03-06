@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import FastifyServer from './bootstrapper';
 import { tenantSchemas } from './modules/tenant/tenant.routes';
 import { userSchemas } from './modules/user/user.routes';
@@ -5,6 +6,8 @@ import { verifyEnv } from './utils';
 import { FALLBACK_PORT } from './utils/constants';
 
 verifyEnv();
+
+dotenv.config();
 
 const server = new FastifyServer({
   port: Number.parseInt(process.env.PORT ?? FALLBACK_PORT, 10),

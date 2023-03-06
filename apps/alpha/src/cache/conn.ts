@@ -15,10 +15,6 @@ export function mainCacheConnection() {
     throw new Error(`Expected 'REDIS_PORT' to be defined but got ${process.env.REDIS_PORT}`);
   }
 
-  if (!process.env.REDIS_USER) {
-    throw new Error(`Expected 'REDIS_USER' to be defined but got ${process.env.REDIS_USER}`);
-  }
-
   if (!process.env.REDIS_PASSWORD) {
     throw new Error(`Expected 'REDIS_PASSWORD' to be defined but got ${process.env.REDIS_PASSWORD}`);
   }
@@ -26,8 +22,8 @@ export function mainCacheConnection() {
   return new MainCache(
     process.env.REDIS_HOST,
     Number(process.env.REDIS_PORT),
-    process.env.REDIS_USER,
     process.env.REDIS_PASSWORD,
+    process.env.REDIS_USER,
   );
 }
 

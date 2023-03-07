@@ -32,4 +32,4 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
 -- Load `citext` into Database
 CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA extensions;
 
-SET search_path = extensions;
+SET search_path = public, extensions;

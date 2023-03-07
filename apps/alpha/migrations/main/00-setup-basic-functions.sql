@@ -1,5 +1,5 @@
 -- Create a schema for extensions
-CREATE SCHEMA extensions;
+CREATE SCHEMA IF NOT EXISTS extensions;
 
 -- Expose everything in extensions schema to everyone
 -- for private functions use tenants own schema
@@ -32,7 +32,4 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
 -- Load `citext` into Database
 CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA extensions;
 
--- Create a default schema to use for tenants
-CREATE SCHEMA main;
-
-SET search_path = main, extensions;
+SET search_path = extensions;

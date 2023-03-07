@@ -6,6 +6,7 @@ import { Umzug, SequelizeStorage } from 'umzug';
 /**
  * An enum of migration types we support
  *
+ * @property 'MAIN:SETUP'
  * @property 'MAIN:UP'
  * @property 'MAIN:DOWN'
  * @property 'MAIN:PURGE'
@@ -16,6 +17,7 @@ import { Umzug, SequelizeStorage } from 'umzug';
  * @property 'SEED:DOWN'
  */
 export enum MigrationTypes {
+  'MAIN:SETUP' = 'MAIN:SETUP',
   'MAIN:UP' = 'MAIN:UP',
   'MAIN:DOWN' = 'MAIN:DOWN',
   'MAIN:PURGE' = 'MAIN:PURGE',
@@ -29,34 +31,7 @@ export enum MigrationTypes {
 const command = process.argv[2];
 const tenantAccessKey = process.argv[3] ?? undefined;
 
-if (!process.env.DB_DATABASE) {
-  throw new Error(`Expected 'DB_DATABASE' to be defined but got ${process.env.DB_DATABASE}`);
-}
-
-if (!process.env.DB_HOST) {
-  throw new Error(`Expected 'DB_HOST' to be defined but got ${process.env.DB_HOST}`);
-}
-
-if (!process.env.DB_PASSWORD) {
-  throw new Error(`Expected 'DB_PASSWORD' to be defined but got ${process.env.DB_PASSWORD}`);
-}
-
-if (!process.env.DB_USERNAME) {
-  throw new Error(`Expected 'DB_USERNAME' to be defined but got ${process.env.DB_USERNAME}`);
-}
-
-if (!process.env.DB_PORT) {
-  throw new Error(`Expected 'DB_PORT' to be defined but got ${process.env.DB_PORT}`);
-}
-
-const sequelize = new Sequelize({
-  dialect: 'postgres',
-  database: process.env.DB_DATABASE,
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  password: process.env.DB_PASSWORD,
-  username: process.env.DB_USERNAME,
-});
+const sequelize = getMainDBInstance();
 
 /**
  * Migrator will be used to look for `migrations` dir and run them one by one.
@@ -152,6 +127,10 @@ async function migrate() {
    * Main table ops, deals with the main table that maintains all the
    * tenants that we have.
    */
+  if (command === MigrationTypes['MAIN:SETUP']) {
+    await createMainDatabase();
+  }
+
   if (command === MigrationTypes['MAIN:UP']) {
     await mainMigrator.up();
   }
@@ -188,4 +167,75 @@ void migrate().then(() => {
   console.info(
     `Successfully ${command.startsWith('seed') ? 'seeded' : 'migrated'}!`,
   );
+}).catch(error => {
+  if (typeof error?.original?.message === 'string' && error.original.message.includes('database "main" does not exist')) {
+    throw new Error('Database \'main\' does not exist in your DB instance! Did you forget to run setup script?');
+  }
+
+  throw error;
 });
+
+/**
+ * Creates a database called `main` for storing metadata for tenants
+ *
+ * @returns zero is successfull
+ */
+async function createMainDatabase() {
+  console.info(`This will connect to database 'template1' and create a new database called which is utilized for metadata.
+Do note that the database 'template1' only exists in 'Postgres' therefore this is not compatible with any other DBMS, except PG.\n`);
+
+  const instance = new Sequelize({
+    dialect: 'postgres',
+    database: 'template1',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    password: process.env.DB_PASSWORD,
+    username: process.env.DB_USERNAME,
+  });
+
+  await instance.query('CREATE DATABASE "main";');
+  await instance.close();
+
+  console.info(`\nSeems like there were no errors however we still recommend that you should check your database if a new database called 'main' was created!
+You can also test this by doing 'MIGRATE:MAIN:UP' if it fails it probably means that there was not main db!\n`);
+
+  return 0;
+}
+
+/**
+ * Get a sequelize instance connected to main DB don't use this
+ * inside the application everything defined here should be used only
+ * in the migrators!
+ *
+ * @returns sequelize instance connected to `main` database
+ */
+function getMainDBInstance() {
+  if (!process.env.DB_DATABASE) {
+    throw new Error(`Expected 'DB_DATABASE' to be defined but got ${process.env.DB_DATABASE}`);
+  }
+
+  if (!process.env.DB_HOST) {
+    throw new Error(`Expected 'DB_HOST' to be defined but got ${process.env.DB_HOST}`);
+  }
+
+  if (!process.env.DB_PASSWORD) {
+    throw new Error(`Expected 'DB_PASSWORD' to be defined but got ${process.env.DB_PASSWORD}`);
+  }
+
+  if (!process.env.DB_USERNAME) {
+    throw new Error(`Expected 'DB_USERNAME' to be defined but got ${process.env.DB_USERNAME}`);
+  }
+
+  if (!process.env.DB_PORT) {
+    throw new Error(`Expected 'DB_PORT' to be defined but got ${process.env.DB_PORT}`);
+  }
+
+  return new Sequelize({
+    dialect: 'postgres',
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    password: process.env.DB_PASSWORD,
+    username: process.env.DB_USERNAME,
+  });
+}

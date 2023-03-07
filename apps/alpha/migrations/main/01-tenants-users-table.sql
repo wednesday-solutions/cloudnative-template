@@ -1,5 +1,5 @@
 -- Tenants table is responsible for maintaining tenants in the database
-CREATE TABLE IF NOT EXISTS "main"."tenants" (
+CREATE TABLE IF NOT EXISTS "tenants" (
   id serial PRIMARY KEY,
   public_uuid uuid DEFAULT uuid_generate_v4(),
   tenant_access_key VARCHAR(32) UNIQUE NOT NULL,
@@ -15,18 +15,18 @@ CREATE TABLE IF NOT EXISTS "main"."tenants" (
   CONSTRAINT name_not_empty CHECK (name <> ''),
   CONSTRAINT email_not_empty CHECK (email <> ''),
   CONSTRAINT company_name_not_empty CHECK (company_name <> ''),
-  CONSTRAINT password_not_empty CHECK (password <> ''),
+  CONSTRAINT password_not_empty CHECK (password <> '')
 );
 
 -- Setup indexes
-CREATE INDEX tenants_public_uuid_idx ON "main"."tenants" (public_uuid);
-CREATE INDEX tenant_access_key_idx ON "main"."tenants" (tenant_access_key);
+CREATE INDEX tenants_public_uuid_idx ON "tenants" (public_uuid);
+CREATE INDEX tenant_access_key_idx ON "tenants" (tenant_access_key);
 
 -- Setup RLS for Tenants
-ALTER TABLE "main"."tenants" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "tenants" ENABLE ROW LEVEL SECURITY;
 
 -- Policies for Tenant
-CREATE POLICY  tenant_isolation_policy ON "main"."tenants"
+CREATE POLICY  tenant_isolation_policy ON "tenants"
 USING (id::TEXT = current_user);
 
 -- Comments on tables
@@ -37,8 +37,8 @@ USING (id::TEXT = current_user);
 -- WHERE relkind = 'r';
 -- ```
 -- Or use `\dt+` in `psql` cli
-COMMENT ON TABLE "main"."tenants" IS 'The table `tenants` will maintain all the tenants in the system. `users` table will reference we will follow a denormalized approach so as to decrease the usage of `tenant.id`.';
+COMMENT ON TABLE "tenants" IS 'The table `tenants` will maintain all the tenants in the system. `users` table will reference we will follow a denormalized approach so as to decrease the usage of `tenant.id`.';
 
 -- In case of any update made to the row update the `updated_at` timestamp
-CREATE TRIGGER set_updated_at BEFORE UPDATE ON "main"."tenants"
+CREATE TRIGGER set_updated_at BEFORE UPDATE ON "tenants"
   FOR EACH ROW EXECUTE PROCEDURE trigger_set_update_at_timestamp();

@@ -22,28 +22,35 @@ export function mapKeys<T extends object>(
   // Loop over and call recursively on each object inside
   if (Array.isArray(o)) {
     for (const _o of o) {
-      mapKeys(_o, fn);
+      mapKeys(_o, fn, true);
     }
   } else if (isObject(o)) {
     const keys = Object.keys(o);
 
     for (const key of keys) {
-      /**
-       * We need to explicitly reassign the type of `o` here, what we expect here is
-       * ```
-       * { key_0: 'primitive', key_1: { key_1_0: 'primitive' } }
-       * ```
-       * That's why we have an explicit `unknown` since the value at the key could
-       * be anything.
-       */
-      if (isObject((o as Record<string, unknown>)[key])) {
-        // Here we are sure that `o[key]` is an `object`
-        mapKeys((o as Record<string, object>)[key], fn);
-      } else if (Array.isArray((o as Record<string, unknown>)[key])) {
+      // We need to explicitly reassign the type of `o` here, what we expect here is
+      // ```
+      // { key_0: 'primitive', key_1: { key_1_0: 'primitive' } }
+      // ```
+      // That's why we have an explicit `unknown` since the value at the key could
+      // be anything.
+      if (Array.isArray((o as Record<string, unknown>)[key])) {
         // In case the value is an array we wanna map that too
+        const newArr = [];
         for (const _o of (o as Record<string, T[]>)[key]) {
-          mapKeys(_o, fn);
+          newArr.push(mapKeys(_o, fn));
         }
+
+        const transformedKey = fn(key);
+        (o as Record<string, unknown>)[transformedKey] = newArr;
+        delete (o as Record<string, unknown>)[key];
+      } else if (isObject((o as Record<string, unknown>)[key])) {
+        // Here we are sure that `o[key]` is an `object`
+        const value = mapKeys((o as Record<string, object>)[key], fn);
+
+        const transformedKey = fn(key);
+        (o as Record<string, unknown>)[transformedKey] = value;
+        delete (o as Record<string, unknown>)[key];
       } else {
         // Attach the same value with the transformed key and delete the key
         const transformedKey = fn(key);
@@ -57,12 +64,3 @@ export function mapKeys<T extends object>(
 
   return o;
 }
-
-/**
- * Verify app envs
- */
-export const verifyEnv = () => {
-  if (!process.env.PORT) {
-    throw new Error('PORT is unset');
-  }
-};

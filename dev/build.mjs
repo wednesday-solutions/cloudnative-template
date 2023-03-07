@@ -12,7 +12,7 @@ try {
     bundle: true,
     platform: 'node',
     target: 'node18',
-    external: ['esbuild'],
+    external: ['esbuild', 'aws-sdk', 'nock', 'mock-aws-s3'],
   });
 } catch (error) {
   console.error(error);

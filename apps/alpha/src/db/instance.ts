@@ -53,5 +53,9 @@ export function createSequelizeInstanceForTesting(options: Options = {}): Sequel
 function getSequelizeInstance(db: string, user: string, pass: string, options?: Options): Sequelize {
   options = options || {};
 
-  return new Sequelize(db, user, pass, options);
+  const sequelizeOptions = defaults(options, {
+    port: Number(process.env.DB_PORT),
+  });
+
+  return new Sequelize(db, user, pass, sequelizeOptions);
 }

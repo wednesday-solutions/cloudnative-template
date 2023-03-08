@@ -26,10 +26,11 @@ RETURNS TRIGGER AS $trigger_set_update_at_timestamp$
   END;
 $trigger_set_update_at_timestamp$ LANGUAGE plpgsql;
 
--- Load `uuid-ossp` into Database
+-- Load extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
-
--- Load `citext` into Database
 CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA extensions;
+CREATE EXTENSION IF NOT EXISTS "btree_gist";
+CREATE EXTENSION IF NOT EXISTS "hstore";
+
 
 SET search_path = public, extensions;

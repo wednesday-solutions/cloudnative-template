@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import type { Model, ModelStatic } from '../../src/db';
 import { DataTypes } from '../../src/db';
-import { clearDatabase, databaseInstance, TestFastifyServer } from './support';
+import { databaseInstance, TestFastifyServer } from './support';
 
 describe('bootstrapper', () => {
   let User: ModelStatic<Model<any, any>>;
@@ -10,7 +10,9 @@ describe('bootstrapper', () => {
   beforeAll(async () => {
     async function userRoutes(router: FastifyInstance) {
       router.get<{ Params: { id: number } }>('/:id', async request => {
-        const foundUser = await User.findOne({ where: { id: request.params.id } });
+        const foundUser = await User.findOne({
+          where: { id: request.params.id },
+        });
 
         return foundUser;
       });
@@ -24,19 +26,25 @@ describe('bootstrapper', () => {
 
     server = new TestFastifyServer({
       port: 5000,
-      routes: [{ handler: userRoutes, opts: { prefix: '/integration-test-route' } }],
+      routes: [
+        { handler: userRoutes, opts: { prefix: '/integration-test-route' } },
+      ],
     });
   });
 
   beforeEach(async () => {
     await databaseInstance.authenticate();
 
-    User = databaseInstance.define('user', { name: DataTypes.STRING }, { timestamps: false });
+    User = databaseInstance.define(
+      'test_user',
+      { name: DataTypes.STRING },
+      { timestamps: false, freezeTableName: true },
+    );
     await databaseInstance.sync({ force: true });
   });
 
   afterEach(async () => {
-    await clearDatabase(databaseInstance);
+    await databaseInstance.getQueryInterface().dropTable('test_user');
   });
 
   afterAll(async () => {

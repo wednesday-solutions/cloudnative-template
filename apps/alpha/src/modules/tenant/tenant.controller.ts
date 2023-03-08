@@ -24,10 +24,10 @@ export async function registerTenant(
   const tenantAlreadyExists = mainDbConn.instance.query(
     `
   SELECT
-    \`id\`,
-    \`tenant_access_key\`
-  FROM \`main\`.\`tenants\`
-  WHERE \`email\` = :email;
+    "id",
+    "tenant_access_key"
+  FROM "main"."tenants"
+  WHERE "email" = :email;
   `.trim(),
     { type: QueryTypes.SELECT, replacements: { email } },
   );
@@ -41,7 +41,7 @@ export async function registerTenant(
 
   const response = await mainDbConn.instance.query(
     `
-    INSERT INTO \`main\`.\`tenants\` (\`name\`, \`company_name\`, \`email\`, \`password\`, \`tenant_access_key\`) VALUES
+    INSERT INTO "main"."tenants" ("name", "company_name", "email", "password", "tenant_access_key") VALUES
     (:name, :company_name, :email, :password, :tenant_access_key);
   `.trim(),
     {

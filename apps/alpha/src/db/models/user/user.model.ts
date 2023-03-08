@@ -47,7 +47,7 @@ export const User: ModelDefined<UserCreationAttributes, UserAttributes>
         field: 'updated_at',
       },
     },
-    { schema: 'main', tableName: 'users', timestamps: false },
+    { tableName: 'users', timestamps: false, underscored: true },
   );
 
 export default User;

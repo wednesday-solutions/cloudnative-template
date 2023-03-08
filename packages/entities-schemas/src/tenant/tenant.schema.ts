@@ -16,17 +16,17 @@ const tenantSchemaCore = {
   /**
    * A UUID for the tenant that can be exposed publically to uniquely identify the tenant
    */
-  publicUuid: z.string(),
+  publicUuid: z.string().optional(),
 
   /**
    * When was this tenant created
    */
-  createdAt: z.date(),
+  createdAt: z.date().optional(),
 
   /**
    * When was the tenant last updated, `undefined` if never updated
    */
-  updatedAt: z.date(),
+  updatedAt: z.date().optional(),
 
   /**
    * Email of the tenant, should be unique
@@ -52,8 +52,7 @@ const tenentAccessKey = {
    */
   tenantAccessKey: z.string({
     invalid_type_error: generateInvalidSchemaTypeError('tenantAccessKey', 'string'),
-    required_error: generateRequiredSchemaTypeError('tenantAccessKey'),
-  }),
+  }).optional(),
 };
 
 const createTenantSchema = z.object({
@@ -77,7 +76,7 @@ const TenantEntitySchema = z.object({
   /**
    * Primary key for the DB uniquely identifying a tenant
    */
-  id: z.number(),
+  id: z.number().optional(),
 
   /**
    * Password of the tenant

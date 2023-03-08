@@ -2,10 +2,11 @@ import dotenv from 'dotenv';
 import FastifyServer from './bootstrapper';
 import { tenantSchemas } from './modules/tenant/tenant.routes';
 import { userSchemas } from './modules/user/user.routes';
-import { verifyEnv } from './utils';
 import { FALLBACK_PORT } from './utils/constants';
 
-verifyEnv();
+if (!process.env.PORT) {
+  throw new Error('PORT is unset');
+}
 
 dotenv.config();
 

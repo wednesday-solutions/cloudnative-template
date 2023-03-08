@@ -1,15 +1,17 @@
 import type { TenantAttributes } from 'entities-schemas';
 import type { ModelDefined, Optional } from '../../index';
-import { DataTypes, dbConnection } from '../../index';
+import { DataTypes, MainDBInstance } from '../../index';
 
 type TenantCreationAttributes = Optional<TenantAttributes, 'id'>;
+
+const dbConnection = MainDBInstance.getInstance().connection.instance;
 
 /**
  * Tenant Entity in the database represents a tenant, more of a company that will
  * have their own database!
  */
 export const Tenant: ModelDefined<TenantCreationAttributes, TenantAttributes>
-  = dbConnection.instance.define(
+  = dbConnection.define(
     'users',
     {
       id: {

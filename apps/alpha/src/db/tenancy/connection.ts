@@ -9,7 +9,7 @@ import { SequelizeInstance } from '../instance';
  *
  * @returns Sequelize connection
  */
-export async function getMainDBConnection() {
+export function getMainDBConnection() {
   if (!process.env.DB_DATABASE) {
     throw new Error('Expected `DB_DATATBASE` to be defined but was not set!');
   }
@@ -27,8 +27,6 @@ export async function getMainDBConnection() {
     process.env.DB_USERNAME,
     process.env.DB_PASSWORD,
   );
-
-  await _conn.instance.authenticate();
 
   return _conn;
 }
@@ -50,7 +48,9 @@ export async function getTenantDBConnection(
   let meta: CacheTenantRecord | string | null = await cache.get(tenantAccessKey);
 
   if (!meta) {
-    const mainDBConnection = await getMainDBConnection();
+    const mainDBConnection = getMainDBConnection();
+    await mainDBConnection.instance.authenticate();
+
     const record = await mainDBConnection.instance.query(`
     SELECT
         "id",

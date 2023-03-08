@@ -19,7 +19,7 @@ export async function registerTenant(
 ) {
   // @TODO - Once a tenant is successfully registered we need to create a db for them
   const { name, companyName, email, password } = request.body;
-  const mainDbConn = await getMainDBConnection();
+  const mainDbConn = getMainDBConnection();
 
   const tenantAlreadyExists = mainDbConn.instance.query(
     `

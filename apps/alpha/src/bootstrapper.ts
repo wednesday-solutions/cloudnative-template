@@ -4,6 +4,7 @@ import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
 import { CustomError } from 'fastify-custom-errors';
 import { MainCacheInstance } from './cache';
+import { MainDBInstance } from './db';
 import type { FastifyBootstrapperOptions } from './types/bootstrapper.types';
 
 /**
@@ -55,6 +56,7 @@ export class FastifyServer {
     this.#registerSchemas();
     this.#registerRoutes();
     this.#setupErrorHandler();
+    await this.#authenticateMainDB();
     await this.#initializeMainCache();
   }
 
@@ -106,6 +108,13 @@ export class FastifyServer {
         this.instance.addSchema(_schema);
       }
     }
+  }
+
+  /**
+   * Authenticates connection to the main database
+   */
+  async #authenticateMainDB() {
+    await MainDBInstance.getInstance().verify();
   }
 
   /**

@@ -55,6 +55,7 @@ function getSequelizeInstance(db: string, user: string, pass: string, options?: 
 
   const sequelizeOptions = defaults(options, {
     port: Number(process.env.DB_PORT),
+    dialect: 'postgres',
   });
 
   return new Sequelize(db, user, pass, sequelizeOptions);

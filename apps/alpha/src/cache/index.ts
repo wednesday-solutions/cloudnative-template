@@ -65,7 +65,7 @@ export class MainCacheInstance {
    * - Space Complexity -> `O(n)`
    */
   async updateOrGetAllTenantsMeta() {
-    const db = await getMainDBConnection();
+    const db = getMainDBConnection();
     const response: TenantRecords[] = await db.instance.query(`
     SELECT
       "id",

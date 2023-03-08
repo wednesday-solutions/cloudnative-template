@@ -23,7 +23,7 @@ export class MainDBInstance {
   connection: SequelizeInstance;
 
   private constructor() {
-    this.connection = getMainDBConnection();
+    this.connection = getMainDBConnection({ logging: false });
   }
 
   /**

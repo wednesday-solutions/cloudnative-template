@@ -26,7 +26,7 @@ services:
       - fastify-integration-tests-redis:/data
       - fastify-integration-tests-redis:/usr/local/etc/redis/redis.conf
     healthcheck:
-      test: ["CMD", "redis-cli", "PING"]
+      test: ["CMD", "redis-cli", "-a", "fastify_redis_password", "PING"]
       interval: 3s
       timeout: 1s
       retries: 10

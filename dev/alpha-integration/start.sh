@@ -18,8 +18,9 @@ done
 
 for _ in {1..50}
 do
+  state=$(docker inspect -f '{{ .State.Health.Status }}' 'integration-tests-fastify-redis' 2>&1)
   return_code=$?
-  if [ ${return_code} -eq 0 ] && [ "$(redis-cli -p 61010 -a "fastify_redis_password" ping)" = "PONG" ]; then
+  if [ ${return_code} -eq 0 ] && [ "$state" == "healthy" ]; then
     echo "integration-tests-fastify-redis is healthy!"
     break
   fi

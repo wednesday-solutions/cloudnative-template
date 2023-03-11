@@ -7,6 +7,6 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "module": "CommonJS"
-  },
+  }
 }
 

@@ -15,7 +15,7 @@
     "test:all": "pnpm run test:unit && pnpm run test:integration",
     "test:unit": "jest --verbose --testPathPattern=test/unit --coverage=false",
     "test:integration": "dotenv -e .env.test -- jest --verbose --testPathPattern=test/integration --coverage=false --setupFilesAfterEnv ./jest-setup-integration.ts",
-    "test:coverage": "dotenv -e .env.test -- jest --coverage --silent --verbose --testPathPattern=test --setupFilesAfterEnv ./jest-setup-integration.ts",
+    "test:coverage": "dotenv -e .env.test -- jest --coverage --silent --verbose --detectOpenHandles --testPathPattern=test --setupFilesAfterEnv ./jest-setup-integration.ts",
     "test:verbose": "jest --verbose --testPathPattern=test",
     "MAIN_DB_MIGRATIONS": "-------------------------- MAIN DB MIGRATIONS --------------------------",
     "migrate:main:setup": "dotenv -e .env.migrations -- ts-node ./migrate.ts MAIN:SETUP",
@@ -56,6 +56,7 @@
     "zod-to-json-schema": "^3.20.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.1",
     "eslint-config-custom": "workspace:*",

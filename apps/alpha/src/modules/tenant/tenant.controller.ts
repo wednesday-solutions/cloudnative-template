@@ -2,10 +2,10 @@ import { hash } from 'argon2';
 import type { CreateTenantBody } from 'entities-schemas';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { BadRequestError } from 'fastify-custom-errors';
+import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
-import { QueryTypes } from 'sequelize';
 import { v4 } from 'uuid';
-import { getMainDBConnection } from '../../db/tenancy/connection';
+import { Tenant } from '../../db/models/tenant/tenant.model';
 
 /**
  * Create and register a new tenant with the system
@@ -19,19 +19,9 @@ export async function registerTenant(
 ) {
   // @TODO - Once a tenant is successfully registered we need to create a db for them
   const { name, companyName, email, password } = request.body;
-  const mainDbConn = getMainDBConnection();
 
-  const tenantAlreadyExists = mainDbConn.instance.query(
-    `
-  SELECT
-    "id",
-    "tenant_access_key"
-  FROM "main"."tenants"
-  WHERE "email" = :email;
-  `.trim(),
-    { type: QueryTypes.SELECT, replacements: { email } },
-  );
-
+  const _tenantAlreadyExists = await Tenant.findOne({ attributes: ['id', 'tenant_access_key'], where: { email } });
+  const tenantAlreadyExists = _tenantAlreadyExists?.toJSON();
   if (!isEmpty(tenantAlreadyExists)) {
     throw new BadRequestError('This tenant already exists! Please contact your administrator.');
   }
@@ -39,22 +29,19 @@ export async function registerTenant(
   const tenantAccessKey = v4().split('-').join('');
   const hashedPassword = await hash(password);
 
-  const response = await mainDbConn.instance.query(
-    `
-    INSERT INTO "main"."tenants" ("name", "company_name", "email", "password", "tenant_access_key") VALUES
-    (:name, :company_name, :email, :password, :tenant_access_key);
-  `.trim(),
-    {
-      type: QueryTypes.INSERT,
-      replacements: {
-        name,
-        company_name: companyName,
-        email,
-        password: hashedPassword,
-        tenant_access_key: tenantAccessKey,
-      },
-    },
-  );
+  const _tenant = await Tenant.create({
+    name,
+    companyName,
+    email,
+    password: hashedPassword,
+    tenantAccessKey,
+  });
 
-  return reply.code(200).send({ data: response });
+  const tenant = cloneDeep(_tenant.toJSON());
+
+  // @ts-expect-error -- 'tenant.password' is required while creating but should not be in response
+  delete tenant.password;
+  delete tenant.id;
+
+  return reply.code(200).send({ data: tenant });
 }

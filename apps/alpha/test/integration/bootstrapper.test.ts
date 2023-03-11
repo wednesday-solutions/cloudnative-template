@@ -25,7 +25,7 @@ describe('bootstrapper', () => {
     }
 
     server = new TestFastifyServer({
-      port: 5000,
+      port: 5001,
       routes: [
         { handler: userRoutes, opts: { prefix: '/integration-test-route' } },
       ],

@@ -33,6 +33,7 @@ importers:
 
   apps/alpha:
     specifiers:
+      '@faker-js/faker': ^7.6.0
       '@fastify/autoload': ^5.7.1
       '@types/lodash': ^4.14.191
       '@types/node': ^18.11.18
@@ -85,6 +86,7 @@ importers:
       zod: 3.20.2
       zod-to-json-schema: 3.20.2_zod@3.20.2
     devDependencies:
+      '@faker-js/faker': 7.6.0
       '@types/node': 18.11.18
       '@types/uuid': 9.0.1
       eslint-config-custom: link:../../packages/eslint-config-custom
@@ -809,6 +811,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
+
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: true
 
   /@fastify/accept-negotiator/1.1.0:
     resolution: {integrity: sha512-OIHZrb2ImZ7XG85HXOONLcJWGosv7sIvM2ifAPQVhg9Lv7qdmMBNVaai4QTdyuaqbKM5eO6sLSQOYI7wEQeCJQ==}
@@ -7512,6 +7519,7 @@ packages:
 
   /wcwidth/1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
+    requiresBuild: true
     dependencies:
       defaults: 1.0.4
     dev: false

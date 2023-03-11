@@ -1,21 +1,4 @@
-import dotenv from 'dotenv';
-import FastifyServer from './bootstrapper';
-import { tenantSchemas } from './modules/tenant/tenant.routes';
-import { userSchemas } from './modules/user/user.routes';
-import { FALLBACK_PORT } from './utils/constants';
-
-if (!process.env.PORT) {
-  throw new Error('PORT is unset');
-}
-
-dotenv.config();
-
-const server = new FastifyServer({
-  port: Number.parseInt(process.env.PORT ?? FALLBACK_PORT, 10),
-  host: '0.0.0.0',
-  logging: true,
-  schemas: [userSchemas, tenantSchemas],
-});
+import { server } from './server';
 
 /**
  * The `main` function initializes the server and starts the

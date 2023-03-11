@@ -1,0 +1,39 @@
+services:
+  postgres-latest:
+    container_name: integration-tests-fastify-postgres
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: fastify_postgres_template
+      POSTGRES_PASSWORD: fastify_postgres_template
+      POSTGRES_DB: fastify_postgres_template
+    ports:
+      - 23010:5432
+    volumes:
+      - fastify-integration-tests-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "fastify_postgres_template"]
+      interval: 3s
+      timeout: 1s
+      retries: 10
+
+  redis-latest:
+    container_name: integration-tests-fastify-redis
+    image: 'redis'
+    ports:
+      - '61010:6379'
+    command: ['redis-server', '--requirepass', 'fastify_redis_password']
+    volumes:
+      - fastify-integration-tests-redis:/data
+      - fastify-integration-tests-redis:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "PING"]
+      interval: 3s
+      timeout: 1s
+      retries: 10
+
+networks:
+  default:
+    name: fastify_postgres_template_testing
+volumes:
+  fastify-integration-tests-postgres: {}
+  fastify-integration-tests-redis: {}

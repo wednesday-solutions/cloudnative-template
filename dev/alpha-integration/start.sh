@@ -2,8 +2,8 @@
 set -Eeuxo pipefail # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" # https://stackoverflow.com/a/17744637
 
-docker compose -p integration-tests-fastify-postgres down --remove-orphans
-docker compose -p integration-tests-fastify-postgres up -d
+docker compose -f ./docker-compose.yml down --remove-orphans
+docker compose -f ./docker-compose.yml up -d
 
 for _ in {1..50}
 do
@@ -11,6 +11,16 @@ do
   return_code=$?
   if [ ${return_code} -eq 0 ] && [ "$state" == "healthy" ]; then
     echo "integration-tests-fastify-postgres is healthy!"
+    break
+  fi
+  sleep 0.4
+done
+
+for _ in {1..50}
+do
+  return_code=$?
+  if [ ${return_code} -eq 0 ] && [ "$(redis-cli -p 61010 -a "fastify_redis_password" ping)" = "PONG" ]; then
+    echo "integration-tests-fastify-redis is healthy!"
     break
   fi
   sleep 0.4

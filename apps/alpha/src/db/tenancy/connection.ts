@@ -1,3 +1,4 @@
+import { BadRequestError } from 'fastify-custom-errors';
 import type { Options } from 'sequelize';
 import { QueryTypes } from 'sequelize';
 import type { CacheTenantRecord, TenantRecords } from '../../cache';
@@ -13,7 +14,7 @@ import { SequelizeInstance } from '../instance';
  */
 export function getMainDBConnection(opts?: Options) {
   if (!process.env.DB_DATABASE) {
-    throw new Error('Expected `DB_DATATBASE` to be defined but was not set!');
+    throw new Error('Expected `DB_DATABASE` to be defined but was not set!');
   }
 
   if (!process.env.DB_USERNAME) {
@@ -48,7 +49,9 @@ export async function getTenantDBConnection(
   password: string,
 ) {
   const cache = MainCacheInstance.getInstance().connection.cache;
-  let meta: CacheTenantRecord | string | null = await cache.get(tenantAccessKey);
+  let meta: CacheTenantRecord | string | null = await cache.get(
+    tenantAccessKey,
+  );
 
   if (!meta) {
     const mainDBConnection = getMainDBConnection();
@@ -57,10 +60,19 @@ export async function getTenantDBConnection(
     const record = await mainDBConnection.instance.query(`
     SELECT
         "id",
-        "tenant_access_key"
-    FROM "main"."tenants"
+        "public_uuid",
+        "name",
+        "email",
+        "company_name",
+        "tenant_access_key",
+        "created_at"
+    FROM "tenants"
     WHERE "tenant_access_key" = :tak;
-    `, { type: QueryTypes.SELECT, replacements: { tak: tenantAccessKey } }) as unknown as TenantRecords;
+    `.trim(), { type: QueryTypes.SELECT, replacements: { tak: tenantAccessKey } }) as unknown as TenantRecords;
+
+    if ((record as any).length === 0) {
+      throw new BadRequestError('Invalid credentials!');
+    }
 
     const lastUpdated = Date.now();
     meta = { record, lastUpdated };

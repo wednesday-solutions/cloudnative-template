@@ -12,7 +12,7 @@ async function tenantRoutes(server: FastifyInstance) {
   server.post<{ Body: CreateTenantBody }>('/', {
     schema: {
       response: {
-        200: $ref('registerTenantResponse'),
+        200: { data: $ref('registerTenantResponse') },
       },
     },
   }, registerTenant);

@@ -24,7 +24,7 @@ export abstract class RedisCache {
   /**
    * Password to authenticate with
    */
-  abstract password: string;
+  abstract password?: string;
 
   /**
    * Establish connection with redis instance

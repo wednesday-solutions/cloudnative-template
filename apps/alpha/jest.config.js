@@ -10,6 +10,8 @@ module.exports = {
 
     // Files that do not require testing or cannot be tested
     '!src/index.ts',
+    '!src/server.ts',
+    '!src/bootstrapper.ts',
     '!src/utils/constants.ts',
   ],
 };

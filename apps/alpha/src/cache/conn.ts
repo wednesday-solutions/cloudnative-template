@@ -1,66 +1,34 @@
-import { MainCache, TenantCache } from './instance';
+import { MainCache } from './instance';
 
 /**
  * Get connection to main cache, this cache is related to the main
  * ops that relate to managing tenants and storing tenants meta.
  *
+ * @param [rhost] - redis host
+ * @param [rport] - redis port
+ * @param [rpassword] - redis password
+ * @param [ruser] - redis user
  * @returns object containing methods and a redis client
  */
-export function mainCacheConnection() {
-  if (!process.env.REDIS_HOST) {
-    throw new Error(`Expected 'REDIS_HOST' to be defined but got ${process.env.REDIS_HOST}`);
+export function mainCacheConnection(
+  rhost?: string,
+  rport?: number,
+  rpassword?: string,
+  ruser?: string,
+) {
+  if (!rhost) {
+    throw new Error(`Expected 'REDIS_HOST' to be defined but got ${rhost}`);
   }
 
-  if (!process.env.REDIS_PORT) {
-    throw new Error(`Expected 'REDIS_PORT' to be defined but got ${process.env.REDIS_PORT}`);
+  if (!rport) {
+    throw new Error(`Expected 'REDIS_PORT' to be defined but got ${rport}`);
   }
 
-  if (!process.env.REDIS_PASSWORD) {
-    throw new Error(`Expected 'REDIS_PASSWORD' to be defined but got ${process.env.REDIS_PASSWORD}`);
+  if (!rpassword) {
+    throw new Error(
+      `Expected 'REDIS_PASSWORD' to be defined but got ${rpassword}`,
+    );
   }
 
-  return new MainCache(
-    process.env.REDIS_HOST,
-    Number(process.env.REDIS_PORT),
-    process.env.REDIS_PASSWORD,
-    process.env.REDIS_USER,
-  );
-}
-
-/**
- * Create a connection to a tenant's cache
- *
- * @param [options] - connection options for tenant's cache
- * @param [options.thost] - tenant's redis host url
- * @param [options.tport] - tenant's redis port
- * @param [options.tusername] - tenant's redis username to authenticate with
- * @param [options.tpassword] - tenant's redis password to authenticate with
- * @returns connection to a tenant's cache
- */
-export function tenantCacheConnection(options: TenantRedisOptions) {
-  const { thost, tport, tusername, tpassword } = options;
-
-  return new TenantCache(thost, tport, tusername, tpassword);
-}
-
-export interface TenantRedisOptions {
-  /**
-   * Tenant's redis host url
-   */
-  thost: string;
-
-  /**
-   * Tenant's redis port
-   */
-  tport: number;
-
-  /**
-   * Tenant's redis username to authenticate with
-   */
-  tusername: string;
-
-  /**
-   * Tenant's redis password to authenticate with
-   */
-  tpassword: string;
+  return new MainCache(rhost, rport, rpassword, ruser);
 }

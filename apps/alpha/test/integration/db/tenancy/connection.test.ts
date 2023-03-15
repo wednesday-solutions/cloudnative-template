@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import type { CacheTenantRecord } from '@/cache';
 import { MainCacheInstance } from '@/cache';
 import { DataTypes, MainDBInstance, Tenant } from '@/db';
-import { getTenantDBConnection } from '@/db/tenancy/connection';
+import { getTenantDBConnection } from '@/db/tenancy/tenant-db-connection';
 
 describe('DB Connection', () => {
   const alphaCreds = { user: 'alpha_admin', pass: 'alpha_password_123' };

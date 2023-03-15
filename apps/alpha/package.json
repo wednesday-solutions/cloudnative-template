@@ -14,7 +14,7 @@
     "TESTING": "-------------------------- TESTING --------------------------",
     "test:all": "pnpm run test:unit && pnpm run test:integration",
     "test:unit": "jest --verbose --testPathPattern=test/unit --coverage=false",
-    "test:integration": "dotenv -e .env.test -- jest --verbose --testPathPattern=test/integration --coverage=false --setupFilesAfterEnv ./jest-setup-integration.ts",
+    "test:integration": "dotenv -e .env.test -- jest --verbose --runInBand --testPathPattern=test/integration --coverage=false --setupFilesAfterEnv ./jest-setup-integration.ts",
     "test:coverage": "dotenv -e .env.test -- jest --coverage --silent --verbose --detectOpenHandles --testPathPattern=test --setupFilesAfterEnv ./jest-setup-integration.ts",
     "test:verbose": "jest --verbose --testPathPattern=test",
     "MAIN_DB_MIGRATIONS": "-------------------------- MAIN DB MIGRATIONS --------------------------",

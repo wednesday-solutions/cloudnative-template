@@ -1,5 +1,5 @@
 import type { SequelizeInstance } from './instance';
-import { getMainDBConnection } from './tenancy/connection';
+import { getMainDBConnection } from './tenancy/main-db-connection';
 
 /**
  * Main Database singleton used for storing tenant metadata. This is the core

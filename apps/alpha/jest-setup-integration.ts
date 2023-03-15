@@ -1,6 +1,6 @@
-import { databaseInstance } from './test/integration/support';
 import { MainCacheInstance } from '@/cache';
 import { MainDBInstance } from '@/db';
+import { databaseInstance } from './test/integration/support';
 
 afterAll(async () => {
   await databaseInstance.close();

@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { getMainDBConnection } from '@/db/tenancy/connection';
+import { getMainDBConnection } from '@/db/tenancy/main-db-connection';
 
 describe('Tenancy Connection', () => {
   /**

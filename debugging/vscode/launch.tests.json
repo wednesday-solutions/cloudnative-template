@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "args": [
+        "./apps/alpha/test/integration/db/tenancy",
+        "--setupFilesAfterEnv",
+        "./apps/alpha/jest-setup-integration.ts"
+      ],
+      "name": "Debug tests!",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "externalTerminal",
+      "type": "node",
+      "env": {
+        "NODE_ENV": "development",
+        "DB_DIALECT": "postgres",
+        "DB_DATABASE": "fastify_postgres_template",
+        "DB_HOST": "0.0.0.0",
+        "DB_PORT": "23010",
+        "DB_USERNAME": "fastify_postgres_template",
+        "DB_PASSWORD": "fastify_postgres_template",
+        "REDIS_HOST": "0.0.0.0",
+        "REDIS_PORT": "61010",
+        "REDIS_USER": "",
+        "REDIS_PASSWORD": "fastify_redis_password",
+        "PORT": "5000"
+      }
+    }
+  ]
+}

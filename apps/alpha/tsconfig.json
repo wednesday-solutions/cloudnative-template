@@ -1,13 +1,11 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "jest-setup-integration.ts", "./migrate.ts", "./environment.d.ts"],
+  "include": ["./src/**/*.ts", "./test/**/*.ts", "./migrations/**/*.ts", "./migrate-to-latest.ts", "jest-setup-integration.ts", "./migrate.ts", "./environment.d.ts"],
   "exclude": ["./turbo", "./coverage"],
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/*"],
-      "@types": ["./src/types/*"],
-      "@database": ["./src/db/index.ts"],
-      "@database/*": ["./src/db/*"],
+      "@/*": ["./src/*"],
     }
-  },
+  }
 }

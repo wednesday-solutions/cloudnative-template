@@ -3,15 +3,10 @@
   "include": ["./src/**/*.ts", "./environment.d.ts"],
   "exclude": ["./turbo", "./coverage"],
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist",
     "rootDir": "./src",
-    "module": "CommonJS",
-    "paths": {
-      "@src/*": ["./src/*"],
-      "@types": ["./src/types/*"],
-      "@database": ["./src/db/index.ts"],
-      "@database/*": ["./src/db/*"],
-    }
-  },
+    "module": "CommonJS"
+  }
 }
 

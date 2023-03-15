@@ -105,7 +105,9 @@ The instance can now be used with other functions or database related stuff to t
   - PS: You can use `testPathPattern` CLI flag to specify in which directory your integration tests reside in
 4. Do `pnpm run test:integration` at your root directory and watch your integration tests run!
 
-### **Development Scripts**
+## Development Scripts 📝
+
+Development scripts are there to you help you out with a bunch of stuff. Few are listed below!
 
 | **Purpose**                     | **Script**                  |
 |---------------------------------|-----------------------------|
@@ -115,3 +117,24 @@ The instance can now be used with other functions or database related stuff to t
 | Create and run prod build       | pnpm start:prod             |
 | Compose development             | pnpm development:up         |
 | Rebuild and compose development | pnpm development:up --build |
+
+## FAQs 🤨
+
+<details>
+  <summary>Why use `~aliasName` instead of `@aliasName`?</summary>
+
+  ### The reason!
+  The idea is really simple! There are packages that use the same thing!
+  You can change if you want however that will create eslint `import/order` rule conflicts
+  and your import order will also mess up!
+
+  ### Example
+  ```typescript
+  // External dependency
+  import { sendMail } from '@sendgrid';
+
+  // Internal aliasing
+  import { createDatabaseConnectionForTesting } from '@database';
+  ```
+
+</details>

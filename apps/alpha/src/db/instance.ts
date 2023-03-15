@@ -15,9 +15,9 @@ export class SequelizeInstance {
    * Generate a new sequelize instance and assign it to instance
    *
    * @param [db] - database to connect to
-   * @param [user] - user to connect iwth
+   * @param [user] - user to connect with
    * @param [pass] - password to use for authentication
-   * @param [options] - Sequelize options bag
+   * @param [options] - options bag to forward to sequelize
    */
   constructor(db: string, user: string, pass: string, options?: Options) {
     this.instance = getSequelizeInstance(db, user, pass, options);
@@ -53,5 +53,10 @@ export function createSequelizeInstanceForTesting(options: Options = {}): Sequel
 function getSequelizeInstance(db: string, user: string, pass: string, options?: Options): Sequelize {
   options = options || {};
 
-  return new Sequelize(db, user, pass, options);
+  const sequelizeOptions = defaults(options, {
+    port: Number(process.env.DB_PORT),
+    dialect: 'postgres',
+  });
+
+  return new Sequelize(db, user, pass, sequelizeOptions);
 }

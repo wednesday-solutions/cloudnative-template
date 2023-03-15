@@ -16,8 +16,8 @@
       "cache": false
     },
     "start:dev": {
-      "cache": false,
-      "persistent": true
+      "dependsOn": ["build"],
+      "cache": false
     },
     "start:qa": {
       "dependsOn": [
@@ -70,6 +70,10 @@
     "DB_PORT",
     "DB_USERNAME",
     "DB_PASSWORD",
+    "REDIS_HOST",
+    "REDIS_PORT",
+    "REDIS_USER",
+    "REDIS_PASSWORD",
     "PORT"
   ],
   "globalDependencies": [

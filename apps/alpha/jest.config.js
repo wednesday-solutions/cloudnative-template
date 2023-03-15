@@ -2,9 +2,7 @@ module.exports = {
   ...require('../../jest.config'),
   rootDir: '.',
   moduleNameMapper: {
-    '@src(.*)$': '<rootDir>/src/$1',
-    '@types(.*)$': '<rootDir>/src/types/$1',
-    '@database(.*)$': '<rootDir>/src/db/$1',
+    '@/(.*)$': '<rootDir>/src/$1',
   },
   collectCoverageFrom: [
     // Check only in src
@@ -12,5 +10,8 @@ module.exports = {
 
     // Files that do not require testing or cannot be tested
     '!src/index.ts',
+    '!src/server.ts',
+    '!src/bootstrapper.ts',
+    '!src/utils/constants.ts',
   ],
 };

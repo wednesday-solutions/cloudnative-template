@@ -1,0 +1,51 @@
+version: '3'
+services:
+  # ------------------------- ALPHA -------------------------
+  alpha-postgres-db:
+    container_name: fp-alpha-db
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    volumes:
+      - fp-alpha-db:/var/lib/postgresql/data
+
+  alpha-pgadmin:
+    container_name: fp-alpha-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - fp-alpha-pgadmin:/var/lib/pgadmin
+    ports:
+      - '5050:80'
+    expose:
+      - '5050'
+    restart: unless-stopped
+
+  alpha-redis:
+    container_name: fp-alpha-cache
+    image: 'redis'
+    ports:
+      - '6379:6379'
+    command: ['redis-server', '--requirepass', 'fastify_redis_password']
+    volumes:
+      - fp-alpha-cache-data:/data
+      - fp-alpha-cache-conf:/usr/local/etc/redis/redis.conf
+  # xxxxxxxxxxxxxxxxxxxxxxxxxx ALPHA xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Volumes for services
+volumes:
+  # ------- ALPHA -------
+  fp-alpha-db: {}
+  fp-alpha-pgadmin: {}
+  fp-alpha-cache-data: {}
+  fp-alpha-cache-conf: {}
+  # xxxxxxx ALPHA xxxxxxx

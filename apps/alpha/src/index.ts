@@ -1,19 +1,11 @@
-import dotenv from 'dotenv';
-import FastifyServer from './bootstrapper';
-import { verifyEnv } from './utils';
+import { server } from './server';
 
-dotenv.config();
-
-const server = new FastifyServer({
-  port: Number.parseInt(process.env.PORT, 10),
-  host: '0.0.0.0',
-  logging: true,
-  routes: [],
-});
-
+/**
+ * The `main` function initializes the server and starts the
+ * server instance.
+ */
 async function main() {
   try {
-    verifyEnv();
     await server.startServer();
     console.info(`Listening for requests on port 5000...`);
   } catch (error) {

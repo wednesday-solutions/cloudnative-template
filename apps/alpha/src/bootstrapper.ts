@@ -1,6 +1,10 @@
+import path from 'node:path';
+import autoload from '@fastify/autoload';
 import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
 import { CustomError } from 'fastify-custom-errors';
+import { MainCacheInstance } from './cache';
+import { MainDBInstance } from './db';
 import type { FastifyBootstrapperOptions } from './types/bootstrapper.types';
 
 /**
@@ -31,12 +35,29 @@ export class FastifyServer {
    * @param [options.host] - the host on which the application should run, defaults to `localhost`
    * @param [options.logging] - should log output, defaults to `false`
    * @param [options.routes] - array containing object specifying a route and its prefix
+   * @param [options.schemas] - array containing schemas to register
    */
   constructor(public options: FastifyBootstrapperOptions) {
     this.instance = fastify({ logger: options.logging ?? false });
 
+    this.init()
+      .then(() => {
+        console.info('Bootstrapped the application successfully!');
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
+  /**
+   * Initialize the application
+   */
+  async init() {
+    this.#registerSchemas();
     this.#registerRoutes();
     this.#setupErrorHandler();
+    await this.#authenticateMainDB();
+    await this.#initializeMainCache();
   }
 
   /**
@@ -64,12 +85,41 @@ export class FastifyServer {
    * ```
    */
   async startServer() {
-    await this.instance.listen({ port: this.options.port ?? 5000, host: this.options.host ?? 'localhost' });
+    await this.instance.listen({
+      port: this.options.port ?? 5000,
+      host: this.options.host ?? 'localhost',
+    });
   }
 
   /**
-   * Registers routes provided to the bootstrapper. HealthCheck route
-   * is created by default at `/healthcheck` by the bootstrapper.
+   * Register schemas provided by the user, warn the user if no schemas were provided.
+   */
+  #registerSchemas() {
+    if (!this.options.schemas || this.options.schemas.length === 0) {
+      this.instance.log.warn(
+        'No schemas were provided, you may not have type checking for schema dependent things.',
+      );
+
+      return;
+    }
+
+    for (const schemaDef of this.options.schemas) {
+      for (const _schema of schemaDef) {
+        this.instance.addSchema(_schema);
+      }
+    }
+  }
+
+  /**
+   * Authenticates connection to the main database
+   */
+  async #authenticateMainDB() {
+    await MainDBInstance.getInstance().verify();
+  }
+
+  /**
+   * Registers routes provided to the bootstrapper and auto-register if present.
+   * HealthCheck route is created by default at `/healthcheck` by the bootstrapper.
    */
   #registerRoutes() {
     const routes = this.options.routes ?? [];
@@ -79,9 +129,23 @@ export class FastifyServer {
       return { status: 'Ok!', message: 'Fastify just being fast!' };
     });
 
+    // Autoload all the `*.routes.ts` file that exist inside the `modules` dir
+    void this.instance.register(autoload, {
+      dir: path.join(__dirname, 'modules'),
+      indexPattern: /.*routes.ts$/,
+    });
+
     for (const _route of routes) {
       void this.instance.register(_route.handler, _route.opts);
     }
+  }
+
+  /**
+   * Try and connect to the main cache, throw if any error occurs!
+   */
+  async #initializeMainCache() {
+    await MainCacheInstance.getInstance().connection.connect();
+    console.debug('Connection to main cache succeeded!');
   }
 
   /**
@@ -89,13 +153,51 @@ export class FastifyServer {
    */
   #setupErrorHandler() {
     this.instance.setErrorHandler((error, _request, reply) => {
-      this.instance.log.error(error);
       if (error instanceof CustomError) {
-        void reply
-          .status(error.statusCode)
-          .send({ ok: false, errCode: error.errorCode, errors: error.serializeErrors() });
+        // These are errors that we know we have handled through our
+        // own error handling logic!
+        void reply.status(error.statusCode).send({
+          ok: false,
+          errCode: error.errorCode,
+          errors: error.serializeErrors(),
+        });
+      } else if (
+        (
+          ((((error as any) || {}).validation || [])[0] || {}).schemaPath || ''
+        ).startsWith('Schema')
+      ) {
+        /**
+         * First let's clarify what the above condition is, its essentially this
+         * ```js
+         * (error.validation[0].schemaPath).startsWith('Schema');
+         * ```
+         * The way its written above in the condition is failsafe because what if the
+         * property `validation` is not present? Or `error` itself is undefined or anything.
+         * That would result into a `TypeError` the failsafe method above makes sure that
+         * doesn't happen.
+         *
+         * If this error occurs then it means it came from a Zod Schema validation failure
+         * which can be handled in the way down below.
+         *
+         * TODO: These errors should be easily handled by doing `error instanceof z.ZodError`
+         *       however, the above is returning false because it is somewhere in between being
+         *       converted. This needs to be fixed so as to reduce complexity here!
+         */
+        void reply.status(400).send({
+          ok: false,
+          errCode: '[FASTIFY:API]:SCHEMA_VALIDATION_ERROR',
+          errors: [{ message: error.message }],
+        });
       } else {
-        void reply.status(500).send({ ok: false, errCode: 500, errors: [{ message: 'Something went wrong!' }] });
+        // Handle all the errors that are unexpected and unforeseen
+        // the error should be logged here!
+        this.instance.log.error(error);
+
+        void reply.status(500).send({
+          ok: false,
+          errCode: 500,
+          errors: [{ message: 'Something went wrong!' }],
+        });
       }
     });
   }

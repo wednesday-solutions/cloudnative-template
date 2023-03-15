@@ -21,12 +21,11 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      PGDATA: /data/postgres
     volumes:
       # This will persist the data on host machine remember
       # it will be there as long as the volume is there essentially
       # don't pass the `-v` flag to docker-compose down.
-      - fastify-postgres:/data/postgres
+      - fastify-postgres:/var/lib/postgresql/data
     networks:
       - fastify-postgres-template
 
@@ -41,16 +40,29 @@ services:
     volumes:
       - fastify-pgadmin:/var/lib/pgadmin
     ports:
-      - '5050:5050'
+      - '5050:80'
     restart: unless-stopped
     networks:
       - fastify-postgres-template
+
+  # Setup Redis key-value store
+  fastify-redis:
+    container_name: fastify-template-cache
+    image: 'redis'
+    ports:
+      - '6379:6379'
+    command: ['redis-server', '--requirepass', 'fastify_redis_password']
+    volumes:
+      - fastify_redis_data:/data
+      - fastify_redis_conf:/usr/local/etc/redis/redis.conf
 
 # Volumes that the compose uses will be used to persist
 # for our database persistance.
 volumes:
   fastify-postgres: {}
   fastify-pgadmin: {}
+  fastify_redis_data: {}
+  fastify_redis_conf: {}
 
 # Networks used by docker-compose and all the apps in it
 networks:

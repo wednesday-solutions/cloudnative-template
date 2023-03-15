@@ -9,9 +9,10 @@
     "tsconfig": "workspace:*"
   },
   "scripts": {
+    "test:all": "pnpm test:unit",
     "test:unit": "jest --silent --verbose --testPathPattern=test",
     "prebuild": "rimraf ./dist",
-    "build": "pnpm run prebuild && tsc --project ./tsconfig.build.json"
+    "build": "pnpm prebuild && tsc --project ./tsconfig.build.json"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

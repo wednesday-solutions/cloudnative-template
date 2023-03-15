@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyRegisterOptions } from 'fastify';
+import type { JsonSchema } from 'fastify-zod';
 
 /**
  * Options for FastifyBootstrapper
@@ -35,6 +36,12 @@ export interface FastifyBootstrapperOptions {
    * is automatically created at `/healthcheck`!
    */
   routes?: RouteConfig[];
+
+  /**
+   * An array of JSON Schemas that will be inserted into the application
+   * before routes are registered.
+   */
+  schemas?: JsonSchema[][];
 }
 
 type RouteConfig = {

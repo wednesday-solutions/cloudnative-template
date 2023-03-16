@@ -1,5 +1,5 @@
 import camelCase from 'lodash/camelCase';
-import { Tenant } from '@/db';
+import { Tenant } from '../db/models/tenant/tenant.model';
 import { mapKeys } from '../utils';
 import { mainCacheConnection } from './conn';
 import type { MainCache } from './instance';

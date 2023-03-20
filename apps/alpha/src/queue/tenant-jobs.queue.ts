@@ -35,65 +35,36 @@ export async function provisionTenantsBackend(options: GenerateTenantOptions) {
         process.env.DB_PASSWORD!,
       ).instance;
 
-      /** **************************************************************************
-       * Create Database and required initial groups
-       ************************************************************************** */
       // Create a new database
       await mainDatabase.query(`CREATE DATABASE "${data.tenantsAccessKey}";`);
 
-      // Create groups
-      await tenantAsAdmin.query('CREATE ROLE viewer;');
-      await tenantAsAdmin.query('CREATE ROLE editor;');
-      await tenantAsAdmin.query('CREATE ROLE admin;');
+      // Create a role for the tenant's admin
+      await tenantAsAdmin.query(
+        `CREATE ROLE "${data.name}" WITH ENCRYPTED PASSWORD '${data.password}';`,
+      );
 
-      /** **************************************************************************
-       * Revoke all access only allow "viewer", "editor", and "admin" (s) to connect
-       ************************************************************************** */
       await tenantAsAdmin.query(
         `REVOKE ALL ON DATABASE "${data.tenantsAccessKey}" FROM public;`,
       );
 
       // Grant Connect Access
       await tenantAsAdmin.query(
-        `GRANT CONNECT ON DATABASE "${data.tenantsAccessKey}" TO viewer;`,
-      );
-      await tenantAsAdmin.query(
-        `GRANT CONNECT ON DATABASE "${data.tenantsAccessKey}" TO editor;`,
-      );
-      await tenantAsAdmin.query(
-        `GRANT CONNECT ON DATABASE "${data.tenantsAccessKey}" TO admin;`,
-      );
-
-      // Assign predefined roles (PG Specific)
-      await tenantAsAdmin.query(`GRANT USAGE ON SCHEMA public TO viewer;`);
-      await tenantAsAdmin.query(`GRANT USAGE, CREATE ON SCHEMA public TO editor;`);
-      await tenantAsAdmin.query(`GRANT USAGE, CREATE ON SCHEMA public TO admin;`);
-
-      await tenantAsAdmin.query(`GRANT ALL ON ALL TABLES IN SCHEMA public TO viewer;`);
-      await tenantAsAdmin.query(`GRANT ALL ON ALL TABLES IN SCHEMA public TO editor;`);
-      await tenantAsAdmin.query(`GRANT ALL ON ALL TABLES IN SCHEMA public TO admin;`);
-
-      await tenantAsAdmin.query(`GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO viewer;`);
-      await tenantAsAdmin.query(`GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO editor;`);
-      await tenantAsAdmin.query(`GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO admin;`);
-
-      /** **************************************************************************
-       * Start creating and assigning privileges to tenant specific roles
-       ************************************************************************** */
-      // Create a role for the tenant's admin
-      await tenantAsAdmin.query(
-        `CREATE ROLE "${data.name}" WITH ENCRYPTED PASSWORD '${data.password}';`,
+        `GRANT CONNECT ON DATABASE "${data.tenantsAccessKey}" TO ${data.name};`,
       );
 
       // Provide Login permissions, this makes this a user instead of a group
       await tenantAsAdmin.query(`ALTER ROLE "${data.name}" WITH LOGIN;`);
 
-      //  ADMIN Specific
+      //  Administration Ability
       await tenantAsAdmin.query(`ALTER DEFAULT PRIVILEGES FOR ROLE ${data.name} IN SCHEMA public
-GRANT ALL ON TABLES TO admin;`);
+GRANT ALL ON TABLES TO ${data.name};`);
 
       await tenantAsAdmin.query(`ALTER DEFAULT PRIVILEGES FOR ROLE ${data.name} IN SCHEMA public
-GRANT ALL ON SEQUENCES TO admin;`);
+GRANT ALL ON SEQUENCES TO ${data.name};`);
+
+      await tenantAsAdmin.query(`GRANT USAGE, CREATE ON SCHEMA public TO ${data.name};`);
+      await tenantAsAdmin.query(`GRANT ALL ON ALL TABLES IN SCHEMA public TO ${data.name};`);
+      await tenantAsAdmin.query(`GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO ${data.name};`);
 
       // Load `uuid-ossp` into Database
       await tenantAsAdmin.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
@@ -101,15 +72,13 @@ GRANT ALL ON SEQUENCES TO admin;`);
       // Load `citext` into Database
       await tenantAsAdmin.query(`CREATE EXTENSION IF NOT EXISTS citext;`);
 
-      // Assign groups
-      await tenantAsAdmin.query(`GRANT "admin" TO "${data.name}";`);
-
       await tenantAsAdmin.close();
       const tenantSequelizeInstance = await getTenantDBConnection(
         data.tenantsAccessKey,
         data.name,
         data.password,
       );
+
       const tenantMigrator = new Umzug({
         migrations: {
           glob: ['../../migrations/tenanted/*.ts', { cwd: __dirname }],

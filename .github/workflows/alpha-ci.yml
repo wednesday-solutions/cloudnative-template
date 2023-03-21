@@ -13,6 +13,7 @@ on:
 
 jobs:
   build-and-test:
+    timeout-minutes: 1
     runs-on: ubuntu-latest
 
     # We'll test against both 16 Gallium LTS.

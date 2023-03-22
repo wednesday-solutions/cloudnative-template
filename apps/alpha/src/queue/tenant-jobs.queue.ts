@@ -22,6 +22,7 @@ export async function provisionTenantsBackend(options: GenerateTenantOptions) {
       },
     },
   );
+
   await tenantJob.add({ name, companyName, password, tenantsAccessKey });
 
   void tenantJob.process(async job => {

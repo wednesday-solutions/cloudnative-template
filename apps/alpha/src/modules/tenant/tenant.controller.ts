@@ -74,7 +74,7 @@ export async function registerTenant(
   delete tenant.password;
   delete tenant.id;
 
-  return reply.code(200).send({ data: tenant });
+  return reply.code(200).send({ data: { ...tenant, dbuser: tname } });
 }
 
 /**

@@ -56,6 +56,18 @@ export class MainCache extends RedisCache {
   async dropConnection() {
     this.cache.disconnect();
   }
+
+  async shutdown() {
+    await new Promise<void>(resolve => {
+      void this.cache.quit(() => {
+        resolve();
+      });
+    });
+    // redis.quit() creates a thread to close the connection.
+    // We wait until all threads have been run once to ensure the connection closes.
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise(resolve => setImmediate(resolve));
+  }
 }
 
 export default MainCache;

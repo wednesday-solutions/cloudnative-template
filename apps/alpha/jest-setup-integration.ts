@@ -3,15 +3,13 @@ import { MainDBInstance } from '@/db';
 import { databaseInstance } from './test/integration/support';
 
 afterAll(async () => {
-  jest.resetAllMocks();
   await databaseInstance.close();
   await MainDBInstance.getInstance().connection.instance.close();
 
-  await _clearCache();
-
-  await MainCacheInstance.getInstance().connection.dropConnection();
+  await _clearCacheAndDropConnection();
 });
 
-async function _clearCache() {
+async function _clearCacheAndDropConnection() {
   await MainCacheInstance.getInstance().connection.cache.flushall();
+  await MainCacheInstance.getInstance().connection.shutdown();
 }

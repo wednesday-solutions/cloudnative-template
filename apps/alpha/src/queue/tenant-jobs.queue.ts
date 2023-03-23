@@ -30,14 +30,14 @@ export async function provisionTenantsBackend(options: GenerateTenantOptions) {
       const mainDatabase = MainDBInstance.getInstance().connection.instance;
       const { data } = job;
 
+      // Create a new database
+      await mainDatabase.query(`CREATE DATABASE "${data.tenantsAccessKey}";`);
+
       const tenantAsAdmin = new SequelizeInstance(
         data.tenantsAccessKey,
         process.env.DB_USERNAME!,
         process.env.DB_PASSWORD!,
       ).instance;
-
-      // Create a new database
-      await mainDatabase.query(`CREATE DATABASE "${data.tenantsAccessKey}";`);
 
       // Create a role for the tenant's admin
       await tenantAsAdmin.query(
@@ -57,15 +57,15 @@ export async function provisionTenantsBackend(options: GenerateTenantOptions) {
       await tenantAsAdmin.query(`ALTER ROLE "${data.name}" WITH LOGIN;`);
 
       //  Administration Ability
-      await tenantAsAdmin.query(`ALTER DEFAULT PRIVILEGES FOR ROLE ${data.name} IN SCHEMA public
-GRANT ALL ON TABLES TO ${data.name};`);
+      await tenantAsAdmin.query(`ALTER DEFAULT PRIVILEGES FOR ROLE "${data.name}" IN SCHEMA public
+GRANT ALL ON TABLES TO "${data.name}";`);
 
-      await tenantAsAdmin.query(`ALTER DEFAULT PRIVILEGES FOR ROLE ${data.name} IN SCHEMA public
-GRANT ALL ON SEQUENCES TO ${data.name};`);
+      await tenantAsAdmin.query(`ALTER DEFAULT PRIVILEGES FOR ROLE "${data.name}" IN SCHEMA public
+GRANT ALL ON SEQUENCES TO "${data.name}";`);
 
-      await tenantAsAdmin.query(`GRANT USAGE, CREATE ON SCHEMA public TO ${data.name};`);
-      await tenantAsAdmin.query(`GRANT ALL ON ALL TABLES IN SCHEMA public TO ${data.name};`);
-      await tenantAsAdmin.query(`GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO ${data.name};`);
+      await tenantAsAdmin.query(`GRANT USAGE, CREATE ON SCHEMA public TO "${data.name}";`);
+      await tenantAsAdmin.query(`GRANT ALL ON ALL TABLES IN SCHEMA public TO "${data.name}";`);
+      await tenantAsAdmin.query(`GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO "${data.name}";`);
 
       // Load `uuid-ossp` into Database
       await tenantAsAdmin.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
@@ -93,6 +93,7 @@ GRANT ALL ON SEQUENCES TO ${data.name};`);
       });
 
       await tenantMigrator.up();
+      await tenantSequelizeInstance.instance.close();
     } catch (error) {
       console.error(error);
     }

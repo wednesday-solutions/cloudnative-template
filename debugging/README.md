@@ -4,4 +4,4 @@ This directory does not directly relate to anything in the projects but rather c
 
 ## VSCode
 
-The configurations for VSCode goes into the `.vscode` directory at your root project. The default name should be `launch.json` and should be used. A better idea would be look into how VSCode debugger works! [Debugger in VSCode](https://code.visualstudio.com/docs/editor/debugging)
+The configurations for VSCode goes into the `.vscode` directory at your root project. The default name should be `launch.json` and should be used. A better idea would be to look into how VSCode debugger works! [Debugger in VSCode](https://code.visualstudio.com/docs/editor/debugging)

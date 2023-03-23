@@ -4,7 +4,7 @@ import { MainCache } from '@/cache/instance/main';
 describe('MainCache', () => {
   let redisClient: MainCache;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     redisClient = new MainCache(
       process.env.REDIS_HOST!,
       Number(process.env.REDIS_PORT!),
@@ -14,7 +14,7 @@ describe('MainCache', () => {
     await redisClient.connect();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await redisClient.quit();
   });
 

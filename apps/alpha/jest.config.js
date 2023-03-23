@@ -4,6 +4,7 @@ module.exports = {
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/$1',
   },
+  testTimeout: 30_000,
   collectCoverageFrom: [
     // Check only in src
     'src/**/*.{js,ts}',

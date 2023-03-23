@@ -4,7 +4,7 @@ export const up: TenantMigration = async ({ context }) => {
   const { sequelize, tenantAccessKey } = context;
 
   await sequelize.query(`
-    SET search_path = ${tenantAccessKey}, extensions;
+    SET search_path = ${tenantAccessKey}, public, main, extensions;
   `.trim());
 
   // Function trigger for update timestamp
@@ -21,12 +21,6 @@ export const up: TenantMigration = async ({ context }) => {
       END;
     $trigger_set_update_at_timestamp$ LANGUAGE plpgsql;
   `.trim());
-
-  // Load `uuid-ossp` into Database
-  await sequelize.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
-
-  // Load `citext` into Database
-  await sequelize.query(`CREATE EXTENSION IF NOT EXISTS citext;`);
 };
 
 export const down: TenantMigration = async ({ context }) => {

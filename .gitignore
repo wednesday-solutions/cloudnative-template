@@ -36,3 +36,7 @@ yarn-error.log*
 # ide generated
 .idea
 .vscode
+
+# apisix
+/gateway_data/apisix_log
+/gateway_data/etcd

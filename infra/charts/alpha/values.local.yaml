@@ -1,0 +1,48 @@
+# App Alpha internals envs
+application:
+  nodeEnv: 'development'
+  containerName: 'alpha-svc'
+  containerPort: 5000
+  # Application Metadata
+  meta:
+    name: 'alpha-service'
+    namespace: 'default'
+    appName: 'alpha'
+    tier: 'backend'
+  # Application Configurations
+  config:
+    replicas: 1
+    restartPolicy: 'Always'
+    imagePullPolicy: 'Never'
+    image: 'fastify-postgres-alpha:local'
+  resources:
+    requests:
+      memory: '1024Mi'
+      cpu: '150m'
+    limits:
+      memory: '1024Mi'
+      cpu: '150m'
+  # Application Database Configurations
+  database:
+    port: 5432
+    name: main
+    host: alpha-pg-cluster-rw
+    dialect: postgres
+    username: postgres
+    password: postgres
+  # Application Cache Configurations
+  cache:
+    host: redis
+    port: 6379
+    user: ''
+    password: some-random-and-complex-master-password
+  # Application Secrets
+  secrets:
+    name: alpha-svc-secret
+
+# Postgres Deployment
+database:
+  namespace: default
+  cluster:
+    name: alpha-pg-cluster
+    instances: 1

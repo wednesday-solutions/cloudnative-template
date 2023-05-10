@@ -1,6 +1,4 @@
-import type { TenantMigration } from '../../migrate';
-
-export const up: TenantMigration = async ({ context }) => {
+exports.up = async ({ context }) => {
   const { sequelize } = context;
 
   // Create users table for the provided tenant
@@ -33,7 +31,7 @@ FOR EACH ROW EXECUTE PROCEDURE trigger_set_update_at_timestamp();
   `.trim());
 };
 
-export const down: TenantMigration = async ({ context }) => {
+exports.down = async ({ context }) => {
   const { sequelize } = context;
 
   await sequelize.query(`DROP TABLE IF EXISTS "users";`);

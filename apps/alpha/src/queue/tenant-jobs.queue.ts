@@ -82,7 +82,7 @@ GRANT ALL ON SEQUENCES TO "${data.name}";`);
 
       const tenantMigrator = new Umzug({
         migrations: {
-          glob: ['../../migrations/tenanted/*.ts', { cwd: __dirname }],
+          glob: ['../../migrations/tenanted/*.js', { cwd: __dirname }],
         },
         storage: new SequelizeStorage({
           sequelize: tenantSequelizeInstance.instance,

@@ -5,9 +5,9 @@ services:
     image: apache/apisix-dashboard:3.0.0-alpine
     restart: always
     volumes:
-    - ./gateway_data/apisix_dashboard/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
+      - ./gateway_data/apisix_dashboard/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
     ports:
-    - "9000:9000"
+      - "9000:9000"
     networks:
       apisix:
 
@@ -18,8 +18,8 @@ services:
       - ./gateway_data/apisix_conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
     depends_on:
       - etcd
-    ##network_mode: host
     ports:
+      - "9180:9180/tcp"
       - "9080:9080/tcp"
       - "9091:9091/tcp"
       - "9443:9443/tcp"
@@ -55,12 +55,12 @@ services:
   grafana:
     image: grafana/grafana:7.3.7
     restart: always
-    ports:
-      - "3000:3000"
     volumes:
       - "./gateway_data/grafana_conf/provisioning:/etc/grafana/provisioning"
       - "./gateway_data/grafana_conf/dashboards:/var/lib/grafana/dashboards"
       - "./gateway_data/grafana_conf/config/grafana.ini:/etc/grafana/grafana.ini"
+    ports:
+      - "3000:3000"
     networks:
       apisix:
 

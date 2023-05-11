@@ -17,6 +17,8 @@ dist
 # misc
 .DS_Store
 *.pem
+*.key
+*.crt
 
 # debug
 npm-debug.log*
@@ -36,7 +38,3 @@ yarn-error.log*
 # ide generated
 .idea
 .vscode
-
-# apisix
-/gateway_data/apisix_log
-/gateway_data/etcd

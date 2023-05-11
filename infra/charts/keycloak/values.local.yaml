@@ -1,0 +1,45 @@
+keycloak:
+  metadata:
+    name: auth-server
+    labels:
+      app: auth-server
+  ingress:
+    name: auth-ingress
+  config:
+    replicaCount: 1
+  tls:
+    # Check to gen-cert.sh script if you wanna change the name
+    secretName: local-tls-secret
+  secrets:
+    name: keycloak-secrets
+    keycloakAdmin: admin
+    keycloakAdminPassword: admin
+    kcHttpsCertFile: "/etc/certs/tls.crt"
+    kcHttpsCertKeyFile: "/etc/certs/tls.key"
+    kcHealthEnabled: true
+    kcMetricsEnabled: true
+    kcHostName: auth.localtest.me
+    kcProxy: edge
+    kcDb: postgres
+    kcDbUrl: "jdbc:postgresql://keycloak-database-rw/postgres"
+    kcDbUsername: postgres
+    jgroupsDnsQuery: keycloak
+
+database:
+  metadata:
+    name: keycloak-database
+  cluster:
+    instances: 1
+    primaryUpdateStrategy: unsupervised
+    resources:
+      # Try se full resources for high QOS
+      requests:
+        memory: "512Mi"
+        cpu: "0.5"
+      limits:
+        memory: "512Mi"
+        cpu: "0.5"
+  postgresInternals:
+    sharedBuffers: "128MB" # This should be 25% of the assigned memory
+  monitoring:
+    enablePodMonitor: true

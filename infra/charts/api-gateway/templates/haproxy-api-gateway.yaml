@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.gateway.name }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.gateway.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.gateway.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.gateway.name }}
+    spec:
+      containers:
+        - name: {{ .Values.gateway.name }}
+          image: lukasz/haproxy-auth-gateway
+          env:
+            - name: OAUTH_PUBKEY_PATH
+              value: "/etc/certs/{{ .Values.gateway.config.publicKeyName }}"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: iss-cert
+              mountPath: /etc/certs
+            - name: haproxy-cfg
+              mountPath: /usr/local/etc/haproxy
+      volumes:
+        - name: haproxy-cfg
+          configMap:
+            name: {{ .Values.gateway.config.haproxyConfigmapName }}
+        - name: iss-cert
+          configMap:
+            name: {{ .Values.gateway.config.haproxyIssCert }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.gateway.name }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.gateway.name }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: {{ .Values.gateway.name }}
+  ports:
+    - protocol: TCP
+      port: 80

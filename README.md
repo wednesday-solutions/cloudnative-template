@@ -1,12 +1,18 @@
-# Fastify and Postgres with TurboRepo! 🚀
+# Wednesday Solution's CloudNative Template! 🚀
 
 This is a monorepo template built using TurboRepo. Under the hood we have Fastify Service which is running with a Postgres instance.
 
+# Guides
+
+The monorepo works on K8s for local development and also is deployable on K8s and is fully cloudnative follow the guides below for quick and easy setup.
+
+- [Developer's Guide](https://github.com/wednesday-solutions/fastify-postgres/blob/main/README.md)
+
 # Philosophy
 
-No code is a bad code. The code you start with is always a good code because you and your team (even if you're the only team 🙃) decided on it. What we have in this repository is also good code. Well not exactly good, but in our *opinion* good code.
+No code is a bad code. The code you start with is always good code because you and your team (even if you're the only team 🙃) agreed upon it. What we have in this repository is also good code. Well not exactly good, but in our *opinion* good code.
 
-Good code because it follows what we wanted it to follow. Then what is bad code? No code repository becomes a bad code repository in a day or two. It becomes *bad/unmaintainable/unscalable/sluggish* with time. Call it whatever you want a bad code is easily recognizable. And it falls down to you to fix and maintain it.
+Good code because it follows what we wanted it to follow. Then what is bad code? No code repository becomes bad code repository in a day or two. It becomes *bad/unmaintainable/unscalable/sluggish* with time. Call it whatever you want bad code is easily recognizable. And it falls down to you to fix and then maintain it.
 
 There are several things in this repository that help catch what a human eye might miss. Linters, Type Checkers, Editor configurations, pre-commit hooks, and much more. But they can be avoided because they are bypassable. And that is exactly what makes the good code bad.
 
@@ -27,13 +33,14 @@ The following are the technology that this template utilizes.
 - [Postgres](https://www.postgresql.org/)
 - [Sequelize](https://sequelize.org/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Kubernetes](https://kubernetes.io/)
 
 # Architecture of the template 🏗
 
 The template is a monorepo where the main applications are in the `/apps` directory.
 Aside that we also have several `packages` that we store in the `packages` directory that provided shared config and code.
 
-We use [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli) to pass the `environment` files based on what `NODE_ENV` we wanna use.
+We use [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli) to pass the `environment` files based on what `NODE_ENV` we wanna use. The monorepo utilizes K8s for development too, please refer the developer's guide to know more.
 
 # Testing 👨‍🔬
 

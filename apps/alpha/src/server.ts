@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import FastifyServer from './bootstrapper';
-import { tenantSchemas } from './modules/tenant/tenant.routes';
-import { userSchemas } from './modules/user/user.routes';
+import { tenantSchemas } from './modules/alpha/tenant/tenant.routes';
+import { userSchemas } from './modules/alpha/user/user.routes';
 import { FALLBACK_PORT } from './utils/constants';
 
 dotenv.config();

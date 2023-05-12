@@ -125,7 +125,7 @@ export class FastifyServer {
     const routes = this.options.routes ?? [];
 
     // Register Health Check
-    this.instance.get('/health-check', async () => {
+    this.instance.get('/alpha/health-check', async () => {
       return { status: 'Ok!', message: 'Fastify just being fast!' };
     });
 

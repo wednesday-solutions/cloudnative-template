@@ -6,8 +6,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import snakeCase from 'lodash/snakeCase';
 import { v4 } from 'uuid';
-import { Tenant } from '../../db/models/tenant/tenant.model';
-import { provisionTenantsBackend } from '../../queue/tenant-jobs.queue';
+import { Tenant } from '../../../db/models/tenant/tenant.model';
+import { provisionTenantsBackend } from '../../../queue/tenant-jobs.queue';
 
 /**
  * Create and register a new tenant with the system

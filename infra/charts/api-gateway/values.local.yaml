@@ -1,0 +1,12 @@
+gateway:
+  name: haproxy-gateway
+  config:
+    publicKeyName: wednesday.pem
+    # Check `create-configmaps-for-gateway.sh`
+    haproxyIssCert: haproxy-auth-gateway-iss-cert
+    haproxyConfigmapName: haproxy-auth-gateway-haproxy-cfg
+
+ingress:
+  name: haproxy-gateway-ingress
+  tls:
+    secretName: gateway-tls-secret

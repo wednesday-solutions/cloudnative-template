@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gateway
+description: A Helm chart for Deploying HAProxy Auth Gateway on Kubernetes
+
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

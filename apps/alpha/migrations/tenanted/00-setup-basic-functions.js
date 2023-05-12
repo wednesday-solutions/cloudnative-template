@@ -1,6 +1,4 @@
-import type { TenantMigration } from '../../migrate';
-
-export const up: TenantMigration = async ({ context }) => {
+exports.up = async ({ context }) => {
   const { sequelize, tenantAccessKey } = context;
 
   await sequelize.query(`
@@ -23,7 +21,7 @@ export const up: TenantMigration = async ({ context }) => {
   `.trim());
 };
 
-export const down: TenantMigration = async ({ context }) => {
+exports.down = async ({ context }) => {
   const { sequelize } = context;
 
   await sequelize.query(`DROP FUNCTION IF EXISTS trigger_set_update_at_timestamp;`);

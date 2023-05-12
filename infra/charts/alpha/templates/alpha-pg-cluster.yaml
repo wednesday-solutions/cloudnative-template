@@ -1,0 +1,26 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.database.cluster.name }}
+spec:
+  instances: {{ .Values.database.cluster.instances }}
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - CREATE DATABASE "main"
+  primaryUpdateStrategy: unsupervised
+  postgresql:
+    parameters:
+      shared_buffers: "128MB" # This should be 25% of the available RAM
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "0.5"
+    limits:
+      memory: "512Mi"
+      cpu: "0.5"
+  storage:
+    size: 1Gi
+  # Enable monitoring for this pod
+  monitoring:
+    enablePodMonitor: true

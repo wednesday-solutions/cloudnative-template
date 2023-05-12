@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "http"
+spec:
+  tls:
+    - hosts:
+      - fake
+      secretName: {{ .Values.ingress.tls.secretName }}
+  rules:
+  - host: api.localtest.me
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: {{ .Values.gateway.name }}
+            port:
+              number: 80

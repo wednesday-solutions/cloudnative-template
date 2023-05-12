@@ -1,0 +1,24 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.database.metadata.name }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "3"
+spec:
+  instances: {{ .Values.database.cluster.instances }}
+  primaryUpdateStrategy: {{ .Values.database.cluster.primaryUpdateStrategy }}
+  postgresql:
+    parameters:
+      shared_buffers: {{ .Values.database.postgresInternals.sharedBuffers }}
+  resources:
+    requests:
+      memory: {{ .Values.database.cluster.resources.requests.memory }}
+      cpu: {{ .Values.database.cluster.resources.requests.cpu }}
+    limits:
+      memory: {{ .Values.database.cluster.resources.limits.memory }}
+      cpu: {{ .Values.database.cluster.resources.limits.cpu }}
+  storage:
+    size: 1Gi
+  monitoring:
+    enablePodMonitor: {{ .Values.database.monitoring.enablePodMonitor }}

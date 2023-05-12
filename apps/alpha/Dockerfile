@@ -56,10 +56,21 @@ RUN pnpm turbo run build --filter=@fastify-postgres-template/alpha...
 # Copy build from Stage #2
 # Run the application
 FROM node:18-alpine AS runner
+
+RUN apk update
+RUN apk add --no-cache libc6-compat git
+RUN apk add --no-cache --virtual builds-deps build-base python3
+
+# Enable PNPM
+RUN corepack enable
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
 WORKDIR /app
-RUN addgroup --system --gid 1001 fastify-postgres
-RUN adduser --system --uid 1001 app-alpha
-USER app-alpha
+
+# RUN addgroup --system --gid 1001 fastify-postgres
+# RUN adduser --system --uid 1001 app-alpha
+# USER app-alpha
 
 COPY --from=installer /app .
 COPY /dev/health-check.js /app/health-check.js

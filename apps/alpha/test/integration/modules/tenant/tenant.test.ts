@@ -31,7 +31,7 @@ describe('Tenant module', () => {
 
       const response: any = await server.instance.inject({
         method: 'POST',
-        url: '/tenant',
+        url: '/alpha/tenant',
         payload: randomTenant,
       });
 
@@ -60,13 +60,13 @@ describe('Tenant module', () => {
 
       await server.instance.inject({
         method: 'POST',
-        url: '/tenant',
+        url: '/alpha/tenant',
         payload: randomTenant,
       });
 
       const response: any = await server.instance.inject({
         method: 'POST',
-        url: '/tenant',
+        url: '/alpha/tenant',
         payload: randomTenant,
       });
 

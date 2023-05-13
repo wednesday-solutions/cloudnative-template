@@ -20,6 +20,13 @@ spec:
       labels:
         app: {{ .Values.application.meta.appName }}
         tier: {{ .Values.application.meta.tier }}
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: {{ .Values.application.meta.appName }}
+        dapr.io/app-port: "{{ .Values.application.containerPort }}"
+        dapr.io/enable-api-logging: "true"
+        dapr.io/sidecar-liveness-probe-delay-seconds: "180"
+        dapr.io/sidecar-readiness-probe-delay-seconds: "180"
     spec:
       containers:
       - name: {{ .Values.application.containerName }}
@@ -60,4 +67,4 @@ spec:
   ports:
     - port: 80
       targetPort: {{ .Values.application.containerPort }}
-  type: LoadBalancer
+  type: ClusterIP

@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.2.1",
     "@types/lodash": "^4.14.191",
     "argon2": "^0.30.3",
     "bull": "^4.10.3",

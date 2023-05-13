@@ -1,5 +1,6 @@
 import path from 'node:path';
 import autoload from '@fastify/autoload';
+import fastifyCors from '@fastify/cors';
 import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
 import { CustomError } from 'fastify-custom-errors';
@@ -39,6 +40,9 @@ export class FastifyServer {
    */
   constructor(public options: FastifyBootstrapperOptions) {
     this.instance = fastify({ logger: options.logging ?? false });
+    void this.instance.register(fastifyCors, {
+      origin: ['http://localhost:3000', /\.localhost:3000$/],
+    });
 
     this.init()
       .then(() => {

@@ -20,6 +20,8 @@ spec:
           env:
             - name: OAUTH_PUBKEY_PATH
               value: "/etc/certs/{{ .Values.gateway.config.publicKeyName }}"
+            - name: OAUTH_ISSUER
+              value: https://auth.localtest.me/realms/wednesday
           ports:
             - containerPort: 80
           volumeMounts:

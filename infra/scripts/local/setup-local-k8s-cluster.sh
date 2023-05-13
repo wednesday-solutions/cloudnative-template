@@ -27,9 +27,12 @@ echo
 
 # Install CRDs
 echo 'Installing CRDs...'
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.6.3/cert-manager.yaml
 kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.20/releases/cnpg-1.20.0.yaml
 helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 helm repo update
+helm install jaeger-operator jaegertracing/jaeger-operator
 echo
 
 echo "Local K8s cluster up and running..."

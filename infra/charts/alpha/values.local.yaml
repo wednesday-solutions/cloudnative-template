@@ -18,10 +18,10 @@ application:
   resources:
     requests:
       memory: '1024Mi'
-      cpu: '150m'
+      cpu: '500m'
     limits:
       memory: '1024Mi'
-      cpu: '150m'
+      cpu: '500m'
   # Application Database Configurations
   database:
     port: 5432

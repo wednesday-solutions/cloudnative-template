@@ -15,10 +15,11 @@ you must have a public key available at
 # Build alpha app image
 docker_build(
   'fastify-postgres-alpha:local',
-  dockerfile='./apps/alpha/Dockerfile',
+  dockerfile='./apps/alpha/Dockerfile.local',
   context='.',
+  ignore=['./apps/kebab'],
   entrypoint='pnpm start:dev --filter alpha',
-  live_update=[sync('.', '/apps')]
+  live_update=[sync('.', '/apps/alpha')]
 )
 
 #######################
@@ -31,12 +32,18 @@ local_resource('init certificates', cmd='./infra/scripts/local/gen-cert.sh', aut
 # Initialize Configmaps for API Gateway
 local_resource('init gateway configmaps', cmd='./infra/scripts/local/create-configmaps-for-gateway.sh', auto_init=True)
 
+# Initialize Dapr
+local_resource('initialize dapr', cmd='dapr init -k', auto_init=True)
+
 ########################
 # Deploy helm charts
 #######################
 
 # Deploy Redis Cache Cluster
 k8s_yaml(helm('./infra/charts/cache', name='redis-cluster'))
+
+# Deploy Jaeger
+# k8s_yaml(helm('./infra/charts/jaeger', name='jaegar-tracing', values='./infra/charts/jaeger/values.local.yaml'))
 
 # Deploy Keycloak Auth server
 k8s_yaml(helm('./infra/charts/keycloak', name='keycloak-local', values='./infra/charts/keycloak/values.local.yaml'))

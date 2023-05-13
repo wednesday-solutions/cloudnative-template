@@ -16,7 +16,7 @@
       "cache": false
     },
     "start:dev": {
-      "dependsOn": ["build"],
+      "dependsOn": [],
       "cache": false
     },
     "start:qa": {

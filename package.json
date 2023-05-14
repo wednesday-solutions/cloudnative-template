@@ -10,10 +10,9 @@
   "scripts": {
     "DEVELOPMENT": "-------------------- DEVELOPMENT --------------------",
     "turbo": "turbo",
-    "start:dev": "dotenv -e ./environments/.env.development -- turbo run start:dev --parallel",
-    "start:qa": "dotenv -e ./environments/.env.qa -- turbo run start:qa --parallel",
-    "start:prod": "dotenv -e ./environments/.env -- turbo run start:prod --parallel",
-    "docker:dev:up": "pnpm -c exec docker compose -f docker-compose.yml -f docker-compose-development.yml up",
+    "start:dev": "turbo run start:dev --parallel",
+    "start:qa": "turbo run start:qa --parallel",
+    "start:prod": "turbo run start:prod --parallel",
     "TESTING": "-------------------- TESTING --------------------",
     "test:all": "turbo run test:all",
     "test:unit": "turbo run test:unit",
@@ -47,8 +46,5 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@7.25.0",
-  "dependencies": {
-    "dotenv-cli": "^7.0.0"
-  }
+  "packageManager": "pnpm@7.25.0"
 }

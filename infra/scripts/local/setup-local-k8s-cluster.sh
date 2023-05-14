@@ -32,7 +32,6 @@ kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 helm repo update
-helm install jaeger-operator jaegertracing/jaeger-operator
 echo
 
 echo "Local K8s cluster up and running..."

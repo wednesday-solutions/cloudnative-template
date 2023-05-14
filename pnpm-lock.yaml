@@ -3,10 +3,6 @@ lockfileVersion: '6.0'
 importers:
 
   .:
-    dependencies:
-      dotenv-cli:
-        specifier: ^7.0.0
-        version: 7.0.0
     devDependencies:
       '@types/jest':
         specifier: ^29.2.6

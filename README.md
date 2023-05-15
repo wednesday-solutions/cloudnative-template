@@ -6,7 +6,8 @@ This is a monorepo template built using TurboRepo. Under the hood we have Fastif
 
 The monorepo works on K8s for local development and also is deployable on K8s and is fully cloudnative follow the guides below for quick and easy setup.
 
-- [Developer's Guide](https://github.com/wednesday-solutions/fastify-postgres/blob/main/DEVELOPERS_GUIDE.md)
+- [Deployment Flow Guide](https://github.com/wednesday-solutions/fastify-postgres/blob/main/DEPLOYMENT_FLOW_GUIDE.md)
+- [Development Guide](https://github.com/wednesday-solutions/fastify-postgres/blob/main/DEVELOPERS_GUIDE.md)
 
 # Philosophy
 

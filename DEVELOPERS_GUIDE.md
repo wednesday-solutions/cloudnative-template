@@ -13,6 +13,7 @@ Before you even start using or do anything let's make sure your machine has the 
 - [Helm](https://helm.sh/)
 - [Nodejs](https://nodejs.org/en)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [Tilt](https://tilt.dev/)
 
 The above softwares must be available through CLI on your machine (regardless of OS or Architecture); given that you have `docker` installed spinning up a `kubernetes` (we'll use `k8s` for `kubernetes` from now on) cluster wouldn't be difficult.
 
@@ -145,7 +146,7 @@ Feel free to dive into the `alpha` app's `Dockerfile`, its multistaged in order 
 
 The k8s cluster is capable of exposing certain ports on hosts set in the manifests however it requires certificates, we'll be using self-signed certificates for this case.
 
-```sh
+```shell
 ./infra/scripts/local/gen-cert.sh
 ```
 
@@ -159,7 +160,7 @@ An easy way to do that is to first deploy `Keycloak` auth server and tunnel it, 
 
 Let's start by `cd`-ing into `/infra/charts` directory. And execute these, remember when installing helm charts you MUST be in the `/infra/charts` directory.
 
-```sh
+```shell
 helm install keycloak-local keycloak/ --values keycloak/values.local.yaml
 ```
 
@@ -167,7 +168,7 @@ This will start creating mainly two pods, one for `keycloak` auth server and ano
 
 Once done we can start tunneling (perform this on another terminal instance so as to keep your main terminal free), just open up another terminal instance and do:
 
-```sh
+```shell
 minikube tunnel
 ```
 
@@ -188,3 +189,66 @@ Now create a new file with the name of your realm (you can name it whatever you 
 ```
 
 Now you can close the `tunneling` by closing (killing) the terminal running `minikube tunnel`. Keycloak will keep running.
+
+Once you have this you have to create config maps you can manually configure the configmaps or run the following script.
+
+```shell
+./infra/scripts/local/create-configmaps-for-gateway.sh
+```
+
+Once this is done it will create two configmaps one named `haproxy-auth-gateway-iss-cert` with the `.pem` file you just made. Make sure the file `.pem` file contains the Public Key of Keycloak's Realm. The other file is gonna be `haproxy.cfg` is configurations for HAProxy which we will talk about later one we will configure the API Gateway!
+
+Now you're ready for other deployments.
+
+## 5. Deploy Redis Cluster
+
+The Alpha application uses Redis cluster which means for it to work you have a working and running Redis instance. For this case we'll be using Replicated Redis Cluster. However for local work we'll only have the master node up.
+
+```shell
+helm install redis-cluster cache/
+```
+
+The above should be executed in the charts directory and it should start deploying the Redis cluster.
+
+## 6. Deploy Alpha Service
+
+Now we have our Authentication Server up and running its time to deploy the Alpha Service.
+
+Again from the `/charts` directory run the following to deploy the Alpha Service:
+
+```sh
+helm install alpha-local alpha/ --values alpha/values.local.yaml
+```
+
+Now all you gotta do is wait for the Alpha Service to come up!
+
+Once the service is up you should be able to the service running with a side (Dapr) running along side it. You can check logs for the application by doing a normal `kubectl logs <container-name>` this will emit logs from the application. However if you (by any chance) wanna check the logs emitted by Dapr just do the same and append `-c daprd`, then you can see the logs by the `dapr` daemon.
+
+## 7. Deploy API Gateway
+
+Now all we gotta do is start our Gateway that will start moving traffic. For this we will be using HAProxy Gateway its light weight and quite easy to configure. Fortunately we've already moved all the files that you needed in secrets and configmaps.
+
+```sh
+helm install haproxy-gateway api-gateway/ --values api-gateway/values.local.yaml
+```
+
+Just run the above and it should deploy the HAProxy gateway if you've done everything right all you have to do is to do `minikube tunnel` and you'll have everything running and ready.
+
+## 8. Test using the frontend
+
+Just head into `/apps/kebab` and do `pnpm dev` that should start the frontend at `http://localhost:3000` once that is up and running just try to login or you can register. And see everything succeeds, if it does you'll have your user data showing up.
+
+Also if everything works you can even call the `Call Healthcheck Endpoint` that will hit the `alpha` service which should also succeed, check the HAProxy Gateway logs for more interesting information.
+
+## Troubleshooting
+
+<details>
+  <summary>
+    <b>I am getting OOM Killed!</b>
+  </summary>
+  OOM (Out of Memory) Killed simply means that your pods are requesting more memory than available. A few things to keep in mind is that the initial configuration and hardware requests provided at the top of this document is a MUST. Make sure you've not decreased the memory or CPU limit.
+
+  <br />Few other things to keep in mind is that the initial values provided are bare minimum, which means if you increase the amount of instances (say Redis Cluster's instance) then you probably need to increase the resources too!
+
+  Not only that make sure that you've given enough memory for your
+</details>

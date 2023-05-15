@@ -250,5 +250,5 @@ Also if everything works you can even call the `Call Healthcheck Endpoint` that 
 
   <br />Few other things to keep in mind is that the initial values provided are bare minimum, which means if you increase the amount of instances (say Redis Cluster's instance) then you probably need to increase the resources too!
 
-  Not only that make sure that you've given enough memory for your
+  Not only that make sure that you've left enough memory for your Host machine.
 </details>

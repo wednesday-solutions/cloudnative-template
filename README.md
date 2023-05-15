@@ -110,5 +110,3 @@ Development scripts are there to you help you out with a bunch of stuff. Few are
 | Start development server        | pnpm start:dev              |
 | Create and run qa build         | pnpm start:qa               |
 | Create and run prod build       | pnpm start:prod             |
-| Compose development             | pnpm development:up         |
-| Rebuild and compose development | pnpm development:up --build |

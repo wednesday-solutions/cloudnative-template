@@ -175,37 +175,37 @@ minikube tunnel
 Once done it might probably ask for priviledges just enter your password and `keycloak` will be available at `https://auth.localtest.me`. Enter default `admin` and `admin` as username and password (Please change these in production). The first thing to do is to create a new Realm!
 
 - Create a new realm!
-
-![Screenshot 2023-05-15 at 11 41 34 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/6c504e70-623c-41a9-8e47-02423782920f)
-![Screenshot 2023-05-15 at 11 41 52 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/74c0d0f6-f9b4-41a8-84bb-3a2db419e996)
+![Screenshot 2023-05-16 at 10 53 10 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/efc5cdb1-3773-4df3-9614-ef4d70feb7f3)
+![Screenshot 2023-05-16 at 10 53 29 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/d0273333-8724-44e9-974e-de6105814c18)
 
 - Create a new client in your new realm!
 
-![Screenshot 2023-05-15 at 11 42 57 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/e854dca5-d936-42cf-af61-bb6aade90400)
+![Screenshot 2023-05-16 at 10 53 54 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/2d43ff0a-92f3-4f6e-8349-b2d1d13eac4f)
 
 - Name it whatever you want I am calling it `frontend`!
 
-![Screenshot 2023-05-15 at 11 43 18 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/8840ae53-4717-40f3-b3b4-c0bc53df0b1f)
+![Screenshot 2023-05-16 at 10 54 16 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/bac5f10d-53ce-4025-84fd-52fcbc08c263)
 
 - Make sure that you've disabled `Client Authentication` since this application will be protecting a Frontend app which is public so we need `public` access type! And then click on save!
 
-![Screenshot 2023-05-15 at 11 45 23 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/eaccb581-7f7d-4a63-a612-a54371ee3d34)
+![Screenshot 2023-05-16 at 10 54 38 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/46db8b0d-daf0-4d44-91a6-e56d8e284cdf)
 
 - Since we'll be running our frontend on local therefore we need to update the URLs. Navigate to `Settings` of your newly created Client. And update the URLs like so and save!
 
-![Screenshot 2023-05-15 at 11 47 28 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/e42968dd-75e7-433f-a62a-dc735fb3ea85)
+![Screenshot 2023-05-16 at 10 55 19 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/c15ed5b3-77e1-49e7-949c-de53745bf6de)
 
 - Now head over to `Realm Settings` on the side bar and head into `Login` tab and allow the following so as to allow users to register for an acccount!
 
-![Screenshot 2023-05-15 at 11 48 04 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/7165d270-95d3-4b8e-b8ed-7564ec39274c)
+![Screenshot 2023-05-16 at 10 55 43 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/da472eaa-21ec-4527-a345-4b864d12e9b1)
 
 - Head back to `General` tab in your `Realm Settings` and open up the link which says `OpenID Endpoint Configuration`, you'll see a bunch of JSON open the link in `issuer`!
 
-![Screenshot 2023-05-15 at 11 50 35 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/e8887463-43e5-4857-a641-f118e5390b36)
+![Screenshot 2023-05-16 at 10 56 11 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/8d6d32d4-119b-416d-84a1-8e880e2de0ee)
+![Screenshot 2023-05-16 at 10 56 38 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/4c2da6ab-28e4-4788-b6b8-f24e4de5a360)
 
 - And here is the `public_key` you're looking for! Follow the steps below to know how to use it!
 
-![Screenshot 2023-05-15 at 11 50 44 AM](https://github.com/wednesday-solutions/fastify-postgres/assets/104886701/d850ce5f-cd61-43f0-ac9e-10888a15c521)
+![Screenshot 2023-05-16 at 10 57 03 AM](https://github.com/wednesday-solutions/wednesday-cloudnative/assets/104886701/b3711c1b-c9a4-4296-a4a4-f7379e83f9da)
 
 The above should give you a new realm of your own to play with. Explaination of Keycloak and how it works is available on their website check it out [here](https://keycloak.org).
 
